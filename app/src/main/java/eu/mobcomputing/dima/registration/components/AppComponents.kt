@@ -23,12 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -45,52 +42,37 @@ import eu.mobcomputing.dima.registration.R
 @Composable
 fun NormalTextComponent(value: String) {
     Text(
-        text = value,
-        modifier = Modifier
+        text = value, modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
-        style = TextStyle(
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ),
-        color = colorResource(id = R.color.base_text_color),
-        textAlign = TextAlign.Center
+            .heightIn(min = 40.dp), style = TextStyle(
+            fontSize = 12.sp, fontWeight = FontWeight.Normal, fontStyle = FontStyle.Normal
+        ), color = colorResource(id = R.color.base_text_color), textAlign = TextAlign.Center
     )
 }
 
 @Composable
 fun HeaderTextComponent(value: String) {
     Text(
-        text = value,
-        modifier = Modifier
+        text = value, modifier = Modifier
             .fillMaxWidth()
-            .heightIn(),
-        style = TextStyle(
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Normal
-        ),
-        color = colorResource(id = R.color.base_text_color),
-        textAlign = TextAlign.Center
+            .heightIn(), style = TextStyle(
+            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
+        ), color = colorResource(id = R.color.base_text_color), textAlign = TextAlign.Center
     )
 }
 
 @Composable
 fun MyTextFieldComponent(
-    labelValue: String,
-    iconPainterResource: Painter
+    labelValue: String, iconPainterResource: Painter
 ) {
 
     val textValue = remember {
         mutableStateOf("")
     }
-    val localFocusManager = LocalFocusManager.current
 
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
+    OutlinedTextField(modifier = Modifier
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = colorResource(id = R.color.light_green),
@@ -107,24 +89,20 @@ fun MyTextFieldComponent(
         },
         leadingIcon = {
             Icon(
-                painter = iconPainterResource,
-                contentDescription = null
+                painter = iconPainterResource, contentDescription = null
             )
-        }
-    )
+        })
 }
 
 
 @Composable
 fun MyPasswordFieldComponent(
-    labelValue: String,
-    iconPainterResource: Painter
+    labelValue: String, iconPainterResource: Painter
 ) {
 
     val password = remember {
         mutableStateOf("")
     }
-    val localFocusManager = LocalFocusManager.current
 
     val passwordVisible = remember {
         mutableStateOf(false)
@@ -149,31 +127,27 @@ fun MyPasswordFieldComponent(
         },
         leadingIcon = {
             Icon(
-                painter = iconPainterResource,
-                contentDescription = null
+                painter = iconPainterResource, contentDescription = null
             )
         },
         trailingIcon = {
-            val iconImage =
-                if (passwordVisible.value) {
-                    Icons.Filled.Visibility
-                } else {
-                    Icons.Filled.VisibilityOff
-                }
-            var description =
-                if (passwordVisible.value) {
-                    stringResource(R.string.hide_password)
-                } else {
-                    stringResource(R.string.show_password)
-                }
+            val iconImage = if (passwordVisible.value) {
+                Icons.Filled.Visibility
+            } else {
+                Icons.Filled.VisibilityOff
+            }
+            val description = if (passwordVisible.value) {
+                stringResource(R.string.hide_password)
+            } else {
+                stringResource(R.string.show_password)
+            }
 
             IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
                 Icon(imageVector = iconImage, contentDescription = description)
             }
 
         },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else
-            PasswordVisualTransformation()
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
     )
 }
 
@@ -197,17 +171,25 @@ fun ButtonComponent(value: String) {
                 .background(
                     color = colorResource(id = R.color.red_base_colour),
                     shape = RoundedCornerShape(50.dp)
-                ),
-            contentAlignment = Alignment.Center
+                ), contentAlignment = Alignment.Center
         ) {
             Text(
-                text = value,
-                fontSize = 18.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
+                text = value, fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold
             )
 
         }
 
     }
+}
+
+@Composable
+fun MyRedHeadingComponent(value: String) {
+    Text(
+        text = value, modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(), style = TextStyle(
+            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
+        ), color = colorResource(id = R.color.red_base_colour), textAlign = TextAlign.Left
+    )
+
 }
