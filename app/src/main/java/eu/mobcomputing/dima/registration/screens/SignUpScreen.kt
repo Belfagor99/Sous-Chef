@@ -15,6 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
@@ -23,7 +25,7 @@ import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController) {
     Surface(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
@@ -63,7 +65,7 @@ fun SignUpScreen() {
                 )            )
 
             Spacer(modifier = Modifier.height(80.dp))
-            ButtonComponent(value = stringResource(id = R.string.create_account_text))
+            ButtonComponent(value = stringResource(id = R.string.create_account_text), {})
             Spacer(modifier = Modifier.height(30.dp))
             // NormalTextComponent(value = stringResource(id = R.string.or))
         }
@@ -73,5 +75,5 @@ fun SignUpScreen() {
 @Preview
 @Composable
 fun SignUpScreenPreview(){
-    SignUpScreen()
+    SignUpScreen(navController = rememberNavController())
 }

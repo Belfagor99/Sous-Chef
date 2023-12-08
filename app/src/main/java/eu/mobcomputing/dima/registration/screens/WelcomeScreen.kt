@@ -15,12 +15,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
+import eu.mobcomputing.dima.registration.Screen
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.SousChefImageComponent
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController) {
     Surface(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
@@ -39,9 +42,9 @@ fun WelcomeScreen() {
         {
             SousChefImageComponent()
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.create_account_text))
+            ButtonComponent(value = stringResource(id = R.string.create_account_text), onClickAction = { navController.navigate(route = Screen.Register.route) })
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.log_in_text))
+            ButtonComponent(value = stringResource(id = R.string.log_in_text), onClickAction = { navController.navigate(route = Screen.LogIn.route) })
 
         }
     }
@@ -50,6 +53,6 @@ fun WelcomeScreen() {
 @Preview
 @Composable
 fun PreviewWelcomeScreen() {
-    WelcomeScreen()
+    WelcomeScreen(navController = rememberNavController())
 }
 

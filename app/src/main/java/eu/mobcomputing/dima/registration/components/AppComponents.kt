@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.mobcomputing.dima.registration.R
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.res.painterResource
@@ -162,13 +161,13 @@ fun MyPasswordFieldComponent(
 }
 
 @Composable
-fun ButtonComponent(value: String) {
+fun ButtonComponent(value: String, onClickAction: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
         onClick = {
-
+            onClickAction.invoke()
         },
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
