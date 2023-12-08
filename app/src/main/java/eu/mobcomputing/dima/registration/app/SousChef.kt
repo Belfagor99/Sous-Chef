@@ -1,6 +1,5 @@
 package eu.mobcomputing.dima.registration.app
 
-import LogInScreen
 import androidx.compose.material.Surface
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ fun SousChefApp(){
         )
     {
         //SignUpScreen()
-        LogInScreen()
+        //LogInScreen()
     }
 
 }

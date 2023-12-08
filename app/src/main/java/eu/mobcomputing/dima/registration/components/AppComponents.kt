@@ -1,11 +1,13 @@
 package eu.mobcomputing.dima.registration.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -27,16 +29,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.mobcomputing.dima.registration.R
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.res.painterResource
 
 
 @Composable
@@ -75,10 +85,10 @@ fun MyTextFieldComponent(
         .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.light_green),
-            focusedLabelColor = colorResource(id = R.color.light_green),
-            cursorColor = colorResource(id = R.color.light_gray),
-            backgroundColor = colorResource(id = R.color.light_gray)
+            focusedBorderColor = colorResource(id = R.color.pink_600),
+            focusedLabelColor = colorResource(id = R.color.pink_600),
+            cursorColor = colorResource(id = R.color.pink_900),
+            backgroundColor = colorResource(id = R.color.pink_100)
         ),
         keyboardOptions = KeyboardOptions.Default,
         singleLine = true,
@@ -113,10 +123,10 @@ fun MyPasswordFieldComponent(
             .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.light_green),
-            focusedLabelColor = colorResource(id = R.color.light_green),
-            cursorColor = colorResource(id = R.color.light_gray),
-            backgroundColor = colorResource(id = R.color.light_gray)
+            focusedBorderColor = colorResource(id = R.color.pink_600),
+            focusedLabelColor = colorResource(id = R.color.pink_600),
+            cursorColor = colorResource(id = R.color.pink_900),
+            backgroundColor = colorResource(id = R.color.pink_100)
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
@@ -169,12 +179,12 @@ fun ButtonComponent(value: String) {
                 .fillMaxWidth()
                 .heightIn(48.dp)
                 .background(
-                    color = colorResource(id = R.color.red_base_colour),
+                    color = colorResource(id = R.color.pink_900),
                     shape = RoundedCornerShape(50.dp)
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
-                text = value, fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold
+                text = value, fontSize = 18.sp, color = colorResource(id = R.color.pink_100), fontWeight = FontWeight.Bold
             )
 
         }
@@ -189,7 +199,98 @@ fun MyRedHeadingComponent(value: String) {
             .fillMaxWidth()
             .heightIn(), style = TextStyle(
             fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
-        ), color = colorResource(id = R.color.red_base_colour), textAlign = TextAlign.Left
+        ), color = colorResource(id = R.color.pink_900), textAlign = TextAlign.Left
     )
 
 }
+
+@Composable
+fun ClickableLoginTextComponent() {
+    val initialText = "Not have an account? "
+    val loginText = "Sign up"
+
+    val annotatedString = buildAnnotatedString {
+        append(initialText)
+        withStyle(style = SpanStyle(color = colorResource(id = R.color.pink_900))) {
+            pushStringAnnotation(tag = loginText, annotation = loginText)
+            append(loginText)
+        }
+    }
+
+    ClickableText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.End,
+        ),
+        text = annotatedString,
+        onClick = { offset ->
+
+            annotatedString.getStringAnnotations(offset, offset)
+                .firstOrNull()?.also { span ->
+                    Log.d("ClickableTextComponent", "{${span.item}}")
+
+                    if (span.item == loginText) {
+                        // To Do
+                    }
+                }
+
+        },
+    )
+}
+
+
+@Composable
+fun ClickableForgottenPasswordTextComponent() {
+    val loginText = stringResource(id = R.string.forgot_passwd)
+
+    val annotatedString = buildAnnotatedString {
+
+        withStyle(style = SpanStyle(color = colorResource(id = R.color.pink_900))) {
+            pushStringAnnotation(tag = "", annotation = loginText)
+            append(loginText)
+        }
+    }
+
+    ClickableText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.Right
+        ),
+        text = annotatedString,
+        onClick = { offset ->
+
+            annotatedString.getStringAnnotations(offset, offset)
+                .firstOrNull()?.also { span ->
+                    Log.d("ClickableTextComponent", "{${span.item}}")
+
+                    if (span.item == loginText) {
+                        // To Do
+                    }
+                }
+
+        },
+    )
+}
+
+@Composable
+fun SousChefImageComponent(){
+    Image(
+        painter = painterResource(id = R.drawable.sous_chef),
+        contentDescription = "Sous Chef Image",
+        modifier = Modifier.width(280.dp).height(280.dp),
+        alignment = Alignment.Center
+        )
+}
+
+
+

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,10 +25,10 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 @Composable
 fun SignUpScreen() {
     Surface(
-        color = Color.White,
+        color = colorResource(id = R.color.pink_50),
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(colorResource(id = R.color.pink_50))
             .padding(28.dp)
     )
     {
@@ -65,13 +65,13 @@ fun SignUpScreen() {
             Spacer(modifier = Modifier.height(80.dp))
             ButtonComponent(value = stringResource(id = R.string.create_account_text))
             Spacer(modifier = Modifier.height(30.dp))
-            NormalTextComponent(value = stringResource(id = R.string.or))
+            // NormalTextComponent(value = stringResource(id = R.string.or))
         }
     }
 }
 
 @Preview
 @Composable
-fun DefaultPreviewOfSignUpScreen() {
+fun SignUpScreenPreview(){
     SignUpScreen()
 }

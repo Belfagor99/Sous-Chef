@@ -11,4 +11,14 @@
     <color name="base_text_color">#161616</color>
     <color name="light_gray">#CFD8DC</color>
     <color name="light_green">#00E676</color>
+    <color name = "pink_50">#fdefe5</color>
+    <color name="pink_100">#ffd6b8</color>
+    <color name="pink_200">#ffb987</color>
+    <color name="pink_300">#ff9c59</color>
+    <color name="pink_400">#ff863e</color>
+    <color name="pink_500">#ff722f</color>
+    <color name="pink_600">#fa6630</color>
+    <color name="pink_700">#f25630</color>
+    <color name="pink_800">#ea442f</color>
+    <color name="pink_900">#dd1e2e</color>
 </resources>

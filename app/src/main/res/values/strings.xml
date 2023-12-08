@@ -10,5 +10,7 @@
     <string name="show_password">Show password</string>
     <string name="or">OR</string>
     <string name="welcome_back_text">Welcome back!</string>
-    <string name="log_in_small_text">We are happt to see you again. Let’s go get you back in.</string>
+    <string name="log_in_small_text">We are happy to see you again. Let’s go get you back in.</string>
+    <string name="log_in_text">Log in</string>
+    <string name="forgot_passwd">Forgot your password?</string>
 </resources>
