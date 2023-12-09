@@ -44,15 +44,13 @@ fun WelcomeScreen(navController: NavController) {
             ButtonComponent(value = stringResource(
                 id = R.string.create_account_text),
                 onClickAction = { navController.navigate(route = Screen.Register.route) },
-                isEnabled = true,
-                onButtonClicked = {}
+                isEnabled = true
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonComponent(
                 value = stringResource(id = R.string.log_in_text),
                 onClickAction = { navController.navigate(route = Screen.LogIn.route) },
-                isEnabled = true,
-                onButtonClicked = {}
+                isEnabled = true
             )
 
         }

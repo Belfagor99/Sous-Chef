@@ -89,9 +89,8 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
             Spacer(modifier = Modifier.height(80.dp))
             ButtonComponent(
                 value = stringResource(id = R.string.create_account_text),
-                onClickAction = {},
                 isEnabled = logInViewModel.allValidationPassed.value,
-                onButtonClicked = {
+                onClickAction = {
                     logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
             )
             Spacer(modifier = Modifier.height(30.dp))

@@ -66,8 +66,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
             Spacer(modifier = Modifier.height(20.dp))
             ButtonComponent(
                 value = stringResource(id = R.string.log_in_text),
-                onClickAction = {},
-                onButtonClicked = {
+                onClickAction = {
                     logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
             )
             Spacer(modifier = Modifier.height(20.dp))

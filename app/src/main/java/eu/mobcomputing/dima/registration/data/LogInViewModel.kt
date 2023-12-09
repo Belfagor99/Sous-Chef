@@ -3,6 +3,7 @@ package eu.mobcomputing.dima.registration.data
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.data.rules.Validator
 
 class LogInViewModel : ViewModel() {
@@ -47,7 +48,9 @@ class LogInViewModel : ViewModel() {
 
 
     private fun register() {
-        //TO DO
+        createFirebaseUser(
+            email = registrationUIState.value.email,
+            password = registrationUIState.value.password )
     }
 
     private fun validateDataWithRules() {
@@ -78,5 +81,19 @@ class LogInViewModel : ViewModel() {
 
     }
 
+    private fun createFirebaseUser(email: String, password: String){
+        FirebaseAuth.getInstance()
+            .createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener{
+                Log.d(TAG, "Inside on Complete Lister")
+                Log.d(TAG, "is Successful = ${it.isSuccessful}")
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "Inside on Failure Lister")
+                Log.d(TAG, "Exception = ${it.message}")
+
+            }
+
+    }
 
 }

@@ -166,14 +166,13 @@ fun MyPasswordFieldComponent(
 }
 
 @Composable
-fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false, onButtonClicked:() ->Unit ) {
+fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
         onClick = {
             onClickAction.invoke()
-            onButtonClicked.invoke()
         },
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
