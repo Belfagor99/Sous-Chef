@@ -14,4 +14,5 @@
     <string name="log_in_text">Log in</string>
     <string name="forgot_passwd">Forgot your password?</string>
     <string name="information_text_logged_in">Page only for registered and logged in</string>
+    <string name="log_out">Log out</string>
 </resources>

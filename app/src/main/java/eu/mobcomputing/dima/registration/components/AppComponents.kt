@@ -210,7 +210,7 @@ fun MyRedHeadingComponent(value: String) {
 }
 
 @Composable
-fun ClickableLoginTextComponent() {
+fun ClickableLoginTextComponent( onClickAction: () -> Unit) {
     val initialText = "Not have an account? "
     val loginText = "Sign up"
 
@@ -240,7 +240,7 @@ fun ClickableLoginTextComponent() {
                     Log.d("ClickableTextComponent", "{${span.item}}")
 
                     if (span.item == loginText) {
-                        // To Do
+                        onClickAction.invoke()
                     }
                 }
 
@@ -248,6 +248,42 @@ fun ClickableLoginTextComponent() {
     )
 }
 
+@Composable
+fun ClickableRegisterTextComponent( onClickAction: () -> Unit) {
+    val initialText = "Already have an account? "
+    val loginText = "Log in"
+
+    val annotatedString = buildAnnotatedString {
+        append(initialText)
+        withStyle(style = SpanStyle(color = colorResource(id = R.color.pink_900))) {
+            pushStringAnnotation(tag = loginText, annotation = loginText)
+            append(loginText)
+        }
+    }
+
+    ClickableText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.End,
+        ),
+        text = annotatedString,
+        onClick = { offset ->
+            annotatedString.getStringAnnotations(offset, offset)
+                .firstOrNull()?.also { span ->
+                    Log.d("ClickableTextComponent", "{${span.item}}")
+                    if (span.item == loginText) {
+                        onClickAction.invoke()
+                    }
+                }
+
+        },
+    )
+}
 
 @Composable
 fun ClickableForgottenPasswordTextComponent() {

@@ -9,95 +9,71 @@ import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.screens.Screen
 
 class LogInViewModel : ViewModel() {
-
-    var registrationUIState = mutableStateOf(RegistrationUIState())
-    var allValidationPassed = mutableStateOf(false)
-
     private val TAG = LogInViewModel::class.simpleName
-    fun onEvent(event: UIEvent, navController: NavController) {
-        validateDataWithRules()
+
+    var logInUIState = mutableStateOf(LogInUIState())
+    var allValidationPassed = mutableStateOf(false)
+    var logInInProgress = mutableStateOf(false)
+
+    fun onEvent(event: LogInUIEvent, navController: NavController) {
+
         when (event) {
-            is UIEvent.FirstNameChanged -> {
-                registrationUIState.value = registrationUIState.value.copy(
-                    firstName = event.firstName
-                )
-            }
-
-            is UIEvent.LastNameChanged -> {
-                registrationUIState.value = registrationUIState.value.copy(
-                    lastName = event.lastName
-                )
-
-            }
-
-            is UIEvent.EmailChanged -> {
-                registrationUIState.value = registrationUIState.value.copy(
+            is LogInUIEvent.EmailChanged -> {
+                logInUIState.value = logInUIState.value.copy(
                     email = event.email
                 )
+
             }
 
-            is UIEvent.PasswordChanged -> {
-                registrationUIState.value = registrationUIState.value.copy(
+            is LogInUIEvent.PasswordChanged -> {
+                logInUIState.value = logInUIState.value.copy(
                     password = event.password
                 )
             }
 
-            is UIEvent.RegisterButtonClicked -> {
-                register(navController = navController)
+            is LogInUIEvent.LogInButtonClicked -> {
+                logIn(navController)
             }
+
+
         }
-    }
-
-
-    private fun register(navController: NavController) {
-        createFirebaseUser(
-            email = registrationUIState.value.email,
-            password = registrationUIState.value.password,
-            navController = navController)
+        validateDataWithRules()
     }
 
     private fun validateDataWithRules() {
-        val firstNameValidation = Validator.validateFirstName(
-            registrationUIState.value.firstName
-        )
-        val lastNameValidation = Validator.validateLastName(
-            registrationUIState.value.lastName
-        )
         val emailValidation = Validator.validateEmail(
-            registrationUIState.value.email
+            logInUIState.value.email
         )
         val passwordValidation = Validator.validatePassword(
-            registrationUIState.value.password
+            logInUIState.value.password
         )
 
-        registrationUIState.value = registrationUIState.value.copy(
-            firstNameError = firstNameValidation.status,
-            lastNameError = lastNameValidation.status,
+        logInUIState.value = logInUIState.value.copy(
             emailError = emailValidation.status,
             passwordError = passwordValidation.status
         )
 
-        allValidationPassed.value = firstNameValidation.status &&
-                lastNameValidation.status &&
-                emailValidation.status &&
-                passwordValidation.status
-
+        allValidationPassed.value = emailValidation.status && passwordValidation.status
     }
 
-    private fun createFirebaseUser(email: String, password: String, navController: NavController){
-        FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener{
-                Log.d(TAG, "Inside on Complete Lister")
-                Log.d(TAG, "is Successful = ${it.isSuccessful}")
-                navController.navigate(route = Screen.Home.route)
+
+    private fun logIn(navController: NavController) {
+        logInInProgress.value = true
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth
+            .signInWithEmailAndPassword(logInUIState.value.email, logInUIState.value.password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    logInInProgress.value = false
+                    navController.navigate(route = Screen.Home.route)
+                }
             }
             .addOnFailureListener {
+                logInInProgress.value = false
                 Log.d(TAG, "Inside on Failure Lister")
                 Log.d(TAG, "Exception = ${it.message}")
-
             }
-
     }
 
 }
+
