@@ -64,7 +64,12 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.log_in_text), {})
+            ButtonComponent(
+                value = stringResource(id = R.string.log_in_text),
+                onClickAction = {},
+                onButtonClicked = {
+                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
+            )
             Spacer(modifier = Modifier.height(20.dp))
             ClickableForgottenPasswordTextComponent()
             Spacer(modifier = Modifier.height(240.dp))
@@ -76,6 +81,6 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
 
 @Preview
 @Composable
-fun LogInScreenPreview(){
+fun LogInScreenPreview() {
     LogInScreen(navController = rememberNavController())
 }

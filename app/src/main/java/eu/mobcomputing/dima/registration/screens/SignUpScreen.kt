@@ -51,7 +51,8 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                 ),
                 onTextSelected = {
                     logInViewModel.onEvent(UIEvent.FirstNameChanged(it))
-                }
+                },
+                errorStatus = logInViewModel.registrationUIState.value.firstNameError
             )
             MyTextFieldComponent(
                 labelValue = stringResource(id = R.string.last_name),
@@ -60,7 +61,8 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                 ),
                 onTextSelected = {
                     logInViewModel.onEvent(UIEvent.LastNameChanged(it))
-                }
+                },
+                errorStatus = logInViewModel.registrationUIState.value.lastNameError
             )
             MyTextFieldComponent(
                 labelValue = stringResource(id = R.string.email),
@@ -69,7 +71,8 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                 ),
                 onTextSelected = {
                     logInViewModel.onEvent(UIEvent.EmailChanged(it))
-                }
+                },
+                errorStatus = logInViewModel.registrationUIState.value.emailError
             )
 
             MyPasswordFieldComponent(
@@ -79,11 +82,18 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                 ),
                 onTextSelected = {
                     logInViewModel.onEvent(UIEvent.PasswordChanged(it))
-                }
+                },
+                errorStatus = logInViewModel.registrationUIState.value.passwordError
             )
 
             Spacer(modifier = Modifier.height(80.dp))
-            ButtonComponent(value = stringResource(id = R.string.create_account_text), {})
+            ButtonComponent(
+                value = stringResource(id = R.string.create_account_text),
+                onClickAction = {},
+                isEnabled = logInViewModel.allValidationPassed.value,
+                onButtonClicked = {
+                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
+            )
             Spacer(modifier = Modifier.height(30.dp))
             // NormalTextComponent(value = stringResource(id = R.string.or))
         }

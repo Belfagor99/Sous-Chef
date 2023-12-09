@@ -1,9 +1,10 @@
-package eu.mobcomputing.dima.registration
+package eu.mobcomputing.dima.registration.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import eu.mobcomputing.dima.registration.screens.Screen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
 import eu.mobcomputing.dima.registration.screens.WelcomeScreen

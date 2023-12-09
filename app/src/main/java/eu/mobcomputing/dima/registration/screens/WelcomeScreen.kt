@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.Screen
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.SousChefImageComponent
 
@@ -42,9 +41,19 @@ fun WelcomeScreen(navController: NavController) {
         {
             SousChefImageComponent()
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.create_account_text), onClickAction = { navController.navigate(route = Screen.Register.route) }, isEnabled = true)
+            ButtonComponent(value = stringResource(
+                id = R.string.create_account_text),
+                onClickAction = { navController.navigate(route = Screen.Register.route) },
+                isEnabled = true,
+                onButtonClicked = {}
+            )
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.log_in_text), onClickAction = { navController.navigate(route = Screen.LogIn.route) }, isEnabled = true)
+            ButtonComponent(
+                value = stringResource(id = R.string.log_in_text),
+                onClickAction = { navController.navigate(route = Screen.LogIn.route) },
+                isEnabled = true,
+                onButtonClicked = {}
+            )
 
         }
     }

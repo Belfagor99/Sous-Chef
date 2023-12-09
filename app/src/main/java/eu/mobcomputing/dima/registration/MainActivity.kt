@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 
 class MainActivity : ComponentActivity() {

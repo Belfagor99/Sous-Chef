@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration
+package eu.mobcomputing.dima.registration.screens
 
 sealed class Screen(val route: String) {
     data object Welcome: Screen(route = "welcome_screen")

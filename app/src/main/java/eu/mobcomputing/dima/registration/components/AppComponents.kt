@@ -72,7 +72,7 @@ fun HeaderTextComponent(value: String) {
 
 @Composable
 fun MyTextFieldComponent(
-    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit
+    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit, errorStatus: Boolean = false
 ) {
 
     val textValue = remember {
@@ -84,8 +84,8 @@ fun MyTextFieldComponent(
         .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.pink_600),
-            focusedLabelColor = colorResource(id = R.color.pink_600),
+            focusedBorderColor = colorResource(id = R.color.light_green),
+            focusedLabelColor = colorResource(id = R.color.light_green),
             cursorColor = colorResource(id = R.color.pink_900),
             backgroundColor = colorResource(id = R.color.pink_100)
         ),
@@ -101,13 +101,15 @@ fun MyTextFieldComponent(
             Icon(
                 painter = iconPainterResource, contentDescription = null
             )
-        })
+        },
+        isError = !errorStatus
+    )
 }
 
 
 @Composable
 fun MyPasswordFieldComponent(
-    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit
+    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit, errorStatus: Boolean = false
 ) {
 
     val password = remember {
@@ -123,8 +125,8 @@ fun MyPasswordFieldComponent(
             .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.pink_600),
-            focusedLabelColor = colorResource(id = R.color.pink_600),
+            focusedBorderColor = colorResource(id = R.color.light_green),
+            focusedLabelColor = colorResource(id = R.color.light_green),
             cursorColor = colorResource(id = R.color.pink_900),
             backgroundColor = colorResource(id = R.color.pink_100)
         ),
@@ -158,18 +160,20 @@ fun MyPasswordFieldComponent(
             }
 
         },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = !errorStatus
     )
 }
 
 @Composable
-fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false ) {
+fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false, onButtonClicked:() ->Unit ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
         onClick = {
             onClickAction.invoke()
+            onButtonClicked.invoke()
         },
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
