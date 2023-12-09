@@ -51,7 +51,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     id = R.drawable.baseline_alternate_email_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.EmailChanged(it))
+                    logInViewModel.onEvent(UIEvent.EmailChanged(it), navController)
                 }
             )
             MyPasswordFieldComponent(
@@ -60,14 +60,14 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     id = R.drawable.baseline_lock_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.PasswordChanged(it))
+                    logInViewModel.onEvent(UIEvent.PasswordChanged(it), navController)
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonComponent(
                 value = stringResource(id = R.string.log_in_text),
                 onClickAction = {
-                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
+                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked, navController) }
             )
             Spacer(modifier = Modifier.height(20.dp))
             ClickableForgottenPasswordTextComponent()

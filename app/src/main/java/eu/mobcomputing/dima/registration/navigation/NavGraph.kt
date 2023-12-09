@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.Screen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
@@ -30,6 +31,12 @@ fun SetUpNavGraph( navController: NavHostController) {
             route = Screen.Register.route
         ){
             SignUpScreen(navController)
+        }
+
+        composable(
+            route = Screen.Home.route
+        ){
+            HomeScreen(navController)
         }
 
     }

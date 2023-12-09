@@ -50,7 +50,7 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                     id = R.drawable.baseline_person_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.FirstNameChanged(it))
+                    logInViewModel.onEvent(UIEvent.FirstNameChanged(it), navController)
                 },
                 errorStatus = logInViewModel.registrationUIState.value.firstNameError
             )
@@ -60,7 +60,7 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                     id = R.drawable.baseline_person_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.LastNameChanged(it))
+                    logInViewModel.onEvent(UIEvent.LastNameChanged(it), navController)
                 },
                 errorStatus = logInViewModel.registrationUIState.value.lastNameError
             )
@@ -70,7 +70,7 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                     id = R.drawable.baseline_alternate_email_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.EmailChanged(it))
+                    logInViewModel.onEvent(UIEvent.EmailChanged(it), navController)
                 },
                 errorStatus = logInViewModel.registrationUIState.value.emailError
             )
@@ -81,7 +81,7 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                     id = R.drawable.baseline_lock_24
                 ),
                 onTextSelected = {
-                    logInViewModel.onEvent(UIEvent.PasswordChanged(it))
+                    logInViewModel.onEvent(UIEvent.PasswordChanged(it), navController)
                 },
                 errorStatus = logInViewModel.registrationUIState.value.passwordError
             )
@@ -91,7 +91,7 @@ fun SignUpScreen(navController: NavController, logInViewModel: LogInViewModel = 
                 value = stringResource(id = R.string.create_account_text),
                 isEnabled = logInViewModel.allValidationPassed.value,
                 onClickAction = {
-                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked) }
+                    logInViewModel.onEvent(UIEvent.RegisterButtonClicked, navController) }
             )
             Spacer(modifier = Modifier.height(30.dp))
             // NormalTextComponent(value = stringResource(id = R.string.or))

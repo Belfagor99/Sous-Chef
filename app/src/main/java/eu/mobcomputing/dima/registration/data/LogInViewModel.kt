@@ -3,8 +3,10 @@ package eu.mobcomputing.dima.registration.data
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.data.rules.Validator
+import eu.mobcomputing.dima.registration.screens.Screen
 
 class LogInViewModel : ViewModel() {
 
@@ -12,7 +14,7 @@ class LogInViewModel : ViewModel() {
     var allValidationPassed = mutableStateOf(false)
 
     private val TAG = LogInViewModel::class.simpleName
-    fun onEvent(event: UIEvent) {
+    fun onEvent(event: UIEvent, navController: NavController) {
         validateDataWithRules()
         when (event) {
             is UIEvent.FirstNameChanged -> {
@@ -41,16 +43,17 @@ class LogInViewModel : ViewModel() {
             }
 
             is UIEvent.RegisterButtonClicked -> {
-                register()
+                register(navController = navController)
             }
         }
     }
 
 
-    private fun register() {
+    private fun register(navController: NavController) {
         createFirebaseUser(
             email = registrationUIState.value.email,
-            password = registrationUIState.value.password )
+            password = registrationUIState.value.password,
+            navController = navController)
     }
 
     private fun validateDataWithRules() {
@@ -81,12 +84,13 @@ class LogInViewModel : ViewModel() {
 
     }
 
-    private fun createFirebaseUser(email: String, password: String){
+    private fun createFirebaseUser(email: String, password: String, navController: NavController){
         FirebaseAuth.getInstance()
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener{
                 Log.d(TAG, "Inside on Complete Lister")
                 Log.d(TAG, "is Successful = ${it.isSuccessful}")
+                navController.navigate(route = Screen.Home.route)
             }
             .addOnFailureListener {
                 Log.d(TAG, "Inside on Failure Lister")
