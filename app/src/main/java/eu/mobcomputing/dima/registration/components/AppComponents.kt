@@ -72,7 +72,7 @@ fun HeaderTextComponent(value: String) {
 
 @Composable
 fun MyTextFieldComponent(
-    labelValue: String, iconPainterResource: Painter
+    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit
 ) {
 
     val textValue = remember {
@@ -95,6 +95,7 @@ fun MyTextFieldComponent(
         value = textValue.value,
         onValueChange = {
             textValue.value = it
+            onTextSelected(it)
         },
         leadingIcon = {
             Icon(
@@ -106,7 +107,7 @@ fun MyTextFieldComponent(
 
 @Composable
 fun MyPasswordFieldComponent(
-    labelValue: String, iconPainterResource: Painter
+    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit
 ) {
 
     val password = remember {
@@ -133,6 +134,7 @@ fun MyPasswordFieldComponent(
         value = password.value,
         onValueChange = {
             password.value = it
+            onTextSelected(it)
         },
         leadingIcon = {
             Icon(
@@ -161,7 +163,7 @@ fun MyPasswordFieldComponent(
 }
 
 @Composable
-fun ButtonComponent(value: String, onClickAction: () -> Unit) {
+fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,6 +174,7 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit) {
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
         shape = RoundedCornerShape(50.dp),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier

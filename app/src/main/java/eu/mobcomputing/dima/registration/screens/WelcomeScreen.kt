@@ -42,9 +42,9 @@ fun WelcomeScreen(navController: NavController) {
         {
             SousChefImageComponent()
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.create_account_text), onClickAction = { navController.navigate(route = Screen.Register.route) })
+            ButtonComponent(value = stringResource(id = R.string.create_account_text), onClickAction = { navController.navigate(route = Screen.Register.route) }, isEnabled = true)
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(value = stringResource(id = R.string.log_in_text), onClickAction = { navController.navigate(route = Screen.LogIn.route) })
+            ButtonComponent(value = stringResource(id = R.string.log_in_text), onClickAction = { navController.navigate(route = Screen.LogIn.route) }, isEnabled = true)
 
         }
     }

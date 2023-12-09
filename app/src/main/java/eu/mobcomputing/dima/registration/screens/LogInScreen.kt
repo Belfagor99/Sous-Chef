@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
@@ -24,9 +25,11 @@ import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
 import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
+import eu.mobcomputing.dima.registration.data.LogInViewModel
+import eu.mobcomputing.dima.registration.data.UIEvent
 
 @Composable
-fun LogInScreen(navController: NavController) {
+fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {
     Surface(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
@@ -46,13 +49,19 @@ fun LogInScreen(navController: NavController) {
                 labelValue = stringResource(id = R.string.email),
                 iconPainterResource = painterResource(
                     id = R.drawable.baseline_alternate_email_24
-                )
+                ),
+                onTextSelected = {
+                    logInViewModel.onEvent(UIEvent.EmailChanged(it))
+                }
             )
             MyPasswordFieldComponent(
                 labelValue = stringResource(id = R.string.password),
                 iconPainterResource = painterResource(
                     id = R.drawable.baseline_lock_24
-                )
+                ),
+                onTextSelected = {
+                    logInViewModel.onEvent(UIEvent.PasswordChanged(it))
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonComponent(value = stringResource(id = R.string.log_in_text), {})
