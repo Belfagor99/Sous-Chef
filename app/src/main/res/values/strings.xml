@@ -15,4 +15,7 @@
     <string name="forgot_passwd">Forgot your password?</string>
     <string name="information_text_logged_in">Page only for registered and logged in</string>
     <string name="log_out">Log out</string>
+    <string name="wrong_password">Password is not correct</string>
+    <string name="remaining_tries">Number of remaining tries:</string>
+    <string name="password_reset">If the email address is register, you have received instructions to reset your password.</string>
 </resources>

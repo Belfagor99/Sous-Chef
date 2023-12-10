@@ -99,7 +99,12 @@ class RegisterViewModel : ViewModel() {
 
                 if (it.isSuccessful) {
                     registrationInProgress.value = false
-                    navController.navigate(route = Screen.Home.route)
+                    navController.navigate(route = Screen.Home.route,
+                        builder = {
+                            popUpTo(Screen.Home.route) {
+                                inclusive = true
+                            }
+                        })
                 }
             }
             .addOnFailureListener {

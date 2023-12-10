@@ -43,7 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.mobcomputing.dima.registration.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.res.painterResource
 
@@ -72,16 +75,20 @@ fun HeaderTextComponent(value: String) {
 
 @Composable
 fun MyTextFieldComponent(
-    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit, errorStatus: Boolean = false
+    labelValue: String,
+    iconPainterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
 
     val textValue = remember {
         mutableStateOf("")
     }
 
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth()
-        .clip(RoundedCornerShape(4.dp)),
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(4.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = colorResource(id = R.color.light_green),
@@ -109,7 +116,10 @@ fun MyTextFieldComponent(
 
 @Composable
 fun MyPasswordFieldComponent(
-    labelValue: String, iconPainterResource: Painter, onTextSelected: (String) -> Unit, errorStatus: Boolean = false
+    labelValue: String,
+    iconPainterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
 
     val password = remember {
@@ -166,7 +176,7 @@ fun MyPasswordFieldComponent(
 }
 
 @Composable
-fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false ) {
+fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,7 +199,10 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
-                text = value, fontSize = 18.sp, color = colorResource(id = R.color.pink_100), fontWeight = FontWeight.Bold
+                text = value,
+                fontSize = 18.sp,
+                color = colorResource(id = R.color.pink_100),
+                fontWeight = FontWeight.Bold
             )
 
         }
@@ -210,7 +223,7 @@ fun MyRedHeadingComponent(value: String) {
 }
 
 @Composable
-fun ClickableLoginTextComponent( onClickAction: () -> Unit) {
+fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     val initialText = "Not have an account? "
     val loginText = "Sign up"
 
@@ -249,7 +262,7 @@ fun ClickableLoginTextComponent( onClickAction: () -> Unit) {
 }
 
 @Composable
-fun ClickableRegisterTextComponent( onClickAction: () -> Unit) {
+fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
     val initialText = "Already have an account? "
     val loginText = "Log in"
 
@@ -286,7 +299,7 @@ fun ClickableRegisterTextComponent( onClickAction: () -> Unit) {
 }
 
 @Composable
-fun ClickableForgottenPasswordTextComponent() {
+fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
     val loginText = stringResource(id = R.string.forgot_passwd)
 
     val annotatedString = buildAnnotatedString {
@@ -315,7 +328,7 @@ fun ClickableForgottenPasswordTextComponent() {
                     Log.d("ClickableTextComponent", "{${span.item}}")
 
                     if (span.item == loginText) {
-                        // To Do
+                        onClickAction.invoke()
                     }
                 }
 
@@ -323,14 +336,61 @@ fun ClickableForgottenPasswordTextComponent() {
     )
 }
 
+
 @Composable
-fun SousChefImageComponent(){
+fun WrongPasswordSubmitterComponent(numberOfTries: Int) {
+    val wrongPasswordText = stringResource(id = R.string.wrong_password)
+    val remainingTriesText = stringResource(id = R.string.remaining_tries)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp), // Optional: Add padding if needed
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        Text(
+            text = wrongPasswordText,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 40.dp),
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+                color = colorResource(id = R.color.base_text_color)
+            )
+        )
+
+        Text(
+            text = "$remainingTriesText $numberOfTries",
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 40.dp),
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+                color = colorResource(id = R.color.pink_900)
+            )
+        )
+
+
+    }
+
+}
+
+@Composable
+fun SousChefImageComponent() {
     Image(
         painter = painterResource(id = R.drawable.sous_chef),
         contentDescription = "Sous Chef Image",
-        modifier = Modifier.width(280.dp).height(280.dp),
+        modifier = Modifier
+            .width(280.dp)
+            .height(280.dp),
         alignment = Alignment.Center
-        )
+    )
 }
 
 

@@ -5,5 +5,7 @@ data class LogInUIState (
     var password: String = "",
 
     var emailError: Boolean = false,
-    var passwordError: Boolean = false
+    var passwordError: Boolean = false,
+    var numberOfRemainingSubmissions: Int = 2,
+    var passwordResetSent: Boolean = false
 )

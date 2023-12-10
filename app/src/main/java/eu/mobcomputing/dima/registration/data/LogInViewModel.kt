@@ -14,6 +14,8 @@ class LogInViewModel : ViewModel() {
     var logInUIState = mutableStateOf(LogInUIState())
     var allValidationPassed = mutableStateOf(false)
     var logInInProgress = mutableStateOf(false)
+    var passwordIsIncorrect = mutableStateOf(false)
+    var passwordResetSent = mutableStateOf(false)
 
     fun onEvent(event: LogInUIEvent, navController: NavController) {
 
@@ -64,8 +66,22 @@ class LogInViewModel : ViewModel() {
             .signInWithEmailAndPassword(logInUIState.value.email, logInUIState.value.password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
+                    passwordIsIncorrect.value = false
                     logInInProgress.value = false
-                    navController.navigate(route = Screen.Home.route)
+                    navController.navigate(route = Screen.Home.route,
+                        builder = {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    )
+
+                } else if (logInUIState.value.numberOfRemainingSubmissions > 1) {
+                    passwordIsIncorrect.value = true
+                    logInUIState.value.numberOfRemainingSubmissions -= 1
+                    allValidationPassed.value = false
+                } else {
+                    resetPassword(email = logInUIState.value.email)
                 }
             }
             .addOnFailureListener {
@@ -73,6 +89,21 @@ class LogInViewModel : ViewModel() {
                 Log.d(TAG, "Inside on Failure Lister")
                 Log.d(TAG, "Exception = ${it.message}")
             }
+    }
+
+    fun resetPassword(email: String) {
+        if (email.isNotEmpty()) {
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener {
+                    passwordResetSent.value = true
+                    passwordIsIncorrect.value = false
+                    logInUIState.value.numberOfRemainingSubmissions = 2
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "Inside on Failure Lister Password Reset")
+                    Log.d(TAG, "Exception = ${it.message}")
+                }
+        }
     }
 
 }

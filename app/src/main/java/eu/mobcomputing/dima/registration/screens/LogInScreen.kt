@@ -1,6 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,11 +29,12 @@ import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
 import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
+import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
 import eu.mobcomputing.dima.registration.data.LogInUIEvent
 import eu.mobcomputing.dima.registration.data.LogInViewModel
 
 @Composable
-fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel  = viewModel()) {
+fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -47,10 +49,12 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel  = 
             modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(id = R.color.pink_50))
-                .padding(28.dp)
+                .padding(28.dp),
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 MyRedHeadingComponent(value = stringResource(id = R.string.welcome_back_text))
@@ -88,7 +92,21 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel  = 
                     isEnabled = logInViewModel.allValidationPassed.value
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                ClickableForgottenPasswordTextComponent()
+                ClickableForgottenPasswordTextComponent(
+                    onClickAction = {
+                        logInViewModel.resetPassword(
+                            email = logInViewModel.logInUIState.value.email)
+                    }
+                )
+
+                if (logInViewModel.passwordIsIncorrect.value) {
+                    WrongPasswordSubmitterComponent(logInViewModel.logInUIState.value.numberOfRemainingSubmissions)
+                }
+
+                if (logInViewModel.passwordResetSent.value) {
+                    NormalTextComponent(value = stringResource(id = R.string.password_reset))
+                }
+
                 Spacer(modifier = Modifier.height(240.dp))
                 ClickableLoginTextComponent(
                     onClickAction = { navController.navigate(route = Screen.LogIn.route) })
