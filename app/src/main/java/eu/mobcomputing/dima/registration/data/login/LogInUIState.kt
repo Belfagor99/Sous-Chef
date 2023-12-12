@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data
+package eu.mobcomputing.dima.registration.data.login
 
 data class LogInUIState (
     var email: String = "",

@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data
+package eu.mobcomputing.dima.registration.data.login
 
 sealed class LogInUIEvent {
     data class EmailChanged(val email: String): LogInUIEvent()

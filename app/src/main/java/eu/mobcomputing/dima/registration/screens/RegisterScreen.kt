@@ -28,8 +28,8 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
-import eu.mobcomputing.dima.registration.data.RegisterViewModel
-import eu.mobcomputing.dima.registration.data.RegistrationUIEvent
+import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
+import eu.mobcomputing.dima.registration.data.registration.RegistrationUIEvent
 
 @Composable
 fun SignUpScreen(navController: NavController, registerViewModel: RegisterViewModel = viewModel()) {

@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
-import eu.mobcomputing.dima.registration.data.RegisterViewModel
+import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, registerViewModel: RegisterViewModel = viewModel()) {

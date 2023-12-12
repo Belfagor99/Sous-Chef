@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data
+package eu.mobcomputing.dima.registration.data.registration
 
 sealed class RegistrationUIEvent {
     data class FirstNameChanged(val firstName: String): RegistrationUIEvent()

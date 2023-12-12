@@ -30,8 +30,8 @@ import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
-import eu.mobcomputing.dima.registration.data.LogInUIEvent
-import eu.mobcomputing.dima.registration.data.LogInViewModel
+import eu.mobcomputing.dima.registration.data.login.LogInUIEvent
+import eu.mobcomputing.dima.registration.data.login.LogInViewModel
 
 @Composable
 fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {

@@ -1,11 +1,15 @@
-package eu.mobcomputing.dima.registration.data
+package eu.mobcomputing.dima.registration.data.registration
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.firestore
+import eu.mobcomputing.dima.registration.data.User
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.screens.Screen
 
@@ -89,14 +93,37 @@ class RegisterViewModel : ViewModel() {
 
     }
 
+    private fun createUserInDatabase(
+        email: String,
+        firstName: String,
+        lastName: String,
+        userID: String
+    ) {
+        val db = Firebase.firestore
+        val user = User(
+            firstName, lastName, email
+        )
+
+        val userDocumentRef: DocumentReference = db.collection("users").document(userID)
+
+        userDocumentRef.set(user)
+            .addOnSuccessListener {
+                Log.d(TAG, "User document created successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error creating user document", e)
+            }
+
+
+    }
+
     private fun createFirebaseUser(email: String, password: String, navController: NavController) {
         registrationInProgress.value = true
-        FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(email, password)
+        val auth = FirebaseAuth.getInstance()
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 Log.d(TAG, "Inside on Complete Lister")
                 Log.d(TAG, "is Successful = ${it.isSuccessful}")
-
                 if (it.isSuccessful) {
                     registrationInProgress.value = false
                     navController.navigate(route = Screen.Home.route,
@@ -105,7 +132,15 @@ class RegisterViewModel : ViewModel() {
                                 inclusive = true
                             }
                         })
+                    val userID = auth.currentUser?.uid
+                    if (userID != null) {
+                        createUserInDatabase(firstName = registrationUIState.value.firstName,
+                            lastName = registrationUIState.value.lastName,
+                            email = email,
+                            userID = userID)
+                    }
                 }
+
             }
             .addOnFailureListener {
                 registrationInProgress.value = false

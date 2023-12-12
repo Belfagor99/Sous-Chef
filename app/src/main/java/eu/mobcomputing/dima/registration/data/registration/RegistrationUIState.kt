@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data
+package eu.mobcomputing.dima.registration.data.registration
 
 data class RegistrationUIState (
     var firstName: String = "",
