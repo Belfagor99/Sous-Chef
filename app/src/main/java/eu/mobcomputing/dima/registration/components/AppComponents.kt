@@ -45,7 +45,6 @@ import eu.mobcomputing.dima.registration.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -141,7 +140,8 @@ fun MyPasswordFieldComponent(
     iconPainterResource: Painter,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    labelValueFiled:String = ""
 ) {
 
     val password = remember {
@@ -155,7 +155,14 @@ fun MyPasswordFieldComponent(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp)),
-        label = { Text(text = labelValue) },
+        label = {
+            if (!readOnly) {
+                Text(text = labelValue)
+            }
+            else{
+                Text(text = labelValueFiled)
+            }
+        },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = colorResource(id = R.color.light_green),
             focusedLabelColor = colorResource(id = R.color.light_green),
@@ -178,6 +185,7 @@ fun MyPasswordFieldComponent(
         },
 
         readOnly = readOnly,
+        enabled = !readOnly,
 
         trailingIcon = {
             val iconImage = if (passwordVisible.value) {
@@ -202,7 +210,8 @@ fun MyPasswordFieldComponent(
 
         },
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-        isError = !errorStatus
+        isError = !errorStatus,
+
     )
 }
 

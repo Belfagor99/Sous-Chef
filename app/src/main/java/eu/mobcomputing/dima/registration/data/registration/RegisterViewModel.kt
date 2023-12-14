@@ -25,13 +25,33 @@ class RegisterViewModel() : ViewModel() {
     var registrationInProgress = mutableStateOf(false)
     var readOnlyPassword = mutableStateOf(false)
 
-    val currentStep: MutableState<Int> = mutableIntStateOf(0)
+    val userInfoStep: MutableState<Int> = mutableIntStateOf(0)
+    val allergiesStep: MutableState<Int> = mutableIntStateOf(1)
+    val dietTypeStep: MutableState<Int> = mutableIntStateOf(2)
 
     val steps: List<String> = listOf("1", "2", "3")
     val user = mutableStateOf(User())
     val cameBack = mutableStateOf(false)
     val firstStepPassed = mutableStateOf(false)
 
+    val allergens = listOf(
+        Allergen("Eggs"),
+        Allergen("Fish"),
+        Allergen("Almond"),
+        Allergen("Gluten"),
+        Allergen("Chocolate"),
+        Allergen("Avocado"),
+        Allergen("Mustard"),
+        Allergen("Peach"),
+        Allergen("Peanuts"),
+        Allergen("Soy"),
+        Allergen("Milk"),
+        Allergen("Soybeans"),
+        Allergen("Walnuts"),
+        Allergen("Berries"),
+        Allergen("Dairy"),
+
+        )
 
     fun getSharedName(): String {
         return user.value.firstName
@@ -77,17 +97,18 @@ class RegisterViewModel() : ViewModel() {
             }
 
             is RegistrationUIEvent.NextButtonClicked -> {
-                nextStepOnClick(navController = navController)
+                nextStepOnClickInfoUser(navController = navController)
             }
         }
         validateDataWithRules()
     }
 
 
-    private fun register() {
+    private fun register(navController: NavController) {
         createFirebaseUser(
             email = registrationUIState.value.email,
             password = registrationUIState.value.password,
+            navController = navController
         )
     }
 
@@ -143,7 +164,13 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
-    private fun createFirebaseUser(email: String, password: String) {
+    private fun performWhenClickedNextButtonRegister(navController: NavController){
+        registrationInProgress.value = false
+        updateUser()
+        readOnlyPassword.value = true
+        navController.navigate(Screen.UserAllergies.route)
+    }
+    private fun createFirebaseUser(email: String, password: String, navController: NavController) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
@@ -151,13 +178,7 @@ class RegisterViewModel() : ViewModel() {
                 Log.d(TAG, "Inside on Complete Lister")
                 Log.d(TAG, "is Successful = ${it.isSuccessful}")
                 if (it.isSuccessful) {
-                    registrationInProgress.value = false
-//                    navController.navigate(route = Screen.Home.route,
-//                        builder = {
-//                            popUpTo(Screen.Home.route) {
-//                                inclusive = true
-//                            }
-//                        })
+                    performWhenClickedNextButtonRegister(navController)
                     val userID = auth.currentUser?.uid
                     if (userID != null) {
                         createUserInDatabase(
@@ -197,11 +218,13 @@ class RegisterViewModel() : ViewModel() {
         firebaseAuth.addAuthStateListener(authStateListener)
     }
 
-    fun nextStepOnClick(navController: NavController) {
-        register()
-        updateUser()
-        readOnlyPassword.value = true
-        navController.navigate(Screen.UserAllergies.route)
+    fun nextStepOnClickInfoUser(navController: NavController) {
+        if(FirebaseAuth.getInstance().currentUser == null) {
+            register(navController)
+        }
+        else{
+            performWhenClickedNextButtonRegister(navController)
+        }
     }
 
     fun updateUser() {
@@ -245,7 +268,34 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
+    fun backStepOnClick(navController: NavController) {
+        navController.popBackStack()
+    }
 
+    fun addAllergenToUser(
+        allergen: Allergen
+    ) {
+        addAllergen(allergen)
+    }
+
+    fun removeAllergenFromUser(
+        allergen: Allergen
+    ) {
+        removeAllergen(allergen)
+    }
+
+    fun allergenOnClick(
+        allergen: Allergen
+    ) {
+        if (allergen.selectedState.value) {
+            removeAllergenFromUser(allergen)
+        } else {
+            addAllergenToUser(allergen)
+        }
+        allergen.selectedState.value = !allergen.selectedState.value
+        Log.d(TAG, "allergen clicked")
+        Log.d(TAG, allergens.toString())
+    }
 
 }
 

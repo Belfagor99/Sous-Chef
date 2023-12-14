@@ -63,7 +63,7 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 StepperBar(
                     steps = registerViewModel.steps,
-                    currentStep = registerViewModel.currentStep.value
+                    currentStep = registerViewModel.userInfoStep.value
                 )
                 HeaderTextComponent(value = stringResource(id = R.string.personal_information))
                 Spacer(modifier = Modifier.height(10.dp))
@@ -133,7 +133,8 @@ fun SignUpScreen(
                         )
                     },
                     errorStatus = registerViewModel.registrationUIState.value.passwordError,
-                    readOnly = registerViewModel.readOnlyPassword.value
+                    readOnly = registerViewModel.readOnlyPassword.value,
+                    labelValueFiled = "Password cannot be modified once filled",
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -141,7 +142,7 @@ fun SignUpScreen(
                     value = stringResource(id = R.string.next_step),
                     isEnabled = registerViewModel.allValidationPassed.value,
                     onClickAction = {
-                        registerViewModel.nextStepOnClick(navController)
+                        registerViewModel.nextStepOnClickInfoUser(navController)
                     }
                 )
                 Spacer(modifier = Modifier.height(10.dp))

@@ -81,7 +81,8 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     onTextSelected = {
                         logInViewModel.onEvent(LogInUIEvent.PasswordChanged(it), navController)
                     },
-                    errorStatus = logInViewModel.logInUIState.value.passwordError
+                    errorStatus = logInViewModel.logInUIState.value.passwordError,
+
 
                 )
                 Spacer(modifier = Modifier.height(20.dp))

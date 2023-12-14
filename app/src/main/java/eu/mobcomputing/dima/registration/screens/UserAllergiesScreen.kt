@@ -28,12 +28,12 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.userInformation.UserAllergiesViewModel
+import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
 
 @Composable
 fun UserAllergiesScreen(
     navController: NavController,
-    userAllergiesViewModel: UserAllergiesViewModel = viewModel()
+    registerViewModel: RegisterViewModel = viewModel()
 ) {
     Box(
         modifier = Modifier
@@ -61,15 +61,24 @@ fun UserAllergiesScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 StepperBar(
                     steps = listOf("1", "2", "3"),
-                    currentStep = userAllergiesViewModel.currentStep.value
+                    currentStep = registerViewModel.allergiesStep.value
+                    //userAllergiesViewModel.currentStep.value
                 )
                 NormalTextComponent(value = stringResource(id = R.string.allergies))
                 Column {
-                    AllergenGrid(allergens = userAllergiesViewModel.allergens,
+                    AllergenGrid(
+                        allergens = registerViewModel.allergens,
                         onAllergenClick = {
-                            //userAllergiesViewModel.allergenOnClick(it, registrationSharedViewModel = registrationSharedViewModel)
-                            //it.selectedState.value = !it.selectedState.value
+                            registerViewModel.allergenOnClick(it)
+                            it.selectedState.value = !it.selectedState.value
+                            it.selectedState.value = !it.selectedState.value
                         }
+                        //userAllergiesViewModel.allergens,
+                        /*onAllergenClick = {
+                            //userAllergiesViewModel.allergenOnClick(it,
+                            egistrationSharedViewModel = registrationSharedViewModel)
+                            //it.selectedState.value = !it.selectedState.value
+                        }*/
 
                     )
                 }
@@ -85,7 +94,8 @@ fun UserAllergiesScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.previous_step),
                         onClickAction = {
-                                userAllergiesViewModel.backStepOnClick(navController)
+                                //userAllergiesViewModel.backStepOnClick(navController)
+                                registerViewModel.backStepOnClick(navController)
                         },
                         modifier = Modifier.weight(1f)
 
@@ -94,7 +104,8 @@ fun UserAllergiesScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.previous_step),
                         onClickAction = {
-                            userAllergiesViewModel.nextStepOnClick(navController)
+                            //userAllergiesViewModel.nextStepOnClick(navController)
+                            registerViewModel.backStepOnClick(navController)
                         },
                         modifier = Modifier.weight(1f)
                     )
