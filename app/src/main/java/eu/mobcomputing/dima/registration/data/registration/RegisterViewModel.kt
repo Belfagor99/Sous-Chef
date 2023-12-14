@@ -1,6 +1,8 @@
 package eu.mobcomputing.dima.registration.data.registration
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
@@ -9,17 +11,39 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
+import eu.mobcomputing.dima.registration.data.Allergen
+import eu.mobcomputing.dima.registration.data.DietType
 import eu.mobcomputing.dima.registration.data.User
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.screens.Screen
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel() : ViewModel() {
     private val TAG = RegisterViewModel::class.simpleName
 
     var registrationUIState = mutableStateOf(RegistrationUIState())
     var allValidationPassed = mutableStateOf(false)
     var registrationInProgress = mutableStateOf(false)
+    var readOnlyPassword = mutableStateOf(false)
 
+    val currentStep: MutableState<Int> = mutableIntStateOf(0)
+
+    val steps: List<String> = listOf("1", "2", "3")
+    val user = mutableStateOf(User())
+    val cameBack = mutableStateOf(false)
+    val firstStepPassed = mutableStateOf(false)
+
+
+    fun getSharedName(): String {
+        return user.value.firstName
+    }
+
+    fun getSharedLastName(): String {
+        return user.value.lastName
+    }
+
+    fun getSharedEmail(): String {
+        return user.value.email
+    }
 
     fun onEvent(event: RegistrationUIEvent, navController: NavController) {
 
@@ -28,12 +52,14 @@ class RegisterViewModel : ViewModel() {
                 registrationUIState.value = registrationUIState.value.copy(
                     firstName = event.firstName
                 )
+                //registrationSharedViewModel.updateNameOfUser(event.firstName)
             }
 
             is RegistrationUIEvent.LastNameChanged -> {
                 registrationUIState.value = registrationUIState.value.copy(
                     lastName = event.lastName
                 )
+                //registrationSharedViewModel.updateLastOfUser(event.lastName)
 
             }
 
@@ -41,6 +67,7 @@ class RegisterViewModel : ViewModel() {
                 registrationUIState.value = registrationUIState.value.copy(
                     email = event.email
                 )
+                //registrationSharedViewModel.updateEmailOfUser(event.email)
             }
 
             is RegistrationUIEvent.PasswordChanged -> {
@@ -49,19 +76,18 @@ class RegisterViewModel : ViewModel() {
                 )
             }
 
-            is RegistrationUIEvent.RegisterButtonClicked -> {
-                register(navController = navController)
+            is RegistrationUIEvent.NextButtonClicked -> {
+                nextStepOnClick(navController = navController)
             }
         }
         validateDataWithRules()
     }
 
 
-    private fun register(navController: NavController) {
+    private fun register() {
         createFirebaseUser(
             email = registrationUIState.value.email,
             password = registrationUIState.value.password,
-            navController = navController
         )
     }
 
@@ -117,7 +143,7 @@ class RegisterViewModel : ViewModel() {
 
     }
 
-    private fun createFirebaseUser(email: String, password: String, navController: NavController) {
+    private fun createFirebaseUser(email: String, password: String) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
@@ -126,18 +152,20 @@ class RegisterViewModel : ViewModel() {
                 Log.d(TAG, "is Successful = ${it.isSuccessful}")
                 if (it.isSuccessful) {
                     registrationInProgress.value = false
-                    navController.navigate(route = Screen.Home.route,
-                        builder = {
-                            popUpTo(Screen.Home.route) {
-                                inclusive = true
-                            }
-                        })
+//                    navController.navigate(route = Screen.Home.route,
+//                        builder = {
+//                            popUpTo(Screen.Home.route) {
+//                                inclusive = true
+//                            }
+//                        })
                     val userID = auth.currentUser?.uid
                     if (userID != null) {
-                        createUserInDatabase(firstName = registrationUIState.value.firstName,
+                        createUserInDatabase(
+                            firstName = registrationUIState.value.firstName,
                             lastName = registrationUIState.value.lastName,
                             email = email,
-                            userID = userID)
+                            userID = userID
+                        )
                     }
                 }
 
@@ -150,6 +178,7 @@ class RegisterViewModel : ViewModel() {
             }
 
     }
+
 
     fun redirectToLogInScreen(navController: NavController) {
         navController.navigate(route = Screen.LogIn.route)
@@ -168,4 +197,57 @@ class RegisterViewModel : ViewModel() {
         firebaseAuth.addAuthStateListener(authStateListener)
     }
 
+    fun nextStepOnClick(navController: NavController) {
+        register()
+        updateUser()
+        readOnlyPassword.value = true
+        navController.navigate(Screen.UserAllergies.route)
+    }
+
+    fun updateUser() {
+        updateNameOfUser(registrationUIState.value.firstName)
+        updateLastOfUser(registrationUIState.value.lastName)
+        updateEmailOfUser(registrationUIState.value.email)
+        updateFirstStepPassed()
+
+
+    }
+
+
+    fun updateNameOfUser(firstName: String) {
+        user.value = user.value.copy(firstName = firstName)
+    }
+
+    fun updateLastOfUser(lastName: String) {
+        user.value = user.value.copy(lastName = lastName)
+    }
+
+    fun updateEmailOfUser(email: String) {
+        user.value = user.value.copy(email = email)
+    }
+
+    fun updateFirstStepPassed() {
+        firstStepPassed.value = true
+    }
+
+    fun updateDietTypeOfUser(dietType: DietType) {
+        user.value = user.value.copy(dietType = dietType)
+    }
+
+    fun addAllergen(allergen: Allergen) {
+        user.value = user.value.copy(allergies = user.value.allergies + allergen)
+
+    }
+
+
+    fun removeAllergen(allergen: Allergen) {
+        user.value = user.value.copy(allergies = user.value.allergies - allergen)
+
+    }
+
+
+
 }
+
+
+

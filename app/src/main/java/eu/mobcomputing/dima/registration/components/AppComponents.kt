@@ -45,10 +45,19 @@ import eu.mobcomputing.dima.registration.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.ui.res.painterResource
+import eu.mobcomputing.dima.registration.data.Allergen
 
 
 @Composable
@@ -78,11 +87,23 @@ fun MyTextFieldComponent(
     labelValue: String,
     iconPainterResource: Painter,
     onTextSelected: (String) -> Unit,
-    errorStatus: Boolean = false
+    errorStatus: Boolean = false,
+    shouldPreFill: Boolean,
+    preFilledText: String = ""
 ) {
 
-    val textValue = remember {
+    var textValue = remember {
         mutableStateOf("")
+    }
+    if (shouldPreFill) {
+        textValue = remember {
+            mutableStateOf(preFilledText)
+        }
+
+        // Handle changes to prefilledText
+        if (textValue.value != preFilledText) {
+            textValue.value = preFilledText
+        }
     }
 
     OutlinedTextField(
@@ -109,7 +130,7 @@ fun MyTextFieldComponent(
                 painter = iconPainterResource, contentDescription = null
             )
         },
-        isError = !errorStatus
+        isError = !errorStatus,
     )
 }
 
@@ -119,7 +140,8 @@ fun MyPasswordFieldComponent(
     labelValue: String,
     iconPainterResource: Painter,
     onTextSelected: (String) -> Unit,
-    errorStatus: Boolean = false
+    errorStatus: Boolean = false,
+    readOnly: Boolean = false
 ) {
 
     val password = remember {
@@ -140,6 +162,7 @@ fun MyPasswordFieldComponent(
             cursorColor = colorResource(id = R.color.pink_900),
             backgroundColor = colorResource(id = R.color.pink_100)
         ),
+
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         maxLines = 1,
@@ -153,6 +176,9 @@ fun MyPasswordFieldComponent(
                 painter = iconPainterResource, contentDescription = null
             )
         },
+
+        readOnly = readOnly,
+
         trailingIcon = {
             val iconImage = if (passwordVisible.value) {
                 Icons.Filled.Visibility
@@ -165,7 +191,12 @@ fun MyPasswordFieldComponent(
                 stringResource(R.string.show_password)
             }
 
-            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+            IconButton(onClick = {
+                if (!readOnly) {
+                    passwordVisible.value = !passwordVisible.value
+                }
+            }
+            ) {
                 Icon(imageVector = iconImage, contentDescription = description)
             }
 
@@ -211,6 +242,41 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean
 }
 
 @Composable
+fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Modifier) {
+    Button(
+        onClick = { onClickAction.invoke() },
+        enabled = true,
+        modifier = modifier.background(
+            color = colorResource(id = R.color.pink_900),
+            shape = RoundedCornerShape(15.dp)
+        ),
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(15.dp),
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(id = R.color.pink_900),
+                    shape = RoundedCornerShape(15.dp)
+                ), contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = value,
+                fontSize = 20.sp,
+                color = colorResource(id = R.color.pink_100),
+                fontWeight = FontWeight.Bold
+            )
+
+
+        }
+    }
+}
+
+
+@Composable
 fun MyRedHeadingComponent(value: String) {
     Text(
         text = value, modifier = Modifier
@@ -238,7 +304,7 @@ fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     ClickableText(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(min = 30.dp),
         style = TextStyle(
             fontSize = 21.sp,
             fontWeight = FontWeight.Normal,
@@ -393,5 +459,104 @@ fun SousChefImageComponent() {
     )
 }
 
+@Composable
+fun StepperBar(steps: List<String>, currentStep: Int) {
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        steps.forEachIndexed { index, step ->
+            StepperItem(
+                text = step,
+                isCompleted = index < currentStep,
+                isCurrent = index == currentStep
+            )
+            if (index < steps.size - 1) {
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+        }
+    }
+}
 
+@Composable
+fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
+    val color = when {
+        isCompleted -> colorResource(id = R.color.light_green)
+        isCurrent -> colorResource(id = R.color.pink_600)
+        else -> colorResource(id = R.color.pink_200) // Use your desired color for incomplete steps
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = when {
+                isCompleted -> Icons.Default.Check
+                else -> Icons.Default.Circle
+            },
+            contentDescription = null, // Decorative content
+            tint = color
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = text, color = color)
+    }
+}
+
+
+@Composable
+fun AllergenGrid(
+    allergens: List<Allergen>,
+    onAllergenClick: (Allergen) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(100.dp),
+        content = {
+            items(count = allergens.size) { i ->
+                AllergenItem(
+                    allergens[i],
+                    onAllergenClick
+                )
+            }
+        }
+    )
+}
+
+
+@Composable
+fun AllergenItem(
+    allergen: Allergen,
+    onAllergenClick: (Allergen) -> Unit
+) {
+    Button(
+        onClick = { onAllergenClick(allergen) },
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(50.dp),
+        modifier = Modifier
+            .padding(5.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = if (allergen.selectedState.value) colorResource(id = R.color.pink_900) else colorResource(
+                        id = R.color.pink_200
+                    ),
+                    shape = RoundedCornerShape(15.dp)
+                )
+                .padding(8.dp)
+        ) {
+            Text(
+                text = allergen.name,
+                color = if (allergen.selectedState.value) colorResource(id = R.color.pink_50) else colorResource(
+                    id = R.color.pink_900
+                ),
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
+    }
+}
 

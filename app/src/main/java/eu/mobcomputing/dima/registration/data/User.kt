@@ -1,9 +1,9 @@
 package eu.mobcomputing.dima.registration.data
 
 data class User(
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val dietType: DietType = DietType.NORMAL,
-    val allergies: List<String> = emptyList()
+    var firstName: String = "",
+    var lastName: String = "",
+    var email: String = "",
+    var dietType: DietType = DietType.NORMAL,
+    var allergies: List<Allergen> = emptyList()
 )

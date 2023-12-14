@@ -1,5 +1,8 @@
 package eu.mobcomputing.dima.registration.data.registration
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+
 data class RegistrationUIState (
     var firstName: String = "",
     var lastName: String = "",

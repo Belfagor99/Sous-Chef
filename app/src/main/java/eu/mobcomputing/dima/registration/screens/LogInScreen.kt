@@ -69,7 +69,8 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     onTextSelected = {
                         logInViewModel.onEvent(LogInUIEvent.EmailChanged(it), navController)
                     },
-                    errorStatus = logInViewModel.logInUIState.value.emailError
+                    errorStatus = logInViewModel.logInUIState.value.emailError,
+                    shouldPreFill = false
 
                 )
                 MyPasswordFieldComponent(

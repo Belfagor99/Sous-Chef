@@ -8,6 +8,7 @@ import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.Screen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
+import eu.mobcomputing.dima.registration.screens.UserAllergiesScreen
 import eu.mobcomputing.dima.registration.screens.WelcomeScreen
 
 @Composable
@@ -38,6 +39,8 @@ fun SetUpNavGraph( navController: NavHostController) {
         ){
             HomeScreen(navController)
         }
-
+        composable(route = Screen.UserAllergies.route){
+            UserAllergiesScreen(navController = navController)
+        }
     }
 }
