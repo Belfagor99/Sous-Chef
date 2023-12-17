@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.components.AllergenGrid
+import eu.mobcomputing.dima.registration.components.DietOptionList
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
@@ -31,7 +31,7 @@ import eu.mobcomputing.dima.registration.components.StepperBar
 import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
 
 @Composable
-fun UserAllergiesScreen(
+fun UserDietScreen(
     navController: NavController,
     registerViewModel: RegisterViewModel = viewModel()
 ) {
@@ -50,32 +50,27 @@ fun UserAllergiesScreen(
                 .fillMaxSize()
                 .background(colorResource(id = R.color.pink_50))
                 .padding(18.dp)
-        )
-        {
+        ) {
+
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(5.dp))
                 HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 StepperBar(
-                    steps = listOf("1", "2", "3"),
-                    currentStep = registerViewModel.allergiesStep.value
+                    steps = registerViewModel.steps,
+                    currentStep = registerViewModel.dietTypeStep.value
                 )
-                NormalTextComponent(value = stringResource(id = R.string.allergies))
-                Column {
-                    AllergenGrid(
-                        allergens = registerViewModel.allergens,
-                        onAllergenClick = {
-                            registerViewModel.allergenOnClick(it)
-                            it.selectedState.value = !it.selectedState.value
-                            it.selectedState.value = !it.selectedState.value
-                        }
+                NormalTextComponent(value = stringResource(id = R.string.diet_type))
 
-                    )
-                }
-
+                DietOptionList(
+                    dietOptions = registerViewModel.dietOptions,
+                    onDietClick = {
+                        registerViewModel.dietOptionOnClick(it)
+                    }
+                )
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -87,30 +82,32 @@ fun UserAllergiesScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.previous_step),
                         onClickAction = {
-                                registerViewModel.backStepOnClick(navController)
+                            registerViewModel.backStepOnClick(navController)
                         },
                         modifier = Modifier.weight(1f)
+                            .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
 
                     )
+
                     Spacer(modifier = Modifier.width(10.dp))
                     SmallButtonComponent(
-                        value = stringResource(id = R.string.next_step),
+                        value = stringResource(id = R.string.finish),
                         onClickAction = {
-                            registerViewModel.allergiesScreenNext(navController)
+                            registerViewModel.finishRegistration(navController)
                         },
                         modifier = Modifier.weight(1f)
+                            .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
                     )
+
                 }
-
-
             }
         }
-
     }
+
 }
 
 @Preview
 @Composable
-fun PreviewUserInformationScreen() {
-    UserAllergiesScreen(navController = rememberNavController())
+fun PreviewUserDietScreen() {
+    UserDietScreen(navController = rememberNavController())
 }

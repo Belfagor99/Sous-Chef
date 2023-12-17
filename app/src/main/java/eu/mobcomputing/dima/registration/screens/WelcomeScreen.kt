@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -28,31 +27,24 @@ fun WelcomeScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.pink_50))
-            .padding(28.dp)
+            .padding(18.dp)
     )
     {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
+            Spacer(modifier = Modifier.weight(1f))
             SousChefImageComponent()
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.weight(1f))
             ButtonComponent(value = stringResource(
-                id = R.string.create_account_text),
+                id = R.string.sign_up_log_in),
                 onClickAction = { navController.navigate(route = Screen.Register.route) },
                 isEnabled = true
             )
-            Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(
-                value = stringResource(id = R.string.log_in_text),
-                onClickAction = { navController.navigate(route = Screen.LogIn.route) },
-                isEnabled = true
-            )
-
         }
     }
 }

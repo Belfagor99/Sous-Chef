@@ -43,10 +43,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.mobcomputing.dima.registration.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,8 +57,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import eu.mobcomputing.dima.registration.data.Allergen
+import eu.mobcomputing.dima.registration.data.DietOption
 
 
 @Composable
@@ -141,7 +145,7 @@ fun MyPasswordFieldComponent(
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false,
     readOnly: Boolean = false,
-    labelValueFiled:String = ""
+    labelValueFiled: String = ""
 ) {
 
     val password = remember {
@@ -158,8 +162,7 @@ fun MyPasswordFieldComponent(
         label = {
             if (!readOnly) {
                 Text(text = labelValue)
-            }
-            else{
+            } else {
                 Text(text = labelValueFiled)
             }
         },
@@ -212,7 +215,7 @@ fun MyPasswordFieldComponent(
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !errorStatus,
 
-    )
+        )
 }
 
 @Composable
@@ -255,26 +258,25 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
     Button(
         onClick = { onClickAction.invoke() },
         enabled = true,
-        modifier = modifier.background(
-            color = colorResource(id = R.color.pink_900),
-            shape = RoundedCornerShape(15.dp)
-        ),
+        shape = RoundedCornerShape(50.dp),
+        modifier = modifier.fillMaxWidth()
+            . heightIn(48.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
-        shape = RoundedCornerShape(15.dp),
     ) {
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(48.dp)
                 .background(
                     color = colorResource(id = R.color.pink_900),
-                    shape = RoundedCornerShape(15.dp)
+                    shape = RoundedCornerShape(50.dp)
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
                 text = value,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 color = colorResource(id = R.color.pink_100),
                 fontWeight = FontWeight.Bold
             )
@@ -472,7 +474,7 @@ fun SousChefImageComponent() {
 fun StepperBar(steps: List<String>, currentStep: Int) {
     Row(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(8.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -567,5 +569,76 @@ fun AllergenItem(
             )
         }
     }
+}
+
+@Composable
+fun DietOptionItem(
+    dietOption: DietOption,
+    onDietOptionClick: (DietOption) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { onDietOptionClick(dietOption) })
+            .padding(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .background(
+                    color = if (dietOption.selected.value) colorResource(id = R.color.pink_900) else colorResource(
+                        id = R.color.pink_200
+                    )
+                )
+        ) {
+            Image(
+                painter = painterResource(id = dietOption.icon),
+                contentDescription = dietOption.type.name,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            )
+            if (dietOption.selected.value) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = dietOption.type.diet,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun DietOptionList(
+    dietOptions: List<DietOption>,
+    onDietClick: (DietOption) -> Unit
+) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(100.dp),
+        content = {
+            items(count = dietOptions.size) { i ->
+                DietOptionItem(
+                    dietOptions[i],
+                    onDietClick
+                )
+            }
+        }
+    )
+
 }
 

@@ -11,7 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
+import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.data.Allergen
+import eu.mobcomputing.dima.registration.data.DietOption
 import eu.mobcomputing.dima.registration.data.DietType
 import eu.mobcomputing.dima.registration.data.User
 import eu.mobcomputing.dima.registration.data.rules.Validator
@@ -52,6 +54,17 @@ class RegisterViewModel() : ViewModel() {
         Allergen("Dairy"),
 
         )
+
+    var selectedDietOption = { mutableStateOf<DietOption?>(null) }
+
+    val dietOptions = listOf(
+        DietOption(DietType.VEGAN, R.drawable.vegan_removebg_preview),
+        DietOption(DietType.VEGETARIAN, R.drawable.vegetarian_removebg_preview),
+        DietOption(DietType.GLUTEN_FREE, R.drawable.glutenfree_removebg_preview),
+        DietOption(DietType.LACTOSE_FREE, R.drawable.lactofree_removebg_preview),
+        DietOption(DietType.NORMAL, R.drawable.normal_removebg_preview),
+        DietOption(DietType.PESCETARIAN, R.drawable.pescetarian_preview),
+    )
 
     fun getSharedName(): String {
         return user.value.firstName
@@ -164,12 +177,34 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
-    private fun performWhenClickedNextButtonRegister(navController: NavController){
+    private fun createUserInDatabaseWithData(user: MutableState<User>) {
+        val db = Firebase.firestore
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) {
+            val uid = auth.currentUser!!.uid
+            val userDocumentRef: DocumentReference =
+                db.collection("users").document(uid)
+            userDocumentRef.set(user)
+                .addOnSuccessListener {
+                    Log.d(TAG, "User document created successfully")
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error creating user document", e)
+                }
+
+        }
+        else{
+            Log.d(TAG, "Uzivatel nie je prihlaseny, alebo nema??? UID")
+        }
+    }
+
+    private fun performWhenClickedNextButtonRegister(navController: NavController) {
         registrationInProgress.value = false
         updateUser()
         readOnlyPassword.value = true
         navController.navigate(Screen.UserAllergies.route)
     }
+
     private fun createFirebaseUser(email: String, password: String, navController: NavController) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
@@ -219,10 +254,9 @@ class RegisterViewModel() : ViewModel() {
     }
 
     fun nextStepOnClickInfoUser(navController: NavController) {
-        if(FirebaseAuth.getInstance().currentUser == null) {
+        if (FirebaseAuth.getInstance().currentUser == null) {
             register(navController)
-        }
-        else{
+        } else {
             performWhenClickedNextButtonRegister(navController)
         }
     }
@@ -268,6 +302,10 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
+    fun addDietType(dietType: DietType) {
+        user.value = user.value.copy(dietType = dietType)
+    }
+
     fun backStepOnClick(navController: NavController) {
         navController.popBackStack()
     }
@@ -297,6 +335,27 @@ class RegisterViewModel() : ViewModel() {
         Log.d(TAG, allergens.toString())
     }
 
+    fun allergiesScreenNext(navController: NavController) {
+        navController.navigate(Screen.UserDietScreen.route)
+    }
+
+    fun dietOptionOnClick(dietOption: DietOption) {
+        for (dietOpt in dietOptions) {
+            if (dietOpt.selected.value) {
+                dietOpt.selected.value = false
+                break
+            }
+        }
+        dietOption.selected.value = true
+        addDietType(dietOption.type)
+        Log.d(TAG, "dietOpt clicked")
+        Log.d(TAG, dietOption.toString())
+
+    }
+
+    fun finishRegistration(navController: NavController) {
+        createUserInDatabaseWithData(user)
+    }
 }
 
 

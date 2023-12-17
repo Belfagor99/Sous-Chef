@@ -51,7 +51,7 @@ fun SignUpScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(id = R.color.pink_50))
-                .padding(28.dp)
+                .padding(18.dp)
         )
         {
             Column(
@@ -137,7 +137,7 @@ fun SignUpScreen(
                     labelValueFiled = "Password cannot be modified once filled",
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.weight(1f))
                 ButtonComponent(
                     value = stringResource(id = R.string.next_step),
                     isEnabled = registerViewModel.allValidationPassed.value,
@@ -145,7 +145,7 @@ fun SignUpScreen(
                         registerViewModel.nextStepOnClickInfoUser(navController)
                     }
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp) )
                 NormalTextComponent(value = stringResource(id = R.string.or))
                 ClickableRegisterTextComponent(onClickAction = {
                     registerViewModel.redirectToLogInScreen(navController)

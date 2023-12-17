@@ -27,7 +27,7 @@ fun HomeScreen(navController: NavController, registerViewModel: RegisterViewMode
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.pink_50))
-            .padding(28.dp)
+            .padding(18.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
