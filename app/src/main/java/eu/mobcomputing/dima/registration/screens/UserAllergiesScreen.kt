@@ -19,12 +19,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.AllergenGrid
-import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
@@ -33,8 +32,7 @@ import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 @Composable
 fun UserAllergiesScreen(
     navController: NavController,
-    sharedUserDataModel: SharedUserDataModel = viewModel()
-) {
+    sharedUserDataModel: SharedUserDataModel) {
 
     Box(
         modifier = Modifier
@@ -58,7 +56,7 @@ fun UserAllergiesScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
-                HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
+                MyRedHeadingComponent(value = stringResource(id = R.string.create_account_text), shouldBeCentered = true)
                 Spacer(modifier = Modifier.height(10.dp))
                 StepperBar(
                     steps = sharedUserDataModel.steps,
@@ -104,5 +102,5 @@ fun UserAllergiesScreen(
 @Preview
 @Composable
 fun PreviewUserInformationScreen() {
-    UserAllergiesScreen(navController = rememberNavController())
+    UserAllergiesScreen(navController = rememberNavController(), sharedUserDataModel = SharedUserDataModel())
 }

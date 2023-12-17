@@ -1,9 +1,12 @@
 package eu.mobcomputing.dima.registration.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import eu.mobcomputing.dima.registration.data.SharedUserDataModelViewFactory
+import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.SignInSuccessfulScreen
@@ -14,6 +17,11 @@ import eu.mobcomputing.dima.registration.screens.WelcomeScreen
 
 @Composable
 fun SetUpNavGraph( navController: NavHostController) {
+    val sharedViewModelFactory = SharedUserDataModelViewFactory()
+
+    // Create a shared instance of SharedUserDataModel
+    val sharedViewModel: SharedUserDataModel = viewModel(factory = sharedViewModelFactory)
+
     NavHost(navController = navController,
         startDestination = Screen.Welcome.route)
     {
@@ -41,11 +49,11 @@ fun SetUpNavGraph( navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = Screen.UserAllergies.route){
-            UserAllergiesScreen(navController = navController)
+            UserAllergiesScreen(navController = navController, sharedViewModel)
         }
 
         composable(route = Screen.UserDietScreen.route){
-            UserDietScreen(navController = navController)
+            UserDietScreen(navController = navController, sharedViewModel)
         }
 
         composable(route = Screen.SignInSuccessfulScreen.route){

@@ -19,12 +19,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.DietOptionList
-import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
@@ -33,8 +32,8 @@ import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 @Composable
 fun UserDietScreen(
     navController: NavController,
+    sharedUserDataModel: SharedUserDataModel
 ) {
-    val sharedUserDataModel: SharedUserDataModel = viewModel()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +56,7 @@ fun UserDietScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Spacer(modifier = Modifier.height(5.dp))
-                HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
+                MyRedHeadingComponent(value = stringResource(id = R.string.create_account_text), shouldBeCentered = true)
                 Spacer(modifier = Modifier.height(4.dp))
                 StepperBar(
                     steps = sharedUserDataModel.steps,
@@ -71,7 +70,7 @@ fun UserDietScreen(
                         sharedUserDataModel.dietOptionOnClick(it)
                     },
 
-                )
+                    )
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -85,7 +84,8 @@ fun UserDietScreen(
                         onClickAction = {
                             sharedUserDataModel.backStepOnClick(navController)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
                             .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
 
                     )
@@ -96,7 +96,8 @@ fun UserDietScreen(
                         onClickAction = {
                             sharedUserDataModel.finishRegistration(navController)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
                             .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
                     )
 
@@ -110,5 +111,5 @@ fun UserDietScreen(
 @Preview
 @Composable
 fun PreviewUserDietScreen() {
-    UserDietScreen(navController = rememberNavController())
+    UserDietScreen(navController = rememberNavController(), sharedUserDataModel = SharedUserDataModel())
 }

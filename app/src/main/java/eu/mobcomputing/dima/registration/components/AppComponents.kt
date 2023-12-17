@@ -236,8 +236,10 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean
                 .fillMaxWidth()
                 .heightIn(48.dp)
                 .background(
-                    color = colorResource(id = R.color.pink_900),
-                    shape = RoundedCornerShape(50.dp)
+                    color = if (isEnabled) colorResource(id = R.color.pink_900) else colorResource(
+                        id = R.color.pink_200
+                    )
+
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
@@ -301,6 +303,7 @@ fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
         textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
     )
 }
+
 @Composable
 fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     val initialText = "Not have an account? "
@@ -496,7 +499,7 @@ fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
     val color = when {
         isCompleted -> colorResource(id = R.color.light_green)
         isCurrent -> colorResource(id = R.color.pink_600)
-        else -> colorResource(id = R.color.pink_200) // Use your desired color for incomplete steps
+        else -> colorResource(id = R.color.pink_200)
     }
 
     Row(
@@ -507,7 +510,7 @@ fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
                 isCompleted -> Icons.Default.Check
                 else -> Icons.Default.Circle
             },
-            contentDescription = null, // Decorative content
+            contentDescription = null,
             tint = color
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -577,7 +580,7 @@ fun DietOptionItem(
     dietOption: DietOption,
     onDietOptionClick: (DietOption) -> Unit
 ) {
-    val isSelected =  dietOption.selected.value
+    val isSelected = dietOption.selected.value
     //var isSelected by remember { mutableStateOf(dietOption.selected.value) }
 
     Column(
@@ -609,7 +612,7 @@ fun DietOptionItem(
                 alignment = Alignment.Center
             )
             //if (dietOption.selected.value) {
-             if (isSelected){
+            if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,

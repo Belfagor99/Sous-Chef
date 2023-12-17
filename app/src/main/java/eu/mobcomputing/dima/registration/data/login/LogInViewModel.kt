@@ -106,5 +106,8 @@ class LogInViewModel : ViewModel() {
         }
     }
 
+    fun redirectToSignUp(navController: NavController){
+        navController.navigate(route = Screen.Register.route)
+    }
 }
 

@@ -22,8 +22,6 @@ class SharedUserDataModel() : ViewModel() {
 
     val allergiesStep: MutableState<Int> = mutableIntStateOf(1)
     val dietTypeStep: MutableState<Int> = mutableIntStateOf(2)
-
-    val firstInitialisation: MutableState<Boolean> = mutableStateOf(true)
     val steps: List<String> = listOf("1", "2", "3")
 
     val allergens = listOf(
@@ -50,7 +48,7 @@ class SharedUserDataModel() : ViewModel() {
         DietOption(DietType.VEGETARIAN, R.drawable.vegetarian_removebg_preview),
         DietOption(DietType.GLUTEN_FREE, R.drawable.glutenfree_removebg_preview),
         DietOption(DietType.LACTOSE_FREE, R.drawable.lactofree_removebg_preview),
-        DietOption(DietType.NORMAL, R.drawable.normal_removebg_preview),
+        DietOption(DietType.NORMAL, R.drawable.normal_removebg_preview, mutableStateOf(true)),
         DietOption(DietType.PESCETARIAN, R.drawable.pescetarian_preview),
     )
 
@@ -58,18 +56,7 @@ class SharedUserDataModel() : ViewModel() {
 
     private var user = mutableStateOf(User())
 
-    private fun addAllergen(allergen: Allergen) {
-        user.value = user.value.copy(allergies = user.value.allergies + allergen)
-
-    }
-
-
-    private fun removeAllergen(allergen: Allergen) {
-        user.value = user.value.copy(allergies = user.value.allergies - allergen)
-
-    }
-
-    fun setDietType(dietType: DietType) {
+    private fun setDietType(dietType: DietType) {
         user.value = user.value.copy(dietType = dietType)
     }
 
@@ -77,16 +64,18 @@ class SharedUserDataModel() : ViewModel() {
         navController.popBackStack()
     }
 
-    fun addAllergenToUser(
+    private fun addAllergenToUser(
         allergen: Allergen
     ) {
-        addAllergen(allergen)
+        user.value = user.value.copy(allergies = user.value.allergies + allergen)
+
     }
 
-    fun removeAllergenFromUser(
+    private fun removeAllergenFromUser(
         allergen: Allergen
     ) {
-        removeAllergen(allergen)
+        user.value = user.value.copy(allergies = user.value.allergies - allergen)
+
     }
 
     fun allergenOnClick(
@@ -104,32 +93,18 @@ class SharedUserDataModel() : ViewModel() {
     }
 
     fun allergiesScreenNext(navController: NavController) {
-        firstInitialisation.value = false
         navController.navigate(Screen.UserDietScreen.route)
     }
 
     fun dietOptionOnClick(dietOption: DietOption) {
-        /*for (dietOpt in dietOptions) {
-            if (dietOpt.selected.value) {
-                dietOpt.selected.value = false
-                break
-            }
-        }
-        dietOption.selected.value = true
-        selectedDietOption.value = dietOption
-        setDietType(dietOption.type)
-        Log.d(TAG, "dietOpt clicked")
-        Log.d(TAG, dietOption.toString())*/
-        // Unselect previously selected diet option
         selectedDietOption.value.selected.value = false
 
-        // Select the clicked diet option
         dietOption.selected.value = !dietOption.selected.value
 
-        // Update the selected diet option in the ViewModel
+
         selectedDietOption.value = dietOption
 
-        // Add or remove diet type to the user based on selection
+
         if (dietOption.selected.value) {
             setDietType(dietOption.type)
         }
@@ -141,7 +116,7 @@ class SharedUserDataModel() : ViewModel() {
     }
 
 
-   fun finishRegistration(navController: NavController) {
+    fun finishRegistration(navController: NavController) {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
 
         if (userID != null) {

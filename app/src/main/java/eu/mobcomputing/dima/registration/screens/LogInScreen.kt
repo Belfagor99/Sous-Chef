@@ -32,7 +32,6 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
 import eu.mobcomputing.dima.registration.data.login.LogInUIEvent
 import eu.mobcomputing.dima.registration.data.login.LogInViewModel
-import eu.mobcomputing.dima.registration.navigation.Screen
 
 @Composable
 fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {
@@ -107,7 +106,11 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
 
                 Spacer(modifier = Modifier.weight(1f))
                 NormalTextComponent(value = stringResource(id = R.string.or))
-                ClickableLoginTextComponent(onClickAction = { navController.navigate(route = Screen.Register.route) })
+                ClickableLoginTextComponent(onClickAction = {
+                    logInViewModel.redirectToSignUp(
+                        navController
+                    )
+                })
             }
         }
 
