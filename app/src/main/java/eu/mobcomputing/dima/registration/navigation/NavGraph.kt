@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import eu.mobcomputing.dima.registration.screens.HomeScreen
-import eu.mobcomputing.dima.registration.screens.Screen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
+import eu.mobcomputing.dima.registration.screens.SignInSuccessfulScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
 import eu.mobcomputing.dima.registration.screens.UserAllergiesScreen
 import eu.mobcomputing.dima.registration.screens.UserDietScreen
@@ -46,6 +46,10 @@ fun SetUpNavGraph( navController: NavHostController) {
 
         composable(route = Screen.UserDietScreen.route){
             UserDietScreen(navController = navController)
+        }
+
+        composable(route = Screen.SignInSuccessfulScreen.route){
+            SignInSuccessfulScreen(navController = navController)
         }
 
     }

@@ -26,17 +26,18 @@ import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.ClickableRegisterTextComponent
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
+import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
-import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
 import eu.mobcomputing.dima.registration.data.registration.RegistrationUIEvent
+import eu.mobcomputing.dima.registration.data.registration.RegistrationViewModel
 
 @Composable
 fun SignUpScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel = viewModel()
-) {
+    //sharedRegistrationViewModel: SharedRegistrationViewModel = viewModel()
+    registrationViewModel: RegistrationViewModel = viewModel()
+    ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,12 +60,12 @@ fun SignUpScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
+                MyRedHeadingComponent(value = stringResource(id = R.string.create_account_text), shouldBeCentered = true)
                 Spacer(modifier = Modifier.height(10.dp))
-                StepperBar(
-                    steps = registerViewModel.steps,
-                    currentStep = registerViewModel.userInfoStep.value
-                )
+                /*StepperBar(
+                    steps = sharedRegistrationViewModel.steps,
+                    currentStep = sharedRegistrationViewModel.userInfoStep.value
+                )*/
                 HeaderTextComponent(value = stringResource(id = R.string.personal_information))
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -75,15 +76,15 @@ fun SignUpScreen(
                         id = R.drawable.baseline_person_24
                     ),
                     onTextSelected = {
-                        registerViewModel.onEvent(
+                        registrationViewModel.onEvent(
                             RegistrationUIEvent.FirstNameChanged(it),
                             navController
                         )
                     },
-                    errorStatus = registerViewModel.registrationUIState.value.firstNameError,
+                    errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
 
-                    preFilledText = registerViewModel.getSharedName(),
-                    shouldPreFill = registerViewModel.readOnlyPassword.value
+                    //preFilledText = shaiewModel.getSharedName(),
+                    shouldPreFill = false
                 )
 
                 // Last name component
@@ -93,15 +94,16 @@ fun SignUpScreen(
                         id = R.drawable.baseline_person_24
                     ),
                     onTextSelected = {
-                        registerViewModel.onEvent(
+                        registrationViewModel.onEvent(
                             RegistrationUIEvent.LastNameChanged(it),
                             navController
                         )
                     },
-                    errorStatus = registerViewModel.registrationUIState.value.lastNameError,
-                    preFilledText = registerViewModel.getSharedLastName(),
-                    shouldPreFill = registerViewModel.readOnlyPassword.value
-                )
+                    errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
+                    //preFilledText = shiewModel.getSharedLastName(),
+                    //shouldPreFill = sharedRegistrationViewModel.readOnlyPassword.value
+                    shouldPreFill = false
+                    )
 
                 //R-mail component
                 MyTextFieldComponent(
@@ -110,15 +112,16 @@ fun SignUpScreen(
                         id = R.drawable.baseline_alternate_email_24
                     ),
                     onTextSelected = {
-                        registerViewModel.onEvent(
+                        registrationViewModel.onEvent(
                             RegistrationUIEvent.EmailChanged(it),
                             navController
                         )
                     },
-                    errorStatus = registerViewModel.registrationUIState.value.emailError,
-                    preFilledText = registerViewModel.getSharedEmail(),
-                    shouldPreFill = registerViewModel.readOnlyPassword.value
-                )
+                    errorStatus = registrationViewModel.registrationUIState.value.emailError,
+                    //preFilledText = sharedRegistrationViewModel.getSharedEmail(),
+                    //shouldPreFill = sharedRegistrationViewModel.readOnlyPassword.value
+                    shouldPreFill = false
+                    )
 
                 // Password component
                 MyPasswordFieldComponent(
@@ -127,34 +130,36 @@ fun SignUpScreen(
                         id = R.drawable.baseline_lock_24
                     ),
                     onTextSelected = {
-                        registerViewModel.onEvent(
+                        registrationViewModel.onEvent(
                             RegistrationUIEvent.PasswordChanged(it),
                             navController
                         )
                     },
-                    errorStatus = registerViewModel.registrationUIState.value.passwordError,
-                    readOnly = registerViewModel.readOnlyPassword.value,
+                    errorStatus = registrationViewModel.registrationUIState.value.passwordError,
+                    //readOnly = sharedRegistrationViewModel.readOnlyPassword.value,
+                    readOnly = false,
                     labelValueFiled = "Password cannot be modified once filled",
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
                 ButtonComponent(
-                    value = stringResource(id = R.string.next_step),
-                    isEnabled = registerViewModel.allValidationPassed.value,
+                    value = stringResource(id = R.string.sign_up),
+                    isEnabled = registrationViewModel.allValidationPassed.value,
                     onClickAction = {
-                        registerViewModel.nextStepOnClickInfoUser(navController)
+                        registrationViewModel.onEvent(RegistrationUIEvent.RegistrationButtonClicked,
+                            navController)
                     }
                 )
                 Spacer(modifier = Modifier.height(10.dp) )
                 NormalTextComponent(value = stringResource(id = R.string.or))
                 ClickableRegisterTextComponent(onClickAction = {
-                    registerViewModel.redirectToLogInScreen(navController)
+                    registrationViewModel.redirectToLogInScreen(navController)
                 }
                 )
             }
         }
 
-        if (registerViewModel.registrationInProgress.value) {
+        if (registrationViewModel.registrationInProgress.value) {
             CircularProgressIndicator()
         }
     }

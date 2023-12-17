@@ -18,10 +18,12 @@ import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
-import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
+import eu.mobcomputing.dima.registration.data.login.HomeViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, registerViewModel: RegisterViewModel = viewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel = viewModel()) {
     Surface(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
@@ -36,7 +38,7 @@ fun HomeScreen(navController: NavController, registerViewModel: RegisterViewMode
             HeaderTextComponent(value = stringResource(id = R.string.information_text_logged_in))
             ButtonComponent(
                 value = stringResource(id = R.string.log_out),
-                onClickAction = { registerViewModel.logOut(navController) },
+                onClickAction = { homeViewModel.logOut(navController) },
                 isEnabled = true)
 
         }

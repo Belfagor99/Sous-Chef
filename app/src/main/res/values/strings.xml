@@ -25,6 +25,7 @@
     <string name="previous_step">Previous Step</string>
     <string name="finish">Finish</string>
     <string name="sign_up_log_in">Sing up/Log in</string>
-    <string name="after_registration">Great, now you are registered to the Sous Chef app.
-        Before you journey may start, tell us a little more about yourself.</string>
+    <string name="registration_successful">Welcome to </string>
+    <string name="after_registration">Before you journey may start, tell us a little more about yourself.</string>
+    <string name="sign_up">Sign me up</string>
 </resources>

@@ -28,13 +28,14 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
+import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 
 @Composable
 fun UserAllergiesScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel = viewModel()
+    sharedUserDataModel: SharedUserDataModel = viewModel()
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,15 +61,15 @@ fun UserAllergiesScreen(
                 HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
                 Spacer(modifier = Modifier.height(10.dp))
                 StepperBar(
-                    steps = listOf("1", "2", "3"),
-                    currentStep = registerViewModel.allergiesStep.value
+                    steps = sharedUserDataModel.steps,
+                    currentStep = sharedUserDataModel.allergiesStep.value
                 )
                 NormalTextComponent(value = stringResource(id = R.string.allergies))
                 Column {
                     AllergenGrid(
-                        allergens = registerViewModel.allergens,
+                        allergens = sharedUserDataModel.allergens,
                         onAllergenClick = {
-                            registerViewModel.allergenOnClick(it)
+                            sharedUserDataModel.allergenOnClick(it)
                             it.selectedState.value = !it.selectedState.value
                             it.selectedState.value = !it.selectedState.value
                         }
@@ -83,20 +84,11 @@ fun UserAllergiesScreen(
                         .fillMaxWidth()
                         .padding(8.dp)
                 ) {
-
-                    SmallButtonComponent(
-                        value = stringResource(id = R.string.previous_step),
-                        onClickAction = {
-                                registerViewModel.backStepOnClick(navController)
-                        },
-                        modifier = Modifier.weight(1f)
-
-                    )
                     Spacer(modifier = Modifier.width(10.dp))
                     SmallButtonComponent(
                         value = stringResource(id = R.string.next_step),
                         onClickAction = {
-                            registerViewModel.allergiesScreenNext(navController)
+                            sharedUserDataModel.allergiesScreenNext(navController)
                         },
                         modifier = Modifier.weight(1f)
                     )

@@ -28,13 +28,13 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.registration.RegisterViewModel
+import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 
 @Composable
 fun UserDietScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel = viewModel()
 ) {
+    val sharedUserDataModel: SharedUserDataModel = viewModel()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,16 +60,17 @@ fun UserDietScreen(
                 HeaderTextComponent(value = stringResource(id = R.string.create_account_text))
                 Spacer(modifier = Modifier.height(4.dp))
                 StepperBar(
-                    steps = registerViewModel.steps,
-                    currentStep = registerViewModel.dietTypeStep.value
+                    steps = sharedUserDataModel.steps,
+                    currentStep = sharedUserDataModel.dietTypeStep.value
                 )
                 NormalTextComponent(value = stringResource(id = R.string.diet_type))
 
                 DietOptionList(
-                    dietOptions = registerViewModel.dietOptions,
+                    dietOptions = sharedUserDataModel.dietOptions,
                     onDietClick = {
-                        registerViewModel.dietOptionOnClick(it)
-                    }
+                        sharedUserDataModel.dietOptionOnClick(it)
+                    },
+
                 )
 
                 Row(
@@ -82,7 +83,7 @@ fun UserDietScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.previous_step),
                         onClickAction = {
-                            registerViewModel.backStepOnClick(navController)
+                            sharedUserDataModel.backStepOnClick(navController)
                         },
                         modifier = Modifier.weight(1f)
                             .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
@@ -93,7 +94,7 @@ fun UserDietScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.finish),
                         onClickAction = {
-                            registerViewModel.finishRegistration(navController)
+                            sharedUserDataModel.finishRegistration(navController)
                         },
                         modifier = Modifier.weight(1f)
                             .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly

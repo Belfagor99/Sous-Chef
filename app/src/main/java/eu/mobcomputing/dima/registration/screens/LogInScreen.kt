@@ -32,6 +32,7 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
 import eu.mobcomputing.dima.registration.data.login.LogInUIEvent
 import eu.mobcomputing.dima.registration.data.login.LogInViewModel
+import eu.mobcomputing.dima.registration.navigation.Screen
 
 @Composable
 fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {
@@ -40,16 +41,14 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
             .fillMaxSize()
             .background(
                 colorResource(id = R.color.pink_50)
-            ),
-        contentAlignment = Alignment.Center
-    )
-    {
+            ), contentAlignment = Alignment.Center
+    ) {
         Surface(
             color = colorResource(id = R.color.pink_50),
             modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(id = R.color.pink_50))
-                .padding(28.dp),
+                .padding(18.dp),
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -84,22 +83,19 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     errorStatus = logInViewModel.logInUIState.value.passwordError,
 
 
-                )
+                    )
                 Spacer(modifier = Modifier.height(20.dp))
                 ButtonComponent(
-                    value = stringResource(id = R.string.log_in_text),
-                    onClickAction = {
+                    value = stringResource(id = R.string.log_in_text), onClickAction = {
                         logInViewModel.onEvent(LogInUIEvent.LogInButtonClicked, navController)
-                    },
-                    isEnabled = logInViewModel.allValidationPassed.value
+                    }, isEnabled = logInViewModel.allValidationPassed.value
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                ClickableForgottenPasswordTextComponent(
-                    onClickAction = {
-                        logInViewModel.resetPassword(
-                            email = logInViewModel.logInUIState.value.email)
-                    }
-                )
+                ClickableForgottenPasswordTextComponent(onClickAction = {
+                    logInViewModel.resetPassword(
+                        email = logInViewModel.logInUIState.value.email
+                    )
+                })
 
                 if (logInViewModel.passwordIsIncorrect.value) {
                     WrongPasswordSubmitterComponent(logInViewModel.logInUIState.value.numberOfRemainingSubmissions)
@@ -109,10 +105,9 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     NormalTextComponent(value = stringResource(id = R.string.password_reset))
                 }
 
-                Spacer(modifier = Modifier.height(240.dp))
-                ClickableLoginTextComponent(
-                    onClickAction = { navController.navigate(route = Screen.LogIn.route) })
-
+                Spacer(modifier = Modifier.weight(1f))
+                NormalTextComponent(value = stringResource(id = R.string.or))
+                ClickableLoginTextComponent(onClickAction = { navController.navigate(route = Screen.Register.route) })
             }
         }
 

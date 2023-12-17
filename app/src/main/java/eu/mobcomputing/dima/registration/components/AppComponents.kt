@@ -50,7 +50,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -259,8 +258,9 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
         onClick = { onClickAction.invoke() },
         enabled = true,
         shape = RoundedCornerShape(50.dp),
-        modifier = modifier.fillMaxWidth()
-            . heightIn(48.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
     ) {
@@ -288,17 +288,19 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
 
 
 @Composable
-fun MyRedHeadingComponent(value: String) {
+fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
     Text(
-        text = value, modifier = Modifier
+        text = value,
+        modifier = Modifier
             .fillMaxWidth()
-            .heightIn(), style = TextStyle(
-            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
-        ), color = colorResource(id = R.color.pink_900), textAlign = TextAlign.Left
+            .heightIn(),
+        style = TextStyle(
+            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal,
+        ),
+        color = colorResource(id = R.color.pink_900),
+        textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
     )
-
 }
-
 @Composable
 fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     val initialText = "Not have an account? "
@@ -459,13 +461,11 @@ fun WrongPasswordSubmitterComponent(numberOfTries: Int) {
 }
 
 @Composable
-fun SousChefImageComponent() {
+fun MyImageComponent(imageResource: Int, modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.sous_chef),
-        contentDescription = "Sous Chef Image",
-        modifier = Modifier
-            .width(280.dp)
-            .height(280.dp),
+        painter = painterResource(imageResource),
+        contentDescription = imageResource.toString(),
+        modifier = modifier,
         alignment = Alignment.Center
     )
 }
@@ -571,11 +571,15 @@ fun AllergenItem(
     }
 }
 
+
 @Composable
 fun DietOptionItem(
     dietOption: DietOption,
     onDietOptionClick: (DietOption) -> Unit
 ) {
+    val isSelected =  dietOption.selected.value
+    //var isSelected by remember { mutableStateOf(dietOption.selected.value) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -587,7 +591,10 @@ fun DietOptionItem(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .background(
-                    color = if (dietOption.selected.value) colorResource(id = R.color.pink_900) else colorResource(
+                    /*color = if (dietOption.selected.value) colorResource(id = R.color.pink_900) else colorResource(
+                        id = R.color.pink_200
+                    )*/
+                    color = if (isSelected) colorResource(id = R.color.pink_900) else colorResource(
                         id = R.color.pink_200
                     )
                 )
@@ -601,7 +608,8 @@ fun DietOptionItem(
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center
             )
-            if (dietOption.selected.value) {
+            //if (dietOption.selected.value) {
+             if (isSelected){
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
@@ -641,4 +649,3 @@ fun DietOptionList(
     )
 
 }
-

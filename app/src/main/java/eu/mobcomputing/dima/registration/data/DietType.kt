@@ -11,4 +11,8 @@ enum class DietType ( val diet:String) {
     PESCETARIAN("Pescetarian"),
     NORMAL("Normal")
 }
-data class DietOption(val type: DietType, val icon: Int, val selected: MutableState<Boolean> = mutableStateOf(false))
+data class DietOption(
+    val type: DietType,
+    val icon: Int,
+    val selected: MutableState<Boolean> = mutableStateOf(false)
+)

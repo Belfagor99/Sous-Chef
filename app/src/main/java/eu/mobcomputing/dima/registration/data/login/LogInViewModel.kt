@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.data.rules.Validator
-import eu.mobcomputing.dima.registration.screens.Screen
+import eu.mobcomputing.dima.registration.navigation.Screen
 
 class LogInViewModel : ViewModel() {
     private val TAG = LogInViewModel::class.simpleName
