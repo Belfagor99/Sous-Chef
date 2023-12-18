@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -16,10 +17,11 @@ import eu.mobcomputing.dima.registration.data.DietOption
 import eu.mobcomputing.dima.registration.data.DietType
 import eu.mobcomputing.dima.registration.data.User
 import eu.mobcomputing.dima.registration.navigation.Screen
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class SharedUserDataModel() : ViewModel() {
     private val TAG = SharedUserDataModel::class.simpleName
-
     val allergiesStep: MutableState<Int> = mutableIntStateOf(1)
     val dietTypeStep: MutableState<Int> = mutableIntStateOf(2)
     val steps: List<String> = listOf("1", "2", "3")
@@ -116,29 +118,36 @@ class SharedUserDataModel() : ViewModel() {
     }
 
 
-    fun finishRegistration(navController: NavController) {
+    private suspend fun updateUserInFirebase(){
         val userID = FirebaseAuth.getInstance().currentUser?.uid
-
         if (userID != null) {
             val db = Firebase.firestore
             val userDocumentRef: DocumentReference = db.collection("users").document(userID)
 
-            userDocumentRef.update(
-                "allergies",
-                user.value.allergies.map { it.name }, // Assuming Allergen has a "name" property
-                "dietType",
-                user.value.dietType.toString()
-            )
-                .addOnSuccessListener {
-                    Log.d(TAG, "User data updated successfully")
-                    navController.navigate(Screen.Home.route)
+            try {
+                userDocumentRef.update(
+                    "allergies", user.value.allergies.map { it.name },
+                    "dietType", user.value.dietType.toString()
+                ).await()
 
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Error updating user data", e)
-                }
+                Log.d(TAG, "User data updated successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error updating user data", e)
+            }
         } else {
             Log.d(TAG, "USER NOT LOGGED IN")
         }
+    }
+
+    private fun updateUserAsync(navController: NavController) {
+        viewModelScope.launch {
+            updateUserInFirebase()
+
+            // Navigate to the Home screen after updating data
+            navController.navigate(Screen.Home.route)
+        }
+    }
+    fun finishRegistration(navController: NavController) {
+        updateUserAsync(navController)
     }
 }

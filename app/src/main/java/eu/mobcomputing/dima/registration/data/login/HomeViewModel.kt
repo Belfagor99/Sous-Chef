@@ -1,11 +1,26 @@
 package eu.mobcomputing.dima.registration.data.login
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+
+
 class HomeViewModel: ViewModel() {
+    val userLoggedIn: MutableState<Boolean> = mutableStateOf(false)
+
+    init {
+        checkUserLoginStatus()
+    }
+
+    private fun checkUserLoginStatus() {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        userLoggedIn.value = firebaseAuth.currentUser != null
+    }
+
     fun logOut(navController: NavController) {
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
