@@ -51,15 +51,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import eu.mobcomputing.dima.registration.data.Allergen
-import eu.mobcomputing.dima.registration.data.DietOption
+import androidx.navigation.NavController
+import eu.mobcomputing.dima.registration.data.home.BottomNavigationItem
+import eu.mobcomputing.dima.registration.data.userInformation.Allergen
+import eu.mobcomputing.dima.registration.data.userInformation.DietOption
+import eu.mobcomputing.dima.registration.navigation.Screen
 
 
 @Composable
@@ -651,4 +658,61 @@ fun DietOptionList(
         }
     )
 
+}
+
+@Composable
+fun NavigationBarComponent(
+    navController: NavController,
+    items: List<BottomNavigationItem>,
+    selectedItemIndex: Int
+) {
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, bottomNavigationItem ->
+                    NavigationBarItem(
+                        selected = selectedItemIndex == index,
+                        onClick = { navController.navigate(Screen.Welcome.route) },
+                        label = {
+                            Text(bottomNavigationItem.title)
+                        },
+                        alwaysShowLabel = true,
+                        icon = {
+                            if (selectedItemIndex == index) {
+                                Image(
+                                    painter = painterResource(id = bottomNavigationItem.selectedIcon),
+                                    contentDescription = bottomNavigationItem.title,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(id = bottomNavigationItem.unselectedIcon),
+                                    contentDescription = bottomNavigationItem.title,
+                                    modifier = Modifier.size(24.dp)
+                                )
+
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    )
+    { it ->
+        YourContent(innerPadding = it)
+
+    }
+}
+
+@Composable
+fun YourContent(innerPadding: PaddingValues) {
+    // Your content goes here, you can apply innerPadding if needed
+    // For example, you might use it when placing content inside a Box
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+    ) {
+        // Your content components go here
+    }
 }

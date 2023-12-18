@@ -6,7 +6,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
-import eu.mobcomputing.dima.registration.data.User
+import eu.mobcomputing.dima.registration.data.userInformation.User
 
 class SuccessfulRegistrationViewModel : ViewModel() {
     private val TAG = SuccessfulRegistrationViewModel::class.simpleName

@@ -12,10 +12,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.data.Allergen
-import eu.mobcomputing.dima.registration.data.DietOption
-import eu.mobcomputing.dima.registration.data.DietType
-import eu.mobcomputing.dima.registration.data.User
+import eu.mobcomputing.dima.registration.data.userInformation.Allergen
+import eu.mobcomputing.dima.registration.data.userInformation.DietOption
+import eu.mobcomputing.dima.registration.data.userInformation.DietType
+import eu.mobcomputing.dima.registration.data.userInformation.User
 import eu.mobcomputing.dima.registration.navigation.Screen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await

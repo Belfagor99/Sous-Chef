@@ -6,8 +6,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import eu.mobcomputing.dima.registration.data.SharedUserDataModelViewFactory
-import eu.mobcomputing.dima.registration.data.login.HomeViewModel
+import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModelViewFactory
+import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.LogInScreen

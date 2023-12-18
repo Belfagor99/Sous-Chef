@@ -8,7 +8,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
-import eu.mobcomputing.dima.registration.data.User
+import eu.mobcomputing.dima.registration.data.userInformation.User
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.navigation.Screen
 

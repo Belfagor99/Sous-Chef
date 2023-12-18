@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import eu.mobcomputing.dima.registration.data.login.HomeViewModel
+import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 
