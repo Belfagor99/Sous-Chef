@@ -95,7 +95,7 @@ class SharedUserDataModel() : ViewModel() {
     }
 
     fun allergiesScreenNext(navController: NavController) {
-        navController.navigate(Screen.UserDietScreen.route)
+        navController.navigate(Screen.UserDiet.route)
     }
 
     fun dietOptionOnClick(dietOption: DietOption) {

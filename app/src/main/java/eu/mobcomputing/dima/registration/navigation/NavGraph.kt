@@ -80,22 +80,22 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
             UserAllergiesScreen(navController = navController, sharedViewModel)
         }
 
-        composable(route = Screen.UserDietScreen.route) {
+        composable(route = Screen.UserDiet.route) {
             UserDietScreen(navController = navController, sharedViewModel)
         }
 
-        composable(route = Screen.SignInSuccessfulScreen.route) {
+        composable(route = Screen.SignInSuccessful.route) {
             SignInSuccessfulScreen(navController = navController)
         }
 
-        composable(route = Screen.PantryScreen.route) {
+        composable(route = Screen.Pantry.route) {
             PantryScreen(navController = navController)
         }
-        composable(route = Screen.ProfileScreen.route) {
+        composable(route = Screen.Profile.route) {
             ProfileScreen(navController = navController)
         }
 
-        composable(route = Screen.SearchScreen.route) {
+        composable(route = Screen.Search.route) {
             SearchScreen(navController = navController)
         }
 

@@ -718,19 +718,19 @@ fun getBottomNavigationItems(): List<BottomNavigationItem> {
             title = "Pantry",
             selectedIcon = R.drawable.fridge_icon_selected,
             unselectedIcon = R.drawable.fridge_icon_not_selected,
-            screen = Screen.PantryScreen
+            screen = Screen.Pantry
         ),
         BottomNavigationItem(
             title = "Profile",
             selectedIcon = R.drawable.profile_icon_selected,
             unselectedIcon = R.drawable.profile_icon_not_selected,
-            screen = Screen.ProfileScreen
+            screen = Screen.Profile
         ),
         BottomNavigationItem(
             title = "Search",
             selectedIcon = R.drawable.search_selected,
             unselectedIcon = R.drawable.search_not_selected,
-            screen = Screen.SearchScreen
+            screen = Screen.Search
         )
     )
 }
