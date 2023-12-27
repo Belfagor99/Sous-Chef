@@ -11,6 +11,9 @@ import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
+import eu.mobcomputing.dima.registration.screens.PantryScreen
+import eu.mobcomputing.dima.registration.screens.ProfileScreen
+import eu.mobcomputing.dima.registration.screens.SearchScreen
 import eu.mobcomputing.dima.registration.screens.SignInSuccessfulScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
 import eu.mobcomputing.dima.registration.screens.UserAllergiesScreen
@@ -83,6 +86,17 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
 
         composable(route = Screen.SignInSuccessfulScreen.route) {
             SignInSuccessfulScreen(navController = navController)
+        }
+
+        composable(route = Screen.PantryScreen.route) {
+            PantryScreen(navController = navController)
+        }
+        composable(route = Screen.ProfileScreen.route) {
+            ProfileScreen(navController = navController)
+        }
+
+        composable(route = Screen.SearchScreen.route) {
+            SearchScreen(navController = navController)
         }
 
     }

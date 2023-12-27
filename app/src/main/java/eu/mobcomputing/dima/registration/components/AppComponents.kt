@@ -663,7 +663,7 @@ fun DietOptionList(
 @Composable
 fun NavigationBarComponent(
     navController: NavController,
-    items: List<BottomNavigationItem>,
+    items: List<BottomNavigationItem> = getBottomNavigationItems(),
     selectedItemIndex: Int
 ) {
     Scaffold(
@@ -672,7 +672,7 @@ fun NavigationBarComponent(
                 items.forEachIndexed { index, bottomNavigationItem ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
-                        onClick = { navController.navigate(Screen.Welcome.route) },
+                        onClick = { navController.navigate(bottomNavigationItem.screen.route) },
                         label = {
                             Text(bottomNavigationItem.title)
                         },
@@ -702,6 +702,37 @@ fun NavigationBarComponent(
         YourContent(innerPadding = it)
 
     }
+}
+
+@Composable
+fun getBottomNavigationItems(): List<BottomNavigationItem> {
+    return listOf(
+        BottomNavigationItem(
+            title = "Home",
+            selectedIcon = R.drawable.home_icon_selected,
+            unselectedIcon = R.drawable.home_icon_not_selected,
+            selected = true,
+            screen = Screen.Home
+        ),
+        BottomNavigationItem(
+            title = "Pantry",
+            selectedIcon = R.drawable.fridge_icon_selected,
+            unselectedIcon = R.drawable.fridge_icon_not_selected,
+            screen = Screen.PantryScreen
+        ),
+        BottomNavigationItem(
+            title = "Profile",
+            selectedIcon = R.drawable.profile_icon_selected,
+            unselectedIcon = R.drawable.profile_icon_not_selected,
+            screen = Screen.ProfileScreen
+        ),
+        BottomNavigationItem(
+            title = "Search",
+            selectedIcon = R.drawable.search_selected,
+            unselectedIcon = R.drawable.search_not_selected,
+            screen = Screen.SearchScreen
+        )
+    )
 }
 
 @Composable
