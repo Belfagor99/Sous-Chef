@@ -110,7 +110,7 @@ class RegistrationViewModel : ViewModel() {
             .addOnSuccessListener {
                 Log.d(TAG, "User document created successfully")
                 navController.navigate(
-                    Screen.SignInSuccessfulScreen.route,
+                    Screen.SignInSuccessful.route,
                     builder = {
                         popUpTo(navController.graph.id) {
                             inclusive = true
