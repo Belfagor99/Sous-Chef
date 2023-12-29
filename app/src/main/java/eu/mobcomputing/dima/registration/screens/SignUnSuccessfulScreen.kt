@@ -29,8 +29,13 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.data.registration.SuccessfulRegistrationViewModel
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+/**
+ * Composable function representing the SignUp screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ */
 @Composable
-fun SignInSuccessfulScreen(
+fun SignUnSuccessfulScreen(
     navController: NavController,
     successfulRegistrationViewModel: SuccessfulRegistrationViewModel = viewModel()
 ) {
@@ -55,7 +60,7 @@ fun SignInSuccessfulScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MyRedHeadingComponent(value = successfulRegistrationViewModel.userName)
+                MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
                 MyRedHeadingComponent(
                     value = stringResource(id = R.string.registration_successful),
                     shouldBeCentered = true
@@ -89,8 +94,11 @@ fun SignInSuccessfulScreen(
     }
 }
 
+/**
+ * Preview annotation for previewing the SignUpSuccessfulScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun PreviewSignInSuccessfulScreen() {
-    SignInSuccessfulScreen(navController = rememberNavController())
+    SignUnSuccessfulScreen(navController = rememberNavController())
 }

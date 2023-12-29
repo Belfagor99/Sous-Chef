@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.data.userInformation
 
+// Data class representing a user.
 data class User(
     var firstName: String = "",
     var lastName: String = "",

@@ -29,6 +29,12 @@ import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 
+/**
+ * Composable function representing the UserDiet screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ * @param sharedUserDataModel ViewModel managing the logic for the UserDiet screen.
+ */
 @Composable
 fun UserDietScreen(
     navController: NavController,
@@ -108,6 +114,9 @@ fun UserDietScreen(
 
 }
 
+/**
+ * Preview annotation for previewing the UserDietScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun PreviewUserDietScreen() {

@@ -14,7 +14,7 @@ import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.PantryScreen
 import eu.mobcomputing.dima.registration.screens.ProfileScreen
 import eu.mobcomputing.dima.registration.screens.SearchScreen
-import eu.mobcomputing.dima.registration.screens.SignInSuccessfulScreen
+import eu.mobcomputing.dima.registration.screens.SignUnSuccessfulScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
 import eu.mobcomputing.dima.registration.screens.UserAllergiesScreen
 import eu.mobcomputing.dima.registration.screens.UserDietScreen
@@ -23,15 +23,16 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel) {
-    val sharedViewModelFactory = SharedUserDataModelViewFactory()
 
-    // Create a shared instance of SharedUserDataModel
+    // Create a shared instance of SharedUserDataModel using the SharedUserDataModelViewFactory
+    val sharedViewModelFactory = SharedUserDataModelViewFactory()
     val sharedViewModel: SharedUserDataModel = viewModel(factory = sharedViewModelFactory)
 
     // Use LaunchedEffect to navigate when userLoggedIn changes
     LaunchedEffect(homeViewModel.userLoggedIn) {
         delay(100)
         if (homeViewModel.userLoggedIn.value) {
+            // If user is logged in, navigate to the Home screen
             navController.navigate(Screen.Home.route) {
                 // Clear back stack to prevent going back to the WelcomeScreen
                 popUpTo(navController.graph.startDestinationId) {
@@ -41,6 +42,7 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
                 restoreState = true
             }
         } else {
+            // If user is not logged in, navigate to the Welcome screen
             navController.navigate(Screen.Welcome.route) {
                 launchSingleTop = true
                 restoreState = true
@@ -48,53 +50,68 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
         }
     }
 
+    // NavHost composable defines the navigation structure
     NavHost(
         navController = navController,
         startDestination = Screen.Welcome.route
     )
     {
+        // composable functions for different screens
+
+        // Welcome Screen
         composable(
             route = Screen.Welcome.route
         ) {
             WelcomeScreen(navController)
         }
 
+        // Log in Screen
         composable(
             route = Screen.LogIn.route
         ) {
             LogInScreen(navController)
         }
 
+        // Sign up Screen
         composable(
             route = Screen.Register.route
         ) {
             SignUpScreen(navController)
         }
 
+        // Home Screen
         composable(
             route = Screen.Home.route
         ) {
             HomeScreen(navController)
         }
+
+        // User Allergies Screen
         composable(route = Screen.UserAllergies.route) {
             UserAllergiesScreen(navController = navController, sharedViewModel)
         }
 
+        // User Diet Screen
         composable(route = Screen.UserDiet.route) {
             UserDietScreen(navController = navController, sharedViewModel)
         }
 
-        composable(route = Screen.SignInSuccessful.route) {
-            SignInSuccessfulScreen(navController = navController)
+        // Successful signing in Screen
+        composable(route = Screen.SignUnSuccessful.route) {
+            SignUnSuccessfulScreen(navController = navController)
         }
 
+        // Pantry Screen
         composable(route = Screen.Pantry.route) {
             PantryScreen(navController = navController)
         }
+
+        // Profile Screen
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController = navController)
         }
 
+        // Search Screen
         composable(route = Screen.Search.route) {
             SearchScreen(navController = navController)
         }

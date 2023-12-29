@@ -1,39 +1,63 @@
 package eu.mobcomputing.dima.registration.data.registration
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Firebase
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.FirebaseFirestore
 import eu.mobcomputing.dima.registration.data.userInformation.User
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+
 
 class SuccessfulRegistrationViewModel : ViewModel() {
     private val TAG = SuccessfulRegistrationViewModel::class.simpleName
-    var userName: String = ""
+
+    // MutableLiveData to hold the user's name
+    private val _userName = MutableLiveData<String>()
+
+    // Expose an immutable LiveData to observe changes to userName
+    val userName: MutableLiveData<String> get() = _userName
+
+    // Initialization block, called when the ViewModel is created
     init {
         welcomeUser()
     }
 
+    /**
+     *  Fetching user's name from Firestore based on the provided userID.
+     *
+     * @param userID userID that serves as document identifier.
+     *
+     */
     private fun fetchUserName(userID: String) {
-        val db = Firebase.firestore
+        val db = FirebaseFirestore.getInstance()
         val userDocumentRef: DocumentReference = db.collection("users").document(userID)
 
-        userDocumentRef.get()
-            .addOnSuccessListener { documentSnapshot ->
+        // Use viewModelScope for coroutine management
+        viewModelScope.launch {
+            try {
+                val documentSnapshot = userDocumentRef.get().await()
+
                 if (documentSnapshot.exists()) {
                     val user = documentSnapshot.toObject(User::class.java)
                     user?.let {
                         // Update the userName property
-                        userName = "${it.firstName} ${it.lastName}"
+                        _userName.postValue("${it.firstName} ${it.lastName}")
                     }
                 }
-            }
-            .addOnFailureListener { e ->
+            } catch (e: Exception) {
                 Log.e(TAG, "Error fetching user document", e)
             }
+        }
     }
 
+    /**
+     *  Welcomes user when the ViewModel is initialized.
+     *
+     */
     private fun welcomeUser() {
         FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
             fetchUserName(userID)
@@ -41,5 +65,4 @@ class SuccessfulRegistrationViewModel : ViewModel() {
             Log.d(TAG, "Home screen USER is not logged in")
         }
     }
-
 }

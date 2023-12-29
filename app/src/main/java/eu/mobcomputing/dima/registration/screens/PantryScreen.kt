@@ -17,6 +17,11 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 
+/**
+ * Composable function representing the Pantry screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ */
 @Composable
 fun PantryScreen(navController: NavController) {
 
@@ -42,8 +47,11 @@ fun PantryScreen(navController: NavController) {
     }
 }
 
-@Composable
+/**
+ * Preview annotation for previewing the PantryScreen in Android Studio.
+ */
 @Preview
+@Composable
 fun PreviewPantryScreen() {
     PantryScreen(navController = rememberNavController())
 }

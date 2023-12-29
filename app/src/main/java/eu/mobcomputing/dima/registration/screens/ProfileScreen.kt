@@ -17,6 +17,11 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 
+/**
+ * Composable function representing the Profile screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ */
 @Composable
 fun ProfileScreen(navController: NavController,){
     Surface(
@@ -42,8 +47,11 @@ fun ProfileScreen(navController: NavController,){
 }
 
 
-@Composable
+/**
+ * Preview annotation for previewing the ProfileScreen in Android Studio.
+ */
 @Preview
+@Composable
 fun PreviewProfileScreen(){
     ProfileScreen(navController = rememberNavController())
 }

@@ -24,6 +24,11 @@ import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+/**
+ * Composable function representing the Welcome screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ */
 @Composable
 fun WelcomeScreen(navController: NavController) {
     Box(
@@ -68,6 +73,9 @@ fun WelcomeScreen(navController: NavController) {
         }
     }
 }
+/**
+ * Preview annotation for previewing the WelcomeScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun PreviewWelcomeScreen() {

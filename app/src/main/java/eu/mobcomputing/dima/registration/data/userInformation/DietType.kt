@@ -3,14 +3,17 @@ package eu.mobcomputing.dima.registration.data.userInformation
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
-enum class DietType ( val diet:String) {
-    VEGAN ("Vegan"),
-    VEGETARIAN ("Vegetarian"),
+// Enum class representing different diet types.
+enum class DietType(val diet: String) {
+    VEGAN("Vegan"),
+    VEGETARIAN("Vegetarian"),
     GLUTEN_FREE("Gluten free"),
-    LACTOSE_FREE ("Lactose free"),
+    LACTOSE_VEGETARIAN("Lacto-\nVegetarian"),
     PESCETARIAN("Pescetarian"),
-    NORMAL("Normal")
+    NORMAL("Normal"),
 }
+
+// Data class representing a diet option.
 data class DietOption(
     val type: DietType,
     val icon: Int,

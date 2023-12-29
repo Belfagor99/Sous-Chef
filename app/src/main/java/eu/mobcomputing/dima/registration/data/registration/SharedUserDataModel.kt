@@ -20,52 +20,63 @@ import eu.mobcomputing.dima.registration.navigation.Screen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+/**
+ * ViewModel responsible for managing shared user data during the registration process.
+ */
 class SharedUserDataModel() : ViewModel() {
+
     private val TAG = SharedUserDataModel::class.simpleName
+
+    // Step indices for the allergies and diet type screens
     val allergiesStep: MutableState<Int> = mutableIntStateOf(1)
     val dietTypeStep: MutableState<Int> = mutableIntStateOf(2)
+
+    // List of steps for navigation
     val steps: List<String> = listOf("1", "2", "3")
 
+    // List of allergens available for selection
     val allergens = listOf(
-        Allergen("Eggs"),
-        Allergen("Fish"),
-        Allergen("Almond"),
+        Allergen("Dairy"),
+        Allergen("Egg"),
         Allergen("Gluten"),
-        Allergen("Chocolate"),
-        Allergen("Avocado"),
-        Allergen("Mustard"),
-        Allergen("Peach"),
+        Allergen("Grain"),
+        Allergen("Peanut"),
+        Allergen("Seafood"),
+        Allergen("Sesame"),
+        Allergen("Shellfish"),
         Allergen("Peanuts"),
         Allergen("Soy"),
-        Allergen("Milk"),
-        Allergen("Soybeans"),
-        Allergen("Walnuts"),
-        Allergen("Berries"),
-        Allergen("Dairy"),
-
+        Allergen("Sulfite"),
+        Allergen("Tree Nut"),
+        Allergen("Wheat"),
         )
 
+    // List of diet options available for selection
     val dietOptions = listOf(
         DietOption(DietType.VEGAN, R.drawable.vegan_removebg_preview),
         DietOption(DietType.VEGETARIAN, R.drawable.vegetarian_removebg_preview),
         DietOption(DietType.GLUTEN_FREE, R.drawable.glutenfree_removebg_preview),
-        DietOption(DietType.LACTOSE_FREE, R.drawable.lactofree_removebg_preview),
+        DietOption(DietType.LACTOSE_VEGETARIAN, R.drawable.lactofree_removebg_preview),
         DietOption(DietType.NORMAL, R.drawable.normal_removebg_preview, mutableStateOf(true)),
         DietOption(DietType.PESCETARIAN, R.drawable.pescetarian_preview),
     )
 
+    // Currently selected diet option
     private var selectedDietOption: MutableState<DietOption> = mutableStateOf(this.dietOptions[4])
 
+    // User information state
     private var user = mutableStateOf(User())
 
+    /**
+     * Sets the selected diet type for the user.
+     */
     private fun setDietType(dietType: DietType) {
         user.value = user.value.copy(dietType = dietType)
     }
 
-    fun backStepOnClick(navController: NavController) {
-        navController.popBackStack()
-    }
-
+    /**
+     * Adds an allergen to the user's list of allergies.
+     */
     private fun addAllergenToUser(
         allergen: Allergen
     ) {
@@ -73,6 +84,9 @@ class SharedUserDataModel() : ViewModel() {
 
     }
 
+    /**
+     * Removes an allergen from the user's list of allergies.
+     */
     private fun removeAllergenFromUser(
         allergen: Allergen
     ) {
@@ -80,6 +94,9 @@ class SharedUserDataModel() : ViewModel() {
 
     }
 
+    /**
+     * Handles the onClick event for allergens.
+     */
     fun allergenOnClick(
         allergen: Allergen
     ) {
@@ -94,10 +111,23 @@ class SharedUserDataModel() : ViewModel() {
         Log.d(TAG, user.toString())
     }
 
+    /**
+     * Navigates to the next screen in the registration process (User Diet).
+     */
     fun allergiesScreenNext(navController: NavController) {
         navController.navigate(Screen.UserDiet.route)
     }
 
+    /**
+     * Navigates back to the previous screen in the registration process.
+     */
+    fun backStepOnClick(navController: NavController) {
+        navController.popBackStack()
+    }
+
+    /**
+     * Handles the onClick event for diet options.
+     */
     fun dietOptionOnClick(dietOption: DietOption) {
         selectedDietOption.value.selected.value = false
 
@@ -117,8 +147,10 @@ class SharedUserDataModel() : ViewModel() {
 
     }
 
-
-    private suspend fun updateUserInFirebase(){
+    /**
+     * Asynchronously updates the user data in the Firebase Firestore database.
+     */
+    private suspend fun updateUserInFirebase() {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
         if (userID != null) {
             val db = Firebase.firestore
@@ -139,6 +171,9 @@ class SharedUserDataModel() : ViewModel() {
         }
     }
 
+    /**
+     * Initiates the asynchronous user data update and navigates to the Home screen.
+     */
     private fun updateUserAsync(navController: NavController) {
         viewModelScope.launch {
             updateUserInFirebase()
@@ -147,6 +182,10 @@ class SharedUserDataModel() : ViewModel() {
             navController.navigate(Screen.Home.route)
         }
     }
+
+    /**
+     * Finishes the registration process by updating user data and navigating to the Home screen.
+     */
     fun finishRegistration(navController: NavController) {
         updateUserAsync(navController)
     }

@@ -21,6 +21,12 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 
+/**
+ * Composable function representing the Home screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ * @param homeViewModel ViewModel managing the logic for the Home screen.
+ */
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -54,6 +60,9 @@ fun HomeScreen(
 }
 
 
+/**
+ * Preview annotation for previewing the HomeScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun HomeScreenPreview() {

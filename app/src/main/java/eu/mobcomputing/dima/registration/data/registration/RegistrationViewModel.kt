@@ -8,18 +8,31 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
-import eu.mobcomputing.dima.registration.data.userInformation.User
 import eu.mobcomputing.dima.registration.data.rules.Validator
+import eu.mobcomputing.dima.registration.data.userInformation.User
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+/**
+ * ViewModel responsible for handling registration-related logic and managing the UI state.
+ */
 class RegistrationViewModel : ViewModel() {
     private val TAG = RegistrationViewModel::class.simpleName
 
+    // Represents the current state of the registration user interface
     var registrationUIState = mutableStateOf(RegistrationUIState())
+
+    // Indicates whether all validation checks have passed
     var allValidationPassed = mutableStateOf(false)
+
+    // Indicates whether the registration process is in progress
     var registrationInProgress = mutableStateOf(false)
 
-
+    /**
+     * Handles UI events triggered by user interactions.
+     *
+     * @param event The UI event to be processed.
+     * @param navController The NavController for navigation purposes.
+     */
     fun onEvent(event: RegistrationUIEvent, navController: NavController) {
 
         when (event) {
@@ -55,7 +68,9 @@ class RegistrationViewModel : ViewModel() {
         validateDataWithRules()
     }
 
-
+    /**
+     * Validates user input data based on predefined rules and updates the UI state accordingly.
+     */
     private fun validateDataWithRules() {
         val firstNameValidation = Validator.validateFirstName(
             registrationUIState.value.firstName
@@ -84,6 +99,11 @@ class RegistrationViewModel : ViewModel() {
 
     }
 
+    /**
+     * Initiates the registration process by creating a Firebase user account.
+     *
+     * @param navController The NavController for navigation purposes.
+     */
     private fun register(navController: NavController) {
         createFirebaseUser(
             email = registrationUIState.value.email,
@@ -92,6 +112,15 @@ class RegistrationViewModel : ViewModel() {
         )
     }
 
+    /**
+     * Creates a user document in Firestore database after successful Firebase user creation.
+     *
+     * @param email User's email address.
+     * @param firstName User's first name.
+     * @param lastName User's last name.
+     * @param userID Unique identifier for the user.
+     * @param navController The NavController for navigation purposes.
+     */
     private fun createUserInDatabase(
         email: String,
         firstName: String,
@@ -110,7 +139,7 @@ class RegistrationViewModel : ViewModel() {
             .addOnSuccessListener {
                 Log.d(TAG, "User document created successfully")
                 navController.navigate(
-                    Screen.SignInSuccessful.route,
+                    Screen.SignUnSuccessful.route,
                     builder = {
                         popUpTo(navController.graph.id) {
                             inclusive = true
@@ -127,6 +156,14 @@ class RegistrationViewModel : ViewModel() {
 
     }
 
+
+    /**
+     * Creates a Firebase user account using email and password.
+     *
+     * @param email User's email address.
+     * @param password User's chosen password.
+     * @param navController The NavController for navigation purposes.
+     */
     private fun createFirebaseUser(email: String, password: String, navController: NavController) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
@@ -157,6 +194,11 @@ class RegistrationViewModel : ViewModel() {
 
     }
 
+    /**
+     * Navigates to the login screen using the provided NavController.
+     *
+     * @param navController The NavController for navigation purposes.
+     */
     fun redirectToLogInScreen(navController: NavController) {
         navController.navigate(route = Screen.LogIn.route)
     }

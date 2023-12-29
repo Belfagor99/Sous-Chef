@@ -60,6 +60,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
@@ -68,7 +69,18 @@ import eu.mobcomputing.dima.registration.data.userInformation.Allergen
 import eu.mobcomputing.dima.registration.data.userInformation.DietOption
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+/** This file contains all the custom made composable components used in the app. */
 
+
+/**
+ * NormalTextComponent: A composable function for rendering normal text in the app.
+ *
+ * This composable creates a Text component with the specified [value] and applies
+ * common styling properties such as font size, weight, style, color, and text alignment.
+ *
+ * @param value The text content to be displayed.
+ *
+ */
 @Composable
 fun NormalTextComponent(value: String) {
     Text(
@@ -80,6 +92,15 @@ fun NormalTextComponent(value: String) {
     )
 }
 
+/**
+ * HeaderTextComponent: A composable function for rendering header text in the app.
+ *
+ * This composable creates a Header Text component with the specified [value] and applies
+ * common styling properties such as font size, weight, style, color, and text alignment.
+ *
+ * @param value The text content to be displayed.
+ *
+ */
 @Composable
 fun HeaderTextComponent(value: String) {
     Text(
@@ -91,29 +112,58 @@ fun HeaderTextComponent(value: String) {
     )
 }
 
+/**
+ * MyRedHeadingComponent: A composable function for creating a red-colored heading text.
+ *
+ * This composable creates a Text component with specific customization options such as
+ * text value, text style, color, and alignment. It is designed for displaying headings with
+ * a red color. The appearance of the heading is determined by the provided [value] and
+ * [shouldBeCentered] parameters.
+ *
+ * @param value The text content of the heading.
+ * @param shouldBeCentered A boolean flag indicating whether the heading should be centered.
+ *
+ */
+@Composable
+fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
+    Text(
+        text = value,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(),
+        style = TextStyle(
+            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal,
+        ),
+        color = colorResource(id = R.color.pink_900),
+        textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
+    )
+}
+
+/**
+ * MyTextFieldComponent: A composable function for creating a customized OutlinedTextField.
+ *
+ * This composable creates an OutlinedTextField with specific customization options such as
+ * label, icon, colors, and error status. It also allows tracking text changes through the
+ * [onTextSelected] callback.
+ *
+ * @param labelValue The label text for the text field.
+ * @param iconPainterResource The icon painter resource to be displayed as a leading icon.
+ * @param onTextSelected A callback function triggered when the text in the field changes.
+ * @param errorStatus A boolean flag indicating whether the text field has an error.
+ *
+ */
 @Composable
 fun MyTextFieldComponent(
     labelValue: String,
     iconPainterResource: Painter,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false,
-    shouldPreFill: Boolean,
-    preFilledText: String = ""
 ) {
 
-    var textValue = remember {
+    val textValue: MutableState<String> = remember {
         mutableStateOf("")
     }
-    if (shouldPreFill) {
-        textValue = remember {
-            mutableStateOf(preFilledText)
-        }
 
-        // Handle changes to prefilledText
-        if (textValue.value != preFilledText) {
-            textValue.value = preFilledText
-        }
-    }
 
     OutlinedTextField(
         modifier = Modifier
@@ -143,7 +193,21 @@ fun MyTextFieldComponent(
     )
 }
 
-
+/**
+ * MyPasswordFieldComponent: A composable function for creating a customized password input field.
+ *
+ * This composable creates an OutlinedTextField with specific customization options for password input,
+ * such as label, icon, visibility toggle, and error status. It also allows tracking text changes through
+ * the [onTextSelected] callback and supports read-only mode.
+ *
+ * @param labelValue The label text for the password field.
+ * @param iconPainterResource The icon painter resource to be displayed as a leading icon.
+ * @param onTextSelected A callback function triggered when the text in the field changes.
+ * @param errorStatus A boolean flag indicating whether the password field has an error.
+ * @param readOnly A boolean flag indicating whether the field is in read-only mode.
+ * @param labelValueFiled The label text to be displayed in read-only mode.
+ *
+ */
 @Composable
 fun MyPasswordFieldComponent(
     labelValue: String,
@@ -224,6 +288,20 @@ fun MyPasswordFieldComponent(
         )
 }
 
+/**
+ * ButtonComponent: A composable function for creating a custom-styled button.
+ *
+ * This composable creates a Button with specific customization options such as label, click action,
+ * and enabled status. It uses a Box as a container to allow for custom background color based on the
+ * enabled status. The button's appearance is determined by the provided [value], [onClickAction], and
+ * [isEnabled] parameters.
+ *
+ * @param value The text to be displayed on the button.
+ * @param onClickAction A lambda function representing the action to be performed on button click.
+ * @param isEnabled A boolean flag indicating whether the button is enabled or disabled.
+ *
+ */
+
 @Composable
 fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false) {
     Button(
@@ -261,6 +339,19 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean
     }
 }
 
+/**
+ * SmallButtonComponent: A composable function for creating a smaller-sized custom-styled button.
+ *
+ * This composable creates a Button with specific customization options such as label, click action,
+ * and a custom modifier for additional styling. It uses a Box as a container to allow for a custom
+ * background color with rounded corners. The button's appearance is determined by the provided [value],
+ * [onClickAction], and [modifier] parameters.
+ *
+ * @param value The text to be displayed on the button.
+ * @param onClickAction A lambda function representing the action to be performed on button click.
+ * @param modifier Additional styling options for the button.
+ *
+ */
 @Composable
 fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Modifier) {
     Button(
@@ -295,22 +386,16 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
     }
 }
 
-
-@Composable
-fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
-    Text(
-        text = value,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(),
-        style = TextStyle(
-            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal,
-        ),
-        color = colorResource(id = R.color.pink_900),
-        textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
-    )
-}
-
+/**
+ * ClickableLoginTextComponent: A composable function for creating clickable text with a login-related action.
+ *
+ * This composable creates a ClickableText component with specific customization options such as
+ * text style, color, and an annotation for the login-related action. It is designed for displaying
+ * text that allows users to perform a specific action (navigating to the sign-up screen) when clicked.
+ *
+ * @param onClickAction A lambda function representing the action to be performed on text click.
+ *
+ */
 @Composable
 fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     val initialText = "Not have an account? "
@@ -350,6 +435,16 @@ fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     )
 }
 
+/**
+ * ClickableRegisterTextComponent: A composable function for creating clickable text with a register-related action.
+ *
+ * This composable creates a ClickableText component with specific customization options such as
+ * text style, color, and an annotation for the login-related action. It is designed for displaying
+ * text that allows users to perform a specific action (e.g., navigating to the log-in screen) when clicked.
+ *
+ * @param onClickAction A lambda function representing the action to be performed on text click.
+ *
+ */
 @Composable
 fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
     val initialText = "Already have an account? "
@@ -387,6 +482,16 @@ fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
     )
 }
 
+/**
+ * ClickableForgottenPasswordTextComponent: A composable function for creating clickable text with a forgotten password action.
+ *
+ * This composable creates a ClickableText component with specific customization options such as
+ * text style, color, and an annotation for the login-related action. It is designed for displaying
+ * text that allows users to perform a specific action (e.g., trigger sending reset password e-mail) when clicked.
+ *
+ * @param onClickAction A lambda function representing the action to be performed on text click.
+ *
+ */
 @Composable
 fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
     val loginText = stringResource(id = R.string.forgot_passwd)
@@ -425,7 +530,17 @@ fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
     )
 }
 
-
+/**
+ * WrongPasswordSubmitterComponent: A composable function for displaying information about wrong password submission attempts.
+ *
+ * This composable creates a Column containing two Text components, one for displaying a message about
+ * entering a wrong password and another for indicating the remaining number of password entry attempts.
+ * The number displayed informing about remaining number of password entry attempts of the text is
+ * determined by the provided [numberOfTries] parameter.
+ *
+ * @param numberOfTries The number of remaining password entry attempts.
+ *
+ */
 @Composable
 fun WrongPasswordSubmitterComponent(numberOfTries: Int) {
     val wrongPasswordText = stringResource(id = R.string.wrong_password)
@@ -470,6 +585,16 @@ fun WrongPasswordSubmitterComponent(numberOfTries: Int) {
 
 }
 
+/**
+ * MyImageComponent: A composable function for displaying an image.
+ *
+ * This composable creates an Image component with specific customization options such as
+ * the image resource, modifier, and alignment.
+ *
+ * @param imageResource The resource ID of the image to be displayed.
+ * @param modifier Additional styling options for the image.
+ *
+ */
 @Composable
 fun MyImageComponent(imageResource: Int, modifier: Modifier = Modifier) {
     Image(
@@ -480,6 +605,17 @@ fun MyImageComponent(imageResource: Int, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * StepperBar: A composable function for displaying a horizontal stepper bar.
+ *
+ * This composable creates a Row containing individual StepperItem components for each step in the provided
+ * list. It allows visualizing the progress of completing steps, with the current step highlighted and completed
+ * steps differentiated.
+ *
+ * @param steps A list of strings representing the names of each step in the process.
+ * @param currentStep The index of the current step in the process.
+ *
+ */
 @Composable
 fun StepperBar(steps: List<String>, currentStep: Int) {
     Row(
@@ -501,6 +637,18 @@ fun StepperBar(steps: List<String>, currentStep: Int) {
     }
 }
 
+/**
+ * StepperItem: A composable function for displaying an individual step within a stepper bar.
+ *
+ * This composable creates a Row containing an Icon (representing completion status) and Text (displaying the step
+ * text). The appearance of the step is determined by the provided parameters, indicating whether the step is
+ * completed, current, or pending.
+ *
+ * @param text The text to be displayed for the step.
+ * @param isCompleted A boolean flag indicating whether the step is completed.
+ * @param isCurrent A boolean flag indicating whether the step is the current step.
+ *
+ */
 @Composable
 fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
     val color = when {
@@ -525,7 +673,17 @@ fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
     }
 }
 
-
+/**
+ * AllergenGrid: A composable function for displaying a grid of allergen items.
+ *
+ * This composable uses LazyVerticalGrid to create a grid layout with adaptive columns based on the
+ * provided allergens. Each allergen is represented by an AllergenItem, and clicking on an item triggers
+ * the specified [onAllergenClick] action.
+ *
+ * @param allergens A list of allergens to be displayed in the grid.
+ * @param onAllergenClick A lambda function to be executed when an allergen item is clicked.
+ *
+ */
 @Composable
 fun AllergenGrid(
     allergens: List<Allergen>,
@@ -544,7 +702,17 @@ fun AllergenGrid(
     )
 }
 
-
+/**
+ * AllergenItem: A composable function for displaying an individual allergen item within the grid.
+ *
+ * This composable creates a Button containing a Box with background color based on the allergen's selected
+ * state. The allergen name is displayed in the center, and clicking on the item triggers the specified
+ * [onAllergenClick] action.
+ *
+ * @param allergen An allergen object representing the item to be displayed.
+ * @param onAllergenClick A lambda function to be executed when the allergen item is clicked.
+ *
+ */
 @Composable
 fun AllergenItem(
     allergen: Allergen,
@@ -581,14 +749,23 @@ fun AllergenItem(
     }
 }
 
-
+/**
+ * DietOptionItem: A composable function for displaying an individual diet option item.
+ *
+ * This composable creates a Column containing a Box with a background color based on the diet option's selected state.
+ * The diet option icon is displayed in the center, and an optional check icon is shown if the option is selected.
+ * Clicking on the item triggers the specified [onDietOptionClick] action.
+ *
+ * @param dietOption A diet option object representing the item to be displayed.
+ * @param onDietOptionClick A lambda function to be executed when the diet option item is clicked.
+ *
+ */
 @Composable
 fun DietOptionItem(
     dietOption: DietOption,
     onDietOptionClick: (DietOption) -> Unit
 ) {
     val isSelected = dietOption.selected.value
-    //var isSelected by remember { mutableStateOf(dietOption.selected.value) }
 
     Column(
         modifier = Modifier
@@ -601,9 +778,6 @@ fun DietOptionItem(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .background(
-                    /*color = if (dietOption.selected.value) colorResource(id = R.color.pink_900) else colorResource(
-                        id = R.color.pink_200
-                    )*/
                     color = if (isSelected) colorResource(id = R.color.pink_900) else colorResource(
                         id = R.color.pink_200
                     )
@@ -618,7 +792,6 @@ fun DietOptionItem(
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center
             )
-            //if (dietOption.selected.value) {
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
@@ -640,6 +813,17 @@ fun DietOptionItem(
     }
 }
 
+/**
+ * DietOptionList: A composable function for displaying a list of diet option items.
+ *
+ * This composable uses LazyVerticalGrid to create a grid layout with adaptive columns based on the provided
+ * diet options. Each diet option is represented by a DietOptionItem, and clicking on an item triggers the
+ * specified [onDietClick] action.
+ *
+ * @param dietOptions A list of diet options to be displayed in the list.
+ * @param onDietClick A lambda function to be executed when a diet option item is clicked.
+ *
+ */
 @Composable
 fun DietOptionList(
     dietOptions: List<DietOption>,
@@ -660,6 +844,18 @@ fun DietOptionList(
 
 }
 
+/**
+ * NavigationBarComponent: A composable function for creating a bottom navigation bar.
+ *
+ * This composable uses the Scaffold and NavigationBar components to create a bottom navigation bar
+ * with items specified in the [items] parameter. Each item is represented by a NavigationBarItem, and
+ * clicking on an item triggers navigation to the associated screen using the provided [navController].
+ *
+ * @param navController The NavController used for navigating between screens.
+ * @param items A list of BottomNavigationItem objects representing navigation items.
+ * @param selectedItemIndex The index of the currently selected navigation item.
+ *
+ */
 @Composable
 fun NavigationBarComponent(
     navController: NavController,
@@ -699,13 +895,18 @@ fun NavigationBarComponent(
         }
     )
     { it ->
-        YourContent(innerPadding = it)
+        ScreenContent(innerPadding = it)
 
     }
 }
 
+/**
+ * getBottomNavigationItems: A utility function to provide a list of default BottomNavigationItem objects.
+ *
+ * @return A list of BottomNavigationItem objects.
+ */
 @Composable
-fun getBottomNavigationItems(): List<BottomNavigationItem> {
+private fun getBottomNavigationItems(): List<BottomNavigationItem> {
     return listOf(
         BottomNavigationItem(
             title = "Home",
@@ -735,15 +936,22 @@ fun getBottomNavigationItems(): List<BottomNavigationItem> {
     )
 }
 
+/**
+ * ScreenContent: A composable function for displaying the main content of the screen.
+ *
+ * This composable is meant to be used as the content parameter of the Scaffold in the NavigationBarComponent.
+ * It can be replaced with the actual content components of the screen.
+ *
+ * @param innerPadding The PaddingValues applied to the inner content, useful for applying padding to content components.
+ *
+ */
 @Composable
-fun YourContent(innerPadding: PaddingValues) {
-    // Your content goes here, you can apply innerPadding if needed
-    // For example, you might use it when placing content inside a Box
+fun ScreenContent(innerPadding: PaddingValues) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
-        // Your content components go here
+        // there would be content of the screen with bottom navigation
     }
 }

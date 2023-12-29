@@ -33,6 +33,12 @@ import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterCompon
 import eu.mobcomputing.dima.registration.data.login.LogInUIEvent
 import eu.mobcomputing.dima.registration.data.login.LogInViewModel
 
+/**
+ * Composable function representing the LogIn screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ * @param logInViewModel ViewModel managing the logic for the LogIn screen.
+ */
 @Composable
 fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = viewModel()) {
     Box(
@@ -68,7 +74,6 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                         logInViewModel.onEvent(LogInUIEvent.EmailChanged(it), navController)
                     },
                     errorStatus = logInViewModel.logInUIState.value.emailError,
-                    shouldPreFill = false
 
                 )
                 MyPasswordFieldComponent(
@@ -120,6 +125,9 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
     }
 }
 
+/**
+ * Preview annotation for previewing the LoginScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun LogInScreenPreview() {

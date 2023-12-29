@@ -29,6 +29,12 @@ import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
 
+/**
+ * Composable function representing the UserAllergies screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ * @param sharedUserDataModel ViewModel managing the logic for the UserAllergies screen.
+ */
 @Composable
 fun UserAllergiesScreen(
     navController: NavController,
@@ -99,6 +105,9 @@ fun UserAllergiesScreen(
     }
 }
 
+/**
+ * Preview annotation for previewing the UserInformationScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun PreviewUserInformationScreen() {

@@ -17,6 +17,11 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 
+/**
+ * Composable function representing the Search screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ */
 @Composable
 fun SearchScreen(navController: NavController) {
 
@@ -42,8 +47,11 @@ fun SearchScreen(navController: NavController) {
     }
 }
 
-@Composable
+/**
+ * Preview annotation for previewing the SearchScreen in Android Studio.
+ */
 @Preview
+@Composable
 fun PreviewSearchScreen() {
     SearchScreen(navController = rememberNavController())
 }

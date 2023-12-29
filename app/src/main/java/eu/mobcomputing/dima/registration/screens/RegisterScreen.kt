@@ -32,10 +32,15 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.data.registration.RegistrationUIEvent
 import eu.mobcomputing.dima.registration.data.registration.RegistrationViewModel
 
+/**
+ * Composable function representing the SignUp screen of the application.
+ *
+ * @param navController NavController for navigating between screens.
+ * @param registrationViewModel ViewModel managing the logic for the LogIn screen.
+ */
 @Composable
 fun SignUpScreen(
     navController: NavController,
-    //sharedRegistrationViewModel: SharedRegistrationViewModel = viewModel()
     registrationViewModel: RegistrationViewModel = viewModel()
     ) {
     Box(
@@ -83,8 +88,6 @@ fun SignUpScreen(
                     },
                     errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
 
-                    //preFilledText = shaiewModel.getSharedName(),
-                    shouldPreFill = false
                 )
 
                 // Last name component
@@ -100,9 +103,6 @@ fun SignUpScreen(
                         )
                     },
                     errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
-                    //preFilledText = shiewModel.getSharedLastName(),
-                    //shouldPreFill = sharedRegistrationViewModel.readOnlyPassword.value
-                    shouldPreFill = false
                     )
 
                 //R-mail component
@@ -118,9 +118,6 @@ fun SignUpScreen(
                         )
                     },
                     errorStatus = registrationViewModel.registrationUIState.value.emailError,
-                    //preFilledText = sharedRegistrationViewModel.getSharedEmail(),
-                    //shouldPreFill = sharedRegistrationViewModel.readOnlyPassword.value
-                    shouldPreFill = false
                     )
 
                 // Password component
@@ -165,6 +162,9 @@ fun SignUpScreen(
     }
 }
 
+/**
+ * Preview annotation for previewing the SignUpScreen in Android Studio.
+ */
 @Preview
 @Composable
 fun SignUpScreenPreview() {
