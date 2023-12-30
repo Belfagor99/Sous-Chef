@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.models
 
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 /**
  * The [Ingredient] data class represents information about a food ingredient.
@@ -28,4 +29,6 @@ data class Ingredient (
     @SerializedName("amount") val amount: Double = 0.0,
     @SerializedName("unit") val unit: String = "",
     @SerializedName("consistency") val consistency: String = "",
+    @SerializedName("expiring_date") val expiringDate: Date ?= null,
+    @SerializedName("user_quantity") val userQuantity: Int = 0,
 )

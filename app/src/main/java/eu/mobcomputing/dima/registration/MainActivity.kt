@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
@@ -14,6 +15,7 @@ import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
  * Main entry point for the application.
  * Configures the navigation and sets up the initial screen.
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private val homeViewModel: HomeViewModel by viewModels()
