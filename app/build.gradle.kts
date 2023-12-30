@@ -4,6 +4,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -56,6 +58,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
         buildConfig = true
     }
     composeOptions {
@@ -64,6 +67,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            //excludes += "/META-INF/*"
         }
     }
 }
@@ -81,6 +85,20 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
+
+    implementation("com.google.dagger:hilt-android:2.50")
+    implementation("androidx.compose.material3:material3-android:1.2.0-beta01")
+    //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
+
+
+    kapt("com.google.dagger:hilt-android-testing:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
+
+
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
