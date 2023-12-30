@@ -16,9 +16,15 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
 
 /**
- * A simple grid which lays elements out vertically in evenly sized [columns].
+ * Composable function representing a vertical grid of ingredient cards.
+ *
+ * This grid is populated with information about each ingredient provided in the [ingredients] list.
+ * Each card includes the ingredient's image, name, and allows navigation to a detailed screen
+ * for adding the ingredient to the fridge.
+ *
+ * @param ingredients The list of [Ingredient] objects to display in the grid.
+ * @param navController The NavController for navigation within the application.
  */
-
 @Composable
 fun IngredientVerticalGrid(ingredients: List<Ingredient>, navController: NavController) {
     Surface (
@@ -31,8 +37,7 @@ fun IngredientVerticalGrid(ingredients: List<Ingredient>, navController: NavCont
                 contentPadding = PaddingValues(10.dp),
             ) {
                 items(ingredients) { ingredient ->
-                    // Your grid item Composable here
-                    // Example: IngredientItem(ingredient = ingredient)
+                    // Grid item Composable
                     IngredientCard(ingredient = ingredient, navController= navController)
                 }
             }

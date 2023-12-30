@@ -26,6 +26,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 
+
+/**
+ * Composable function representing a search bar for filtering ingredients.
+ *
+ * This search bar allows users to input search queries, provides suggestions from search history,
+ * and notifies the [SearchIngredientViewModel] of search text changes.
+ *
+ * @param viewModel The [SearchIngredientViewModel] used for handling data and business logic.
+ * @param onSearchTextChange Callback function invoked when the search text changes. It provides the updated search text.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -87,6 +97,8 @@ fun SearchBar(
             }
 
             HorizontalDivider()
+
+            // Text Button to clear all search history
             Text(
                 modifier = Modifier
                     .padding(all = 14.dp)

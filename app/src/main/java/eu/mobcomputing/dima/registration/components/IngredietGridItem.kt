@@ -29,7 +29,15 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
 import java.net.URLEncoder
 
-
+/**
+ * Composable function representing a card displaying information about a specific ingredient.
+ *
+ * This card includes the ingredient's image, name, and allows navigation to a detailed screen
+ * for adding the ingredient to the fridge.
+ *
+ * @param ingredient The [Ingredient] object to display information about.
+ * @param navController The NavController for navigation within the application.
+ */
 @Composable
 fun IngredientCard(ingredient: Ingredient, navController: NavController) {
     ElevatedCard(
@@ -46,9 +54,12 @@ fun IngredientCard(ingredient: Ingredient, navController: NavController) {
             contentColor = Color.Black,
         ),
         onClick = {
-            //convert object to json string
+            /*
+             * convert object to json string
+             * in order to pass the entire object to the next screen via navController
+             */
             val ingredientJSON = Gson().toJson(ingredient)
-            Log.v("ING CLICKED",ingredientJSON)
+            Log.v("INGREDIENT CLICKED",ingredientJSON)
             // Navigate to the new screen when the card is clicked
             navController.navigate("addToFridge/${URLEncoder.encode(ingredientJSON, "utf-8")}")
         },

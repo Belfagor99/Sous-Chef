@@ -1,13 +1,12 @@
 package eu.mobcomputing.dima.registration.screens
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -26,7 +25,16 @@ import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 
+/**
+ * Composable function representing the screen for searching and displaying a list of ingredients.
+ *
+ * This screen utilizes a [SearchIngredientViewModel] to manage and observe the list of ingredients.
+ *
+ * @param navController The NavController for navigation within the application.
+ * @param viewModel The [SearchIngredientViewModel] used for handling data and business logic.
+ */
 @Composable
 fun SearchIngredientScreen(
     navController: NavController,
@@ -46,7 +54,6 @@ fun SearchIngredientScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.pink_50))
-            //.padding(18.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -63,18 +70,38 @@ fun SearchIngredientScreen(
                 }
             )
 
-            Divider(thickness = 1.dp, color = Color.LightGray, modifier = Modifier.padding(
-                start = 8.dp,
-                end = 8.dp,
-                top = 8.dp,
-            ))
+            HorizontalDivider(
+                modifier = Modifier.padding(
+                    start = 8.dp,
+                    end = 8.dp,
+                    top = 8.dp,
+                ), thickness = 1.dp, color = Color.LightGray
+            )
 
-            ingredientsList.value?.let { IngredientVerticalGrid(ingredients = it,navController) }
+            ingredientsList.value?.let {
+                if (it.isNotEmpty()){
+                    //populate grid if ingredients found
+                    IngredientVerticalGrid(ingredients = it,navController)
+                }else {
 
+                    // Ingredients not found
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        HeaderTextComponent(
+                            value = "No ingredient found"
+                        )
+                    }
 
+                }
+
+            }
         }
     }
 }
+
 
 
 @Preview

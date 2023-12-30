@@ -40,13 +40,23 @@ import eu.mobcomputing.dima.registration.components.QuantitySelector
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
 
+
+/**
+ * Composable function for adding an ingredient to the fridge with options for quantity and expiration date.
+ *
+ * @param navController The NavController for navigation within the application.
+ * @param ingredient The ingredient to be added to the fridge.
+ */
 @Composable
-fun AddIngredientToFridge(
+fun AddIngredientToPantry(
     navController: NavController,
     ingredient: Ingredient,
-    //homeViewModel: HomeViewModel = viewModel()
+    //TODO: add view model
 ) {
 
+    /*
+     * State variables for the date picker
+     */
     var date by remember {
         mutableStateOf("Open date picker dialog")
     }
@@ -56,7 +66,9 @@ fun AddIngredientToFridge(
     }
 
 
-
+    /*
+     * UI composition
+     */
     Surface(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
@@ -67,13 +79,15 @@ fun AddIngredientToFridge(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-            //verticalArrangement = Arrangement.SpaceBetween
         ){
-
+            /*
+             * Back button row
+             */
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
+                // Navigate back button
                 IconButton(
                     onClick = {
                         navController.navigate(Screen.SearchIngredientScreen.route) {
@@ -85,6 +99,9 @@ fun AddIngredientToFridge(
                 }
             }
 
+            /*
+             * Main content column
+             */
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -98,7 +115,9 @@ fun AddIngredientToFridge(
                     value =  ingredient.name
                 )
 
-
+                /*
+                 * Quantity selector row
+                 */
                 Row (
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -121,11 +140,12 @@ fun AddIngredientToFridge(
                         onQuantityChange = {},
                         modifier = Modifier.weight(1f)
                         )
-
                 }
 
 
-
+                /*
+                 * Expiration date row
+                 */
                 Row (
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -166,29 +186,29 @@ fun AddIngredientToFridge(
                         )
                     }
                 }
-
-
             }
 
+
+            /*
+             * Button to add to pantry
+             */
             ButtonComponent(
                 value = "Add to pantry",
                 onClickAction = {},
                 isEnabled = true)
 
         }
-
-
     }
 }
 
 
 @Preview
 @Composable
-fun AddIngredientToFridgePreview() {
+fun AddIngredientToPantryPreview() {
     val ingredient = Ingredient(
         id= 1,
         name = "Egg",
         image = "",
         )
-    AddIngredientToFridge(navController = rememberNavController(),ingredient= ingredient)
+    AddIngredientToPantry(navController = rememberNavController(),ingredient= ingredient)
 }

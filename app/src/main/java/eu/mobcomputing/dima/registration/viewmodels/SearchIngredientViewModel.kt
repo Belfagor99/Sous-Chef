@@ -16,18 +16,20 @@ import javax.inject.Inject
 
 
 /**
- * The reason why ViewModels shouldn't contain an instance of Context or anything like Views or other
- * objects that hold onto a Context is because it has a separate lifecycle than Activities and Fragments.
+ * ViewModel class for handling ingredient data in the search feature.
  *
- * What I mean by this is, let's say you do a rotation change on your app. This causes your Activity
- * and Fragment to destroy itself so it recreates itself. ViewModel is meant to persist during this state,
- * so there's chances of crashes and other exceptions happening if it's still holding a View or Context to
- * the destroyed Activity.
+ * This ViewModel is responsible for loading and filtering a list of ingredients
+ * from a CSV file. It utilizes Hilt for dependency injection and extends
+ * AndroidViewModel to manage the application context.
+ *
+ * @property application The application context provided through dependency injection.
+ * @property _ingredients MutableLiveData holding the list of ingredients.
+ * @property ingredients LiveData exposing the list of ingredients.
  */
 
 @HiltViewModel
 class SearchIngredientViewModel @Inject constructor(
-    private val application: Application,
+    application: Application,
 ) : AndroidViewModel(application) {
 
     private val _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
@@ -35,7 +37,9 @@ class SearchIngredientViewModel @Inject constructor(
 
     //private var allIngredients: List<Ingredient> = emptyList()
 
-
+    /**
+     * Initializes the ViewModel by launching a coroutine to load ingredients from the CSV file.
+     */
     init {
         viewModelScope.launch {
             loadIngredientFromCsv()
@@ -43,6 +47,11 @@ class SearchIngredientViewModel @Inject constructor(
 
     }
 
+    /**
+     * Loads ingredient data from the "ingredients.csv" file in the assets folder.
+     *
+     * @throws IOException If an error occurs while reading the CSV file.
+     */
     private fun loadIngredientFromCsv() {
         try {
             val inputStream = getApplication<Application>().assets.open("ingredients.csv")
@@ -57,6 +66,12 @@ class SearchIngredientViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Converts CSV data to a list of Ingredient objects.
+     *
+     * @param csvData List of strings representing CSV data.
+     * @return List of Ingredient objects parsed from the CSV data.
+     */
     private fun convertCsvDataToIngredientList(csvData: List<String>): List<Ingredient> {
         return csvData.map { line ->
             val values = line.split(";")
@@ -65,7 +80,15 @@ class SearchIngredientViewModel @Inject constructor(
     }
 
 
-    // Function to filter ingredients based on search text
+    /**
+     * Filters the list of ingredients based on the provided search text.
+     *
+     * If the search text is blank, the original list is reloaded from the CSV file.
+     * Otherwise, the list is filtered based on whether the ingredient's name
+     * contains the search text (case-insensitive).
+     *
+     * @param searchText The text to use for filtering ingredients.
+     */
     fun filterIngredients(searchText: String) {
 
         if (searchText.isBlank()){

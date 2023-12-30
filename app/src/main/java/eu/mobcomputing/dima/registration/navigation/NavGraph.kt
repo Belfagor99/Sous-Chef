@@ -6,13 +6,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.gson.Gson
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModelViewFactory
 import eu.mobcomputing.dima.registration.data.home.HomeViewModel
 import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
+import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.screens.AddIngredientToPantry
 import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.PantryScreen
 import eu.mobcomputing.dima.registration.screens.ProfileScreen
+import eu.mobcomputing.dima.registration.screens.SearchIngredientScreen
 import eu.mobcomputing.dima.registration.screens.SearchScreen
 import eu.mobcomputing.dima.registration.screens.SignUnSuccessfulScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
@@ -20,6 +24,7 @@ import eu.mobcomputing.dima.registration.screens.UserAllergiesScreen
 import eu.mobcomputing.dima.registration.screens.UserDietScreen
 import eu.mobcomputing.dima.registration.screens.WelcomeScreen
 import kotlinx.coroutines.delay
+import java.net.URLDecoder
 
 @Composable
 fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel) {
@@ -114,6 +119,27 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
         // Search Screen
         composable(route = Screen.Search.route) {
             SearchScreen(navController = navController)
+        }
+
+
+        composable(route = Screen.SearchIngredientScreen.route){
+            SearchIngredientScreen(navController = navController)
+        }
+
+        composable(route = Screen.AddIngredientToFridgeScreen.route) { backStackEntry ->
+            // Extract the ingredientJSON from the route
+            val ingredientJSON = backStackEntry.arguments?.getString("ingredient") ?: ""
+
+            //convert it back into object
+            val ingredient: Ingredient? = try {
+                val decodedString = URLDecoder.decode(ingredientJSON, "utf-8")
+                Gson().fromJson(decodedString, Ingredient::class.java)
+            } catch (e: Exception) {
+                null
+            }
+
+            // Display the details screen using the extracted obj
+            ingredient?.let { AddIngredientToPantry(navController= navController, ingredient = it) }
         }
 
     }

@@ -30,11 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Composable function representing a quantity selector with a text field and buttons to increase or decrease the quantity.
+ *
+ * @param modifier The [Modifier] to apply to the quantity selector.
+ * @param initialQuantity The initial quantity value. Default is 1.
+ * @param onQuantityChange Callback function invoked when the quantity changes. It provides the updated quantity.
+ */
 @Composable
 fun QuantitySelector(
+    modifier: Modifier = Modifier,
     initialQuantity: Int = 1,
     onQuantityChange: (Int) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     var quantity by remember { mutableStateOf(initialQuantity) }
     val keyboardController = LocalSoftwareKeyboardController.current
