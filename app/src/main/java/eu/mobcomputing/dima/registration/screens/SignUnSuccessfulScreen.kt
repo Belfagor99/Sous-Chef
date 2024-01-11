@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +26,7 @@ import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
-import eu.mobcomputing.dima.registration.data.registration.SuccessfulRegistrationViewModel
+import eu.mobcomputing.dima.registration.viewmodels.SuccessfulRegistrationViewModel
 import eu.mobcomputing.dima.registration.navigation.Screen
 
 /**

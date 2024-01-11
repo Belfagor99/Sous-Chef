@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.userInformation
+package eu.mobcomputing.dima.registration.models
 
 // Data class representing a user.
 data class User(

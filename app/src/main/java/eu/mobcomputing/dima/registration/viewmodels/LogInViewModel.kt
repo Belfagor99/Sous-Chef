@@ -1,10 +1,12 @@
-package eu.mobcomputing.dima.registration.data.login
+package eu.mobcomputing.dima.registration.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
+import eu.mobcomputing.dima.registration.uiEvents.LogInUIEvent
+import eu.mobcomputing.dima.registration.uiStates.LogInUIState
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.navigation.Screen
 

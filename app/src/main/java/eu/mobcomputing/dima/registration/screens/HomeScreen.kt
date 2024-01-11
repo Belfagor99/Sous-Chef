@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -19,7 +19,7 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
-import eu.mobcomputing.dima.registration.data.home.HomeViewModel
+import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
 
 /**
  * Composable function representing the Home screen of the application.

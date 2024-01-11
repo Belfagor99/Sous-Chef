@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import eu.mobcomputing.dima.registration.data.home.HomeViewModel
+import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 

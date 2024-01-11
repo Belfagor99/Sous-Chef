@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.registration
+package eu.mobcomputing.dima.registration.uiStates
 
 
 /**

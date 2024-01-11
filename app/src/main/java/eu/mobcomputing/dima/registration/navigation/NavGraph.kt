@@ -7,9 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.gson.Gson
-import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModelViewFactory
-import eu.mobcomputing.dima.registration.data.home.HomeViewModel
-import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
+import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataModelViewFactory
+import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
+import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataViewModel
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.screens.AddIngredientToPantry
 import eu.mobcomputing.dima.registration.screens.HomeScreen
@@ -31,7 +31,7 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
 
     // Create a shared instance of SharedUserDataModel using the SharedUserDataModelViewFactory
     val sharedViewModelFactory = SharedUserDataModelViewFactory()
-    val sharedViewModel: SharedUserDataModel = viewModel(factory = sharedViewModelFactory)
+    val sharedViewModel: SharedUserDataViewModel = viewModel(factory = sharedViewModelFactory)
 
     // Use LaunchedEffect to navigate when userLoggedIn changes
     LaunchedEffect(homeViewModel.userLoggedIn) {

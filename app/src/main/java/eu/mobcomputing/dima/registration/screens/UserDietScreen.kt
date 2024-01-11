@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,18 +27,18 @@ import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
+import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataViewModel
 
 /**
  * Composable function representing the UserDiet screen of the application.
  *
  * @param navController NavController for navigating between screens.
- * @param sharedUserDataModel ViewModel managing the logic for the UserDiet screen.
+ * @param sharedUserDataViewModel ViewModel managing the logic for the UserDiet screen.
  */
 @Composable
 fun UserDietScreen(
     navController: NavController,
-    sharedUserDataModel: SharedUserDataModel
+    sharedUserDataViewModel: SharedUserDataViewModel
 ) {
     Box(
         modifier = Modifier
@@ -65,15 +65,15 @@ fun UserDietScreen(
                 MyRedHeadingComponent(value = stringResource(id = R.string.create_account_text), shouldBeCentered = true)
                 Spacer(modifier = Modifier.height(4.dp))
                 StepperBar(
-                    steps = sharedUserDataModel.steps,
-                    currentStep = sharedUserDataModel.dietTypeStep.value
+                    steps = sharedUserDataViewModel.steps,
+                    currentStep = sharedUserDataViewModel.dietTypeStep.value
                 )
                 NormalTextComponent(value = stringResource(id = R.string.diet_type))
 
                 DietOptionList(
-                    dietOptions = sharedUserDataModel.dietOptions,
+                    dietOptions = sharedUserDataViewModel.dietOptions,
                     onDietClick = {
-                        sharedUserDataModel.dietOptionOnClick(it)
+                        sharedUserDataViewModel.dietOptionOnClick(it)
                     },
 
                     )
@@ -88,7 +88,7 @@ fun UserDietScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.previous_step),
                         onClickAction = {
-                            sharedUserDataModel.backStepOnClick(navController)
+                            sharedUserDataViewModel.backStepOnClick(navController)
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -100,7 +100,7 @@ fun UserDietScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.finish),
                         onClickAction = {
-                            sharedUserDataModel.finishRegistration(navController)
+                            sharedUserDataViewModel.finishRegistration(navController)
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -120,5 +120,5 @@ fun UserDietScreen(
 @Preview
 @Composable
 fun PreviewUserDietScreen() {
-    UserDietScreen(navController = rememberNavController(), sharedUserDataModel = SharedUserDataModel())
+    UserDietScreen(navController = rememberNavController(), sharedUserDataViewModel = SharedUserDataViewModel())
 }

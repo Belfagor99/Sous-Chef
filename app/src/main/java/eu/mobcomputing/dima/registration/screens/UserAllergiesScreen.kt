@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,18 +27,19 @@ import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
-import eu.mobcomputing.dima.registration.data.registration.SharedUserDataModel
+import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataViewModel
 
 /**
  * Composable function representing the UserAllergies screen of the application.
  *
  * @param navController NavController for navigating between screens.
- * @param sharedUserDataModel ViewModel managing the logic for the UserAllergies screen.
+ * @param sharedUserDataViewModel ViewModel managing the logic for the UserAllergies screen.
  */
 @Composable
 fun UserAllergiesScreen(
     navController: NavController,
-    sharedUserDataModel: SharedUserDataModel) {
+    sharedUserDataViewModel: SharedUserDataViewModel
+) {
 
     Box(
         modifier = Modifier
@@ -65,15 +66,15 @@ fun UserAllergiesScreen(
                 MyRedHeadingComponent(value = stringResource(id = R.string.create_account_text), shouldBeCentered = true)
                 Spacer(modifier = Modifier.height(10.dp))
                 StepperBar(
-                    steps = sharedUserDataModel.steps,
-                    currentStep = sharedUserDataModel.allergiesStep.value
+                    steps = sharedUserDataViewModel.steps,
+                    currentStep = sharedUserDataViewModel.allergiesStep.value
                 )
                 NormalTextComponent(value = stringResource(id = R.string.allergies))
                 Column {
                     AllergenGrid(
-                        allergens = sharedUserDataModel.allergens,
+                        allergens = sharedUserDataViewModel.allergens,
                         onAllergenClick = {
-                            sharedUserDataModel.allergenOnClick(it)
+                            sharedUserDataViewModel.allergenOnClick(it)
                             it.selectedState.value = !it.selectedState.value
                             it.selectedState.value = !it.selectedState.value
                         }
@@ -92,7 +93,7 @@ fun UserAllergiesScreen(
                     SmallButtonComponent(
                         value = stringResource(id = R.string.next_step),
                         onClickAction = {
-                            sharedUserDataModel.allergiesScreenNext(navController)
+                            sharedUserDataViewModel.allergiesScreenNext(navController)
                         },
                         modifier = Modifier.weight(1f)
                     )
@@ -111,5 +112,5 @@ fun UserAllergiesScreen(
 @Preview
 @Composable
 fun PreviewUserInformationScreen() {
-    UserAllergiesScreen(navController = rememberNavController(), sharedUserDataModel = SharedUserDataModel())
+    UserAllergiesScreen(navController = rememberNavController(), sharedUserDataViewModel = SharedUserDataViewModel())
 }

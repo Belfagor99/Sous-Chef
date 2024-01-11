@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.registration
+package eu.mobcomputing.dima.registration.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import eu.mobcomputing.dima.registration.data.userInformation.User
+import eu.mobcomputing.dima.registration.models.User
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 

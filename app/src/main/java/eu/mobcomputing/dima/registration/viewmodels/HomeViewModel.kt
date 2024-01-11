@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.home
+package eu.mobcomputing.dima.registration.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

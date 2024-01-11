@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.userInformation
+package eu.mobcomputing.dima.registration.models
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

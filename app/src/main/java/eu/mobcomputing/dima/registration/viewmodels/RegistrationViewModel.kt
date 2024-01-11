@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.registration
+package eu.mobcomputing.dima.registration.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -8,8 +8,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
+import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
+import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 import eu.mobcomputing.dima.registration.data.rules.Validator
-import eu.mobcomputing.dima.registration.data.userInformation.User
+import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
 
 /**

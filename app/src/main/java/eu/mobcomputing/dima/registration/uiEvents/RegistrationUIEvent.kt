@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.registration
+package eu.mobcomputing.dima.registration.uiEvents
 
 /**
  * Sealed class representing UI events related to the registration screen.

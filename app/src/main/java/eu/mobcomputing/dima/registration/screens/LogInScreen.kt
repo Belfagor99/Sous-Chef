@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +30,8 @@ import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
-import eu.mobcomputing.dima.registration.data.login.LogInUIEvent
-import eu.mobcomputing.dima.registration.data.login.LogInViewModel
+import eu.mobcomputing.dima.registration.uiEvents.LogInUIEvent
+import eu.mobcomputing.dima.registration.viewmodels.LogInViewModel
 
 /**
  * Composable function representing the LogIn screen of the application.
@@ -67,7 +67,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                 Spacer(modifier = Modifier.height(20.dp))
                 MyTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
-                    iconPainterResource = painterResource(
+                    leadingIcon = painterResource(
                         id = R.drawable.baseline_alternate_email_24
                     ),
                     onTextSelected = {
@@ -78,7 +78,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                 )
                 MyPasswordFieldComponent(
                     labelValue = stringResource(id = R.string.password),
-                    iconPainterResource = painterResource(
+                    leadingIcon = painterResource(
                         id = R.drawable.baseline_lock_24
                     ),
                     onTextSelected = {

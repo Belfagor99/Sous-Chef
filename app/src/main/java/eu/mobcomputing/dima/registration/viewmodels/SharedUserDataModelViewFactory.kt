@@ -1,10 +1,10 @@
-package eu.mobcomputing.dima.registration.data.registration
+package eu.mobcomputing.dima.registration.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 /**
- * Factory class for creating instances of [SharedUserDataModel].
+ * Factory class for creating instances of [SharedUserDataViewModel].
  */
 class SharedUserDataModelViewFactory : ViewModelProvider.Factory {
 
@@ -16,8 +16,8 @@ class SharedUserDataModelViewFactory : ViewModelProvider.Factory {
      * @throws IllegalArgumentException if the [ViewModel] class is unknown.
      */
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SharedUserDataModel::class.java)) {
-            return SharedUserDataModel() as T
+        if (modelClass.isAssignableFrom(SharedUserDataViewModel::class.java)) {
+            return SharedUserDataViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

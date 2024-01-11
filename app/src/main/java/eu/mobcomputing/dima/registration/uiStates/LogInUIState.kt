@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.data.login
+package eu.mobcomputing.dima.registration.uiStates
 
 /**
  * Data class representing the state of the login user interface.
