@@ -204,6 +204,13 @@ fun MyPasswordFieldComponent(
             password.value = it
             onTextSelected(it)
         },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = colorResource(id = R.color.pink_100),
+            unfocusedContainerColor = colorResource(id = R.color.pink_100),
+            cursorColor = colorResource(id = R.color.pink_900),
+            focusedBorderColor = colorResource(id = R.color.light_green),
+            unfocusedBorderColor = colorResource(id = R.color.pink_900)
+        ),
         leadingIcon = {
             Icon(painter = leadingIcon, contentDescription = null)
         },
@@ -218,7 +225,6 @@ fun MyPasswordFieldComponent(
 
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !errorStatus,
-
         )
 }
 
