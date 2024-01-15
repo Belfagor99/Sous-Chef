@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 
 /**
  * Composable function representing the screen for searching and displaying a list of ingredients.
@@ -58,8 +60,7 @@ fun SearchIngredientScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
-        ){
-
+        ) {
 
             SearchBar(
                 viewModel = viewModel,
@@ -78,30 +79,36 @@ fun SearchIngredientScreen(
                 ), thickness = 1.dp, color = Color.LightGray
             )
 
-            ingredientsList.value?.let {
-                if (it.isNotEmpty()){
-                    //populate grid if ingredients found
-                    IngredientVerticalGrid(ingredients = it,navController)
-                }else {
+            Box(modifier = Modifier.weight(weight = 1f, fill = false)) {
+                ingredientsList.value?.let {
+                    if (it.isNotEmpty()) {
+                        //populate grid if ingredients found
+                        IngredientVerticalGrid(ingredients = it, navController)
+                    } else {
 
-                    // Ingredients not found
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        HeaderTextComponent(
-                            value = "No ingredient found"
-                        )
+                        // Ingredients not found
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            HeaderTextComponent(
+                                value = "No ingredient found"
+                            )
+                        }
+
                     }
 
                 }
-
             }
+
+            NavigationBarComponent(
+                navController = navController,
+                selectedItemIndex = 3
+            )
         }
     }
 }
-
 
 
 @Preview

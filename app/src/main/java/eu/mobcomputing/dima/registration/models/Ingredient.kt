@@ -29,6 +29,6 @@ data class Ingredient (
     @SerializedName("amount") val amount: Double = 0.0,
     @SerializedName("unit") val unit: String = "",
     @SerializedName("consistency") val consistency: String = "",
-    @SerializedName("expiring_date") val expiringDate: Date ?= null,
-    @SerializedName("user_quantity") val userQuantity: Int = 0,
+    @SerializedName("expiring_date") var expiringDate: Date ?= null,
+    @SerializedName("user_quantity") var userQuantity: Int = 0,
 )

@@ -6,16 +6,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.viewmodels.BottomNavigationItem
 import eu.mobcomputing.dima.registration.navigation.Screen
@@ -39,13 +40,22 @@ fun NavigationBarComponent(
     items: List<BottomNavigationItem> = getBottomNavigationItems(),
     selectedItemIndex: Int
 ) {
-    Scaffold(
-        bottomBar = {
+//    Scaffold(
+//        bottomBar = {
             NavigationBar {
                 items.forEachIndexed { index, bottomNavigationItem ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
-                        onClick = { navController.navigate(bottomNavigationItem.screen.route) },
+                        onClick = {
+                            navController.navigate(bottomNavigationItem.screen.route) {
+                                navController.graph.startDestinationRoute?.let { screenRoute ->
+                                    popUpTo(screenRoute) {
+                                        saveState = true
+                                    }
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                         label = {
                             Text(bottomNavigationItem.title)
                         },
@@ -69,12 +79,11 @@ fun NavigationBarComponent(
                     )
                 }
             }
-        }
-    )
-    { it ->
-        ScreenContent(innerPadding = it)
-
-    }
+//        }
+//    )
+//    { it ->
+//        ScreenContent(innerPadding = it)
+//    }
 }
 
 /**
@@ -108,7 +117,7 @@ private fun getBottomNavigationItems(): List<BottomNavigationItem> {
             title = "Search",
             selectedIcon = R.drawable.search_selected,
             unselectedIcon = R.drawable.search_not_selected,
-            screen = Screen.Search
+            screen = Screen.SearchIngredientScreen
         )
     )
 }
@@ -122,7 +131,7 @@ private fun getBottomNavigationItems(): List<BottomNavigationItem> {
  * @param innerPadding The PaddingValues applied to the inner content, useful for applying padding to content components.
  *
  */
-@Composable
+/*@Composable
 fun ScreenContent(innerPadding: PaddingValues) {
     Box(
         modifier = Modifier
@@ -130,6 +139,15 @@ fun ScreenContent(innerPadding: PaddingValues) {
             .padding(innerPadding)
     ) {
         // there would be content of the screen with bottom navigation
+    }
+}*/
+
+@Preview
+@Composable
+fun NavigationBarPreview() {
+    MaterialTheme {
+        NavigationBarComponent(navController = rememberNavController(),
+            getBottomNavigationItems(),1)
     }
 }
 

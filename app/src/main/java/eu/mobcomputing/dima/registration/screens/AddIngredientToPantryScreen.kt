@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -30,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
@@ -39,6 +43,9 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.QuantitySelector
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
+import eu.mobcomputing.dima.registration.viewmodels.AddIngredientToPantryViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 /**
@@ -52,6 +59,8 @@ fun AddIngredientToPantry(
     navController: NavController,
     ingredient: Ingredient,
     //TODO: add view model
+     addIngredientToPantryViewModel: AddIngredientToPantryViewModel = viewModel()
+
 ) {
 
     /*
@@ -64,6 +73,12 @@ fun AddIngredientToPantry(
     var showDatePicker by remember {
         mutableStateOf(false)
     }
+
+
+    /*
+    *   Get local context for Toast message
+    * */
+    val context = LocalContext.current
 
 
     /*
@@ -137,7 +152,9 @@ fun AddIngredientToPantry(
 
 
                     QuantitySelector(
-                        onQuantityChange = {},
+                        onQuantityChange = {
+                            ingredient.userQuantity=it
+                        },
                         modifier = Modifier.weight(1f)
                         )
                 }
@@ -182,7 +199,11 @@ fun AddIngredientToPantry(
                     if (showDatePicker) {
                         DatePickerView(
                             onDismiss = { showDatePicker = false },
-                            onDateSelected = { date = it },
+                            onDateSelected = { it ->
+                                date = it
+                                ingredient.expiringDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                    .parse(it)
+                            },
                         )
                     }
                 }
@@ -194,7 +215,21 @@ fun AddIngredientToPantry(
              */
             ButtonComponent(
                 value = "Add to pantry",
-                onClickAction = {},
+                onClickAction = {
+                    // be sure to put a quantity at least  = 1
+                    if (ingredient.userQuantity==0){
+                        ingredient.userQuantity=1
+                    }
+
+                    Log.e("ADDING", ingredient.toString())
+                    addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
+
+                    //notify user
+                    Toast.makeText(context,"Ingredient added to your pantry!",Toast.LENGTH_SHORT).show()
+
+                    //go back to home
+                    navController.navigate(Screen.Home.route)
+                },
                 isEnabled = true)
 
         }
