@@ -27,6 +27,7 @@ data class BottomNavigationItem(
 /**
  * ViewModel for the home screen responsible for handling user login status.
  */
+
 class HomeViewModel : ViewModel() {
     val userLoggedIn: MutableState<Boolean> = mutableStateOf(false)
 

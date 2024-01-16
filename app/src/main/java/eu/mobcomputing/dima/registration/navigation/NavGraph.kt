@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +28,7 @@ import eu.mobcomputing.dima.registration.screens.WelcomeScreen
 import kotlinx.coroutines.delay
 import java.net.URLDecoder
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel) {
 
@@ -59,7 +62,7 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
     NavHost(
         navController = navController,
         startDestination = Screen.Welcome.route
-    )
+        )
     {
         // composable functions for different screens
 
@@ -142,5 +145,7 @@ fun SetUpNavGraph(navController: NavHostController, homeViewModel: HomeViewModel
             ingredient?.let { AddIngredientToPantry(navController= navController, ingredient = it) }
         }
 
+
     }
+
 }
