@@ -1,7 +1,6 @@
 package eu.mobcomputing.dima.registration.components
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,15 +32,15 @@ import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
  * This search bar allows users to input search queries, provides suggestions from search history,
  * and notifies the [SearchIngredientViewModel] of search text changes.
  *
- * @param viewModel The [SearchIngredientViewModel] used for handling data and business logic.
+ *
  * @param onSearchTextChange Callback function invoked when the search text changes. It provides the updated search text.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SearchBar(
-    viewModel: SearchIngredientViewModel,
-    onSearchTextChange: (String) -> Unit
+    onSearchTextChange: (String) -> Unit,
+    onSearch: (String) -> Unit,
 ) {
     var text by remember { mutableStateOf("") } // Query for SearchBar
     var active by remember { mutableStateOf(false) } // Active state for SearchBar
@@ -58,7 +57,7 @@ fun SearchBar(
             onSearch = {
                 searchHistory.add(text)
                 active = false
-                viewModel.filterIngredients(it)
+                onSearch(it)
             },
             active = active,
             onActiveChange = {
@@ -118,5 +117,5 @@ fun SearchBar(
 @Preview
 @Composable
 fun PreviewSearchBarExample() {
-    SearchBar(viewModel = SearchIngredientViewModel(application = Application()),onSearchTextChange = {})
+    SearchBar(onSearch = {},onSearchTextChange = {})
 }

@@ -97,7 +97,7 @@ class SearchIngredientViewModel @Inject constructor(
             val filteredList = ingredients.value?.filter { ingredient ->
                 ingredient.name.contains(searchText, ignoreCase = true)
             }
-            _ingredients.value = filteredList
+            _ingredients.value = filteredList!!
             Log.v("VIEW-MODEL", _ingredients.value.toString())
 
         }

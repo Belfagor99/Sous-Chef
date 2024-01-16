@@ -38,9 +38,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
-import eu.mobcomputing.dima.registration.components.DatePickerView
+import eu.mobcomputing.dima.registration.components.add_ingredients.DatePickerView
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
-import eu.mobcomputing.dima.registration.components.QuantitySelector
+import eu.mobcomputing.dima.registration.components.add_ingredients.QuantitySelector
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.viewmodels.AddIngredientToPantryViewModel

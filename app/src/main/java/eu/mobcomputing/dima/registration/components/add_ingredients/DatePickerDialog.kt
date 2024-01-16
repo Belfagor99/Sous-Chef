@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.components
+package eu.mobcomputing.dima.registration.components.add_ingredients
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text

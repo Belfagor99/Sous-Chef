@@ -114,9 +114,9 @@ private fun getBottomNavigationItems(): List<BottomNavigationItem> {
             screen = Screen.Profile
         ),
         BottomNavigationItem(
-            title = "Search",
-            selectedIcon = R.drawable.search_selected,
-            unselectedIcon = R.drawable.search_not_selected,
+            title = "Add Ingr",
+            selectedIcon = R.drawable.add_ingredient_icon_selected,
+            unselectedIcon = R.drawable.add_ingredients_icon_not_selected,
             screen = Screen.SearchIngredientScreen
         )
     )

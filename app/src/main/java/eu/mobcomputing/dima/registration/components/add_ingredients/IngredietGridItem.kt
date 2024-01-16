@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration.components
+package eu.mobcomputing.dima.registration.components.add_ingredients
 
 import android.util.Log
 import androidx.compose.foundation.Image

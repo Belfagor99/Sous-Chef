@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.models.User
 
 /**
  * ViewModel class for handling the addition of ingredients to the user's pantry.
@@ -40,20 +41,20 @@ class AddIngredientToPantryViewModel : ViewModel() {
                     if (documentSnapshot.exists()) {
 
                         // Check if the array contains the specified element
-                        val array = documentSnapshot.get("ingredientsInPantry") as? ArrayList<MutableMap<String,Any>>
+                        val array = documentSnapshot.toObject(User::class.java)?.ingredientsInPantry
 
                         if (array != null) {
-                            val existingIngredient = array.find { it["name"]  == ingredientToAdd.name }
+                            val existingIngredient = array.find { it.name  == ingredientToAdd.name }
 
                             if (existingIngredient != null) {
                                 // Object with the specified name already exists, increment the userQuantity
                                 val index = array.indexOf(existingIngredient)
 
-                                val updatedQuantity = existingIngredient["userQuantity"] as Long +  ingredientToAdd.userQuantity
+                                val updatedQuantity = existingIngredient.userQuantity +  ingredientToAdd.userQuantity
 
-                                array[index]["userQuantity"] = updatedQuantity
+                                array[index].userQuantity = updatedQuantity
 
-                                Log.e("CHECK","Already there. New amount: ${array[index]["userQuantity"]}")
+                                Log.e("CHECK","Already there. New amount: ${array[index].userQuantity}")
 
                                 //update all the array in firestore (seems that Firestore can't update just a value from the array)
                                 userDoc!!.update("ingredientsInPantry", array)
@@ -62,6 +63,8 @@ class AddIngredientToPantryViewModel : ViewModel() {
                                 // Object with the specified name doesn't exist, add it to the array
                                 userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
                             }
+                        }else{
+                            Log.e("CHECK","array seems to be null!")
                         }
                     } else {
                         // Document does not exist

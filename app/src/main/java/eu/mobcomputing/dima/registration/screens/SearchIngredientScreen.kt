@@ -20,7 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.components.IngredientVerticalGrid
+import eu.mobcomputing.dima.registration.components.add_ingredients.IngredientVerticalGrid
 import eu.mobcomputing.dima.registration.components.SearchBar
 import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,7 +63,12 @@ fun SearchIngredientScreen(
         ) {
 
             SearchBar(
-                viewModel = viewModel,
+                //viewModel = viewModel,
+                onSearch = { newSearchText ->
+                    searchText = newSearchText
+                    // Call the filter function in the ViewModel
+                    viewModel.filterIngredients(newSearchText)
+                },
                 onSearchTextChange = { newSearchText ->
                     searchText = newSearchText
                     // Call the filter function in the ViewModel
