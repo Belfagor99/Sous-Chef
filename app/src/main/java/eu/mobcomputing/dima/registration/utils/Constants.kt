@@ -1,7 +1,5 @@
 package eu.mobcomputing.dima.registration.utils
 
-import androidx.compose.ui.res.stringResource
-import eu.mobcomputing.dima.registration.R
 
 /**
  * The [Constants] class provides static constant values used throughout the application.

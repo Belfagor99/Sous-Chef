@@ -3,7 +3,6 @@ package eu.mobcomputing.dima.registration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
             val token = task.result
 
             // Log and the FCM
-            Log.d("FCM", token.toString());
+            Log.d("FCM", token.toString())
         })
 
         super.onCreate(savedInstanceState)
