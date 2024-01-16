@@ -57,6 +57,7 @@ fun HomeScreen(
         notificationPermissionState = notificationPermissionState
     )
 
+    // Check the notification permission status and launch corresponding dialog if necessary
     LaunchedEffect(key1 = Unit) {
         Log.d("Permission", "Notification permission status: ${notificationPermissionState.status}")
         Log.d("Permission", "Is granted: ${notificationPermissionState.status.isGranted}")
@@ -67,7 +68,6 @@ fun HomeScreen(
             Firebase.messaging.subscribeToTopic(Constants.TOPIC)
         } else{
             Log.d("Permission", "Requesting notification permission")
-
             showNotificationDialog.value = true
         }
     }

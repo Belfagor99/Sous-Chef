@@ -30,4 +30,7 @@
     <string name="sign_up">Sign me up</string>
     <string name="defaultnotification_channel_id">SousChefChannel</string>
     <string name="default_notification_channel_id">default_sous_chef_app</string>
+    <string name="notification_permission">Notification Permission</string>
+    <string name="please_allow_this_app_to_send_you_a_notification">Please allow this app to send you a notification</string>
+    <string name="ok">OK</string>
 </resources>
