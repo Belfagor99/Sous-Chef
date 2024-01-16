@@ -153,6 +153,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+
 
     //for API calls
     //retrofit
@@ -163,4 +165,5 @@ dependencies {
     //gson converter
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 }
