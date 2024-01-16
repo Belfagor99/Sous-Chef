@@ -83,7 +83,7 @@ fun PantryScreen(
                 ), thickness = 1.dp, color = Color.LightGray
             )
 
-            Box(modifier = Modifier.weight(weight = 1f, fill = false)) {
+            Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
                 ingredientsList.value?.let {
                     if (it.isNotEmpty()) {
                         //populate grid if ingredients found
