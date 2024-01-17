@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
-import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 
