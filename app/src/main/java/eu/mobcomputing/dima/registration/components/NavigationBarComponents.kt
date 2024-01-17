@@ -124,7 +124,6 @@ private fun getBottomNavigationItems(): List<BottomNavigationItem> {
  * This composable is meant to be used as the content parameter of the Scaffold in the NavigationBarComponent.
  * It can be replaced with the actual content components of the screen.
  *
- * @param innerPadding The PaddingValues applied to the inner content, useful for applying padding to content components.
  *
  */
 /*@Composable
