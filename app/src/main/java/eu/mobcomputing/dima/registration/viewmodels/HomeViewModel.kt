@@ -1,7 +1,5 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
@@ -29,22 +27,6 @@ data class BottomNavigationItem(
  */
 
 class HomeViewModel : ViewModel() {
-    val userLoggedIn: MutableState<Boolean> = mutableStateOf(false)
-
-    /**
-     * Initializes the ViewModel and checks the user's login status.
-     */
-    init {
-        checkUserLoginStatus()
-    }
-
-    /**
-     * Checks the user's login status using Firebase authentication.
-     */
-    private fun checkUserLoginStatus() {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        userLoggedIn.value = firebaseAuth.currentUser != null
-    }
 
     /**
      * Logs out the user and navigates to the welcome screen.

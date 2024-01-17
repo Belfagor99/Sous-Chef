@@ -23,7 +23,6 @@ import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
-    private val homeViewModel: HomeViewModel by viewModels()
 
     /**
      * Called when the activity is first created.
@@ -55,7 +54,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RegistrationTheme {
                 navController = rememberNavController()
-                SetUpNavGraph(navController = navController, homeViewModel)
+                SetUpNavGraph(navController = navController)
             }
         }
     }
