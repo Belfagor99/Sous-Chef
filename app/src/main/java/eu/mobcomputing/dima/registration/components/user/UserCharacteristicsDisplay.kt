@@ -184,7 +184,7 @@ fun UserCharacteristicsDisplay(
 @Preview
 fun UserCharacteristicsDisplayPreview(){
 
-    var userCharacteristics : List<String> = listOf(
+    val userCharacteristics : List<String> = listOf(
         "Dairy",
         "Egg",
         "Gluten",
