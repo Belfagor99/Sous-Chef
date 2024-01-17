@@ -1,10 +1,6 @@
 package eu.mobcomputing.dima.registration.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.viewmodels.BottomNavigationItem
+import eu.mobcomputing.dima.registration.models.BottomNavigationItem
 import eu.mobcomputing.dima.registration.navigation.Screen
 
 

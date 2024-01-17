@@ -3,19 +3,21 @@ package eu.mobcomputing.dima.registration.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,7 +29,6 @@ import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.viewmodels.SuccessfulRegistrationViewModel
-import eu.mobcomputing.dima.registration.navigation.Screen
 
 /**
  * Composable function representing the SignUp screen of the application.
@@ -39,7 +40,7 @@ fun SignUnSuccessfulScreen(
     navController: NavController,
     successfulRegistrationViewModel: SuccessfulRegistrationViewModel = viewModel()
 ) {
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(
@@ -48,19 +49,18 @@ fun SignUnSuccessfulScreen(
         contentAlignment = Alignment.Center
     )
     {
-        Surface(
-            color = colorResource(id = R.color.pink_50),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorResource(id = R.color.pink_50))
-                .padding(18.dp),
-        ) {
+        val isSmallScreen = maxWidth < 600.dp
+        if (isSmallScreen) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(18.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
+                //MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
+                MyRedHeadingComponent(value = "NAME")
+
                 MyRedHeadingComponent(
                     value = stringResource(id = R.string.registration_successful),
                     shouldBeCentered = true
@@ -86,18 +86,59 @@ fun SignUnSuccessfulScreen(
                     value = stringResource(
                         id = R.string.next_step
                     ),
-                    onClickAction = { navController.navigate(route = Screen.UserAllergies.route) },
+                    onClickAction = { successfulRegistrationViewModel.redirect(navController) },
                     isEnabled = true
                 )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(50.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .fillMaxWidth()
+                ) {
+                    MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
+                    MyRedHeadingComponent(
+                        value = stringResource(id = R.string.registration_successful),
+                        shouldBeCentered = true
+                    )
+
+
+                    MyImageComponent(
+                        R.drawable.souschef_logo,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                Column {
+                    NormalTextComponent(value = stringResource(id = R.string.after_registration))
+                    ButtonComponent(
+                        value = stringResource(
+                            id = R.string.next_step
+                        ),
+                        onClickAction = { successfulRegistrationViewModel.redirect(navController) },
+                        isEnabled = true
+                    )
+
+                }
             }
         }
     }
 }
 
+
 /**
  * Preview annotation for previewing the SignUpSuccessfulScreen in Android Studio.
  */
-@Preview
+@Preview(device = Devices.PIXEL_6)
+@Preview(device = Devices.PIXEL_TABLET)
 @Composable
 fun PreviewSignInSuccessfulScreen() {
     SignUnSuccessfulScreen(navController = rememberNavController())

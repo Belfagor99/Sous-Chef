@@ -4,6 +4,7 @@ package eu.mobcomputing.dima.registration.components
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -49,11 +50,18 @@ import eu.mobcomputing.dima.registration.R
 @Composable
 fun NormalTextComponent(value: String) {
     Text(
-        text = value, modifier = Modifier
+        text = value,
+        modifier =
+        Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp), style = TextStyle(
-            fontSize = 12.sp, fontWeight = FontWeight.Normal, fontStyle = FontStyle.Normal
-        ), color = colorResource(id = R.color.base_text_color), textAlign = TextAlign.Center
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal
+        ),
+        color = colorResource(id = R.color.base_text_color),
+        textAlign = TextAlign.Center
     )
 }
 
@@ -95,7 +103,8 @@ fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
         text = value,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(),
+            .heightIn()
+            .padding(16.dp),
         style = TextStyle(
             fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal,
         ),
@@ -225,7 +234,7 @@ fun MyPasswordFieldComponent(
 
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !errorStatus,
-        )
+    )
 }
 
 /**
@@ -265,12 +274,12 @@ fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
         onClick = { offset ->
 
             annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
-                    Log.d("ClickableTextComponent", "{${span.item}}")
+                Log.d("ClickableTextComponent", "{${span.item}}")
 
-                    if (span.item == loginText) {
-                        onClickAction.invoke()
-                    }
+                if (span.item == loginText) {
+                    onClickAction.invoke()
                 }
+            }
 
         },
     )
@@ -312,11 +321,11 @@ fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
         text = annotatedString,
         onClick = { offset ->
             annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
-                    Log.d("ClickableTextComponent", "{${span.item}}")
-                    if (span.item == loginText) {
-                        onClickAction.invoke()
-                    }
+                Log.d("ClickableTextComponent", "{${span.item}}")
+                if (span.item == loginText) {
+                    onClickAction.invoke()
                 }
+            }
 
         },
     )
@@ -358,12 +367,12 @@ fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
         onClick = { offset ->
 
             annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
-                    Log.d("ClickableTextComponent", "{${span.item}}")
+                Log.d("ClickableTextComponent", "{${span.item}}")
 
-                    if (span.item == loginText) {
-                        onClickAction.invoke()
-                    }
+                if (span.item == loginText) {
+                    onClickAction.invoke()
                 }
+            }
 
         },
     )

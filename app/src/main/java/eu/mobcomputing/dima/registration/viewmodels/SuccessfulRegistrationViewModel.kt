@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.mobcomputing.dima.registration.models.User
+import eu.mobcomputing.dima.registration.navigation.Screen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -63,6 +65,12 @@ class SuccessfulRegistrationViewModel : ViewModel() {
             fetchUserName(userID)
         } ?: run {
             Log.d(TAG, "Home screen USER is not logged in")
+        }
+    }
+
+    fun redirect(navController: NavController){
+        navController.navigate(route = Screen.UserAllergies.route) {
+            popUpTo(Screen.SignUnSuccessful.route) { inclusive = true }
         }
     }
 }
