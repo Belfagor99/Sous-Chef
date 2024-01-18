@@ -3,9 +3,9 @@ package eu.mobcomputing.dima.registration.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,50 +36,44 @@ fun NavigationBarComponent(
     items: List<BottomNavigationItem> = getBottomNavigationItems(),
     selectedItemIndex: Int
 ) {
-//    Scaffold(
-//        bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, bottomNavigationItem ->
-                    NavigationBarItem(
-                        selected = selectedItemIndex == index,
-                        onClick = {
-                            navController.navigate(bottomNavigationItem.screen.route) {
-                                navController.graph.startDestinationRoute?.let { screenRoute ->
-                                    popUpTo(screenRoute) {
-                                        saveState = true
-                                    }
-                                }
-                                launchSingleTop = true
-                            }
-                        },
-                        label = {
-                            Text(bottomNavigationItem.title)
-                        },
-                        alwaysShowLabel = true,
-                        icon = {
-                            if (selectedItemIndex == index) {
-                                Image(
-                                    painter = painterResource(id = bottomNavigationItem.selectedIcon),
-                                    contentDescription = bottomNavigationItem.title,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            } else {
-                                Image(
-                                    painter = painterResource(id = bottomNavigationItem.unselectedIcon),
-                                    contentDescription = bottomNavigationItem.title,
-                                    modifier = Modifier.size(24.dp)
-                                )
 
+    NavigationBar {
+        items.forEachIndexed { index, bottomNavigationItem ->
+            NavigationBarItem(
+                selected = selectedItemIndex == index,
+                onClick = {
+                    navController.navigate(bottomNavigationItem.screen.route) {
+                        navController.graph.startDestinationRoute?.let { screenRoute ->
+                            popUpTo(screenRoute) {
+                                saveState = true
                             }
                         }
-                    )
+                        launchSingleTop = true
+                    }
+                },
+                label = {
+                    Text(bottomNavigationItem.title)
+                },
+                alwaysShowLabel = true,
+                icon = {
+                    if (selectedItemIndex == index) {
+                        Image(
+                            painter = painterResource(id = bottomNavigationItem.selectedIcon),
+                            contentDescription = bottomNavigationItem.title,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = bottomNavigationItem.unselectedIcon),
+                            contentDescription = bottomNavigationItem.title,
+                            modifier = Modifier.size(24.dp)
+                        )
+
+                    }
                 }
-            }
-//        }
-//    )
-//    { it ->
-//        ScreenContent(innerPadding = it)
-//    }
+            )
+        }
+    }
 }
 
 /**
@@ -119,30 +113,17 @@ private fun getBottomNavigationItems(): List<BottomNavigationItem> {
 }
 
 /**
- * ScreenContent: A composable function for displaying the main content of the screen.
- *
- * This composable is meant to be used as the content parameter of the Scaffold in the NavigationBarComponent.
- * It can be replaced with the actual content components of the screen.
- *
- *
+ * Preview annotation for previewing the NavigationBar in Android Studio.
  */
-/*@Composable
-fun ScreenContent(innerPadding: PaddingValues) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-    ) {
-        // there would be content of the screen with bottom navigation
-    }
-}*/
 
 @Preview
 @Composable
 fun NavigationBarPreview() {
     MaterialTheme {
-        NavigationBarComponent(navController = rememberNavController(),
-            getBottomNavigationItems(),1)
+        NavigationBarComponent(
+            navController = rememberNavController(),
+            getBottomNavigationItems(), 1
+        )
     }
 }
 

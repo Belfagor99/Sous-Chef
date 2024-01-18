@@ -11,7 +11,10 @@ class SplashScreenViewModel : ViewModel() {
      */
     private fun checkUserLoginStatus(): Boolean {
         val firebaseAuth = FirebaseAuth.getInstance()
-        return firebaseAuth.currentUser != null
+        if(firebaseAuth.currentUser != null){
+            return firebaseAuth.currentUser!!.email != null
+        }
+        return false
     }
 
     /**

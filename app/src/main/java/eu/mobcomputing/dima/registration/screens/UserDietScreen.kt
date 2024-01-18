@@ -25,8 +25,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.DietOptionList
+import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
-import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SmallButtonComponent
 import eu.mobcomputing.dima.registration.components.StepperBar
@@ -61,9 +61,10 @@ fun UserDietScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Spacer(modifier = Modifier.height(5.dp))
-                MyRedHeadingComponent(
+                HeaderTextComponent(
                     value = stringResource(id = R.string.create_account_text),
-                    shouldBeCentered = true
+                    shouldBeCentered = true,
+                    shouldBeRed = true
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 StepperBar(
@@ -137,9 +138,10 @@ fun UserDietScreen(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Spacer(modifier = Modifier.height(5.dp))
-                    MyRedHeadingComponent(
+                    HeaderTextComponent(
                         value = stringResource(id = R.string.create_account_text),
-                        shouldBeCentered = true
+                        shouldBeCentered = true,
+                        shouldBeRed = true
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     StepperBar(

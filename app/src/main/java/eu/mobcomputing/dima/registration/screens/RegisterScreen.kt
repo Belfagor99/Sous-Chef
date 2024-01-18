@@ -31,7 +31,6 @@ import eu.mobcomputing.dima.registration.components.ClickableRegisterTextCompone
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
-import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
@@ -65,9 +64,10 @@ fun SignUpScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                MyRedHeadingComponent(
+                HeaderTextComponent(
                     value = stringResource(id = R.string.create_account_text),
-                    shouldBeCentered = true
+                    shouldBeCentered = true,
+                    shouldBeRed = true
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 HeaderTextComponent(value = stringResource(id = R.string.personal_information))
@@ -177,9 +177,10 @@ fun SignUpScreen(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    MyRedHeadingComponent(
+                    HeaderTextComponent(
                         value = stringResource(id = R.string.create_account_text),
-                        shouldBeCentered = true
+                        shouldBeCentered = true,
+                        shouldBeRed = true
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     HeaderTextComponent(value = stringResource(id = R.string.personal_information))

@@ -45,10 +45,12 @@ import eu.mobcomputing.dima.registration.R
  * common styling properties such as font size, weight, style, color, and text alignment.
  *
  * @param value The text content to be displayed.
+ * @param shouldBeCentered Boolean value defining if the text should be centered.
+ * @param shouldBeRed Boolean value defining if the text should be red.
  *
  */
 @Composable
-fun NormalTextComponent(value: String) {
+fun NormalTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false) {
     Text(
         text = value,
         modifier =
@@ -56,12 +58,12 @@ fun NormalTextComponent(value: String) {
             .fillMaxWidth()
             .heightIn(min = 40.dp),
         style = TextStyle(
-            fontSize = 12.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
         ),
-        color = colorResource(id = R.color.base_text_color),
-        textAlign = TextAlign.Center
+        color = if(shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
+        textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
     )
 }
 
@@ -72,44 +74,20 @@ fun NormalTextComponent(value: String) {
  * common styling properties such as font size, weight, style, color, and text alignment.
  *
  * @param value The text content to be displayed.
+ * @param shouldBeCentered Boolean value defining if the text should be centered.
+ * @param shouldBeRed Boolean value defining if the text should be red.
  *
  */
 @Composable
-fun HeaderTextComponent(value: String) {
+fun HeaderTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false) {
     Text(
         text = value, modifier = Modifier
             .fillMaxWidth()
             .heightIn(), style = TextStyle(
             fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
-        ), color = colorResource(id = R.color.base_text_color), textAlign = TextAlign.Center
-    )
-}
-
-/**
- * MyRedHeadingComponent: A composable function for creating a red-colored heading text.
- *
- * This composable creates a Text component with specific customization options such as
- * text value, text style, color, and alignment. It is designed for displaying headings with
- * a red color. The appearance of the heading is determined by the provided [value] and
- * [shouldBeCentered] parameters.
- *
- * @param value The text content of the heading.
- * @param shouldBeCentered A boolean flag indicating whether the heading should be centered.
- *
- */
-@Composable
-fun MyRedHeadingComponent(value: String, shouldBeCentered: Boolean = false) {
-    Text(
-        text = value,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn()
-            .padding(16.dp),
-        style = TextStyle(
-            fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal,
-        ),
-        color = colorResource(id = R.color.pink_900),
+        ), color = if(shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
         textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
+
     )
 }
 
