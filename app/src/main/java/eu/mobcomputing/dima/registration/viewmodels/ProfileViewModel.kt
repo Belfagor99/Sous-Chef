@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import eu.mobcomputing.dima.registration.models.Allergen
+import eu.mobcomputing.dima.registration.models.DietType
 import eu.mobcomputing.dima.registration.models.User
 import kotlinx.coroutines.launch
 
@@ -62,7 +64,7 @@ class ProfileViewModel : ViewModel() {
 
 
     /**
-     * Retrieve user characteristics (allergies and diet) from the Firestore database.
+     * Retrieve user characteristics from the Firestore database.
      * If the user document is not available or an error occurs during retrieval, appropriate logs are generated.
      */
     private fun getUserCharacteristics(){
@@ -88,7 +90,7 @@ class ProfileViewModel : ViewModel() {
                         _email.value = usrEmail
 
                         // get ingredient List from firestore user's document
-                        val allergies = user.allergies.map { allergen -> allergen.name }.toList()
+                        val allergies = user.allergies.toList()
                         _userAllergies.value = allergies
 
 
@@ -96,24 +98,88 @@ class ProfileViewModel : ViewModel() {
                         _userDiet.value = diet
 
 
-                        Log.e("PROFILE->CHECK:allergies",allergies.toString())
-                        Log.e("PROFILE->CHECK:diet",_userDiet.value.toString())
+                        Log.e("PROFILE @ GET USR CHAR ->CHECK:allergies",allergies.toString())
+                        Log.e("PROFILE @ GET USR CHAR ->CHECK:diet",_userDiet.value.toString())
 
                     } else {
                         // Document does not exist
-                        Log.e("PROFILE->CHECK","Document does not exist.")
+                        Log.e("PROFILE @ GET USR CHAR -> CHECK","Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE->CHECK","Error Failire Listener: $e")
+                    Log.e("PROFILE @ GET USR CHAR -> CHECK","Error Failire Listener: $e")
                 }
 
             }
         } catch (e: Exception) {
-            Log.e("PROFILE-> GET USR", "Error getting user document", e)
+            Log.e("PROFILE @ GET USR CHAR -> GET USR", "Error getting user document", e)
 
         }
 
+    }
+
+    /**
+     * Sets the new list of allergies for the user in the Firestore database.
+     *
+     * @param newAllergies The list of new allergies to be set for the user.
+     */
+    fun setNewAllergies(newAllergies : List<String>){
+        try {
+            if (userDoc == null){
+                Log.e("PROFILE @ SET ALLERG ->SET ALLERGIES", "Error fetching user doc")
+            }else{
+                userDoc!!.get().addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+
+                        userDoc!!.update("allergies",newAllergies)
+
+                    } else {
+                        // Document does not exist
+                        Log.e("PROFILE @ SET ALLERG -> CHECK","Document does not exist.")
+                    }
+                }.addOnFailureListener { e ->
+                    // Handle errors
+                    Log.e("PROFILE @ SET ALLERG -> CHECK","Error Failire Listener: $e")
+                }
+
+            }
+        } catch (e: Exception) {
+            Log.e("PROFILE @ SET ALLERG -> GET USR", "Error getting user document", e)
+
+        }
+    }
+
+    /**
+     * Sets the new diet type for the user in the Firestore database.
+     *
+     * @param newDiet The new diet type to be set for the user.
+     */
+    fun setNewDiet(newDiet : String){
+        try {
+            if (userDoc == null){
+                Log.e("PROFILE @ SET DIET", "Error fetching user doc")
+            }else{
+                userDoc!!.get().addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+
+                        val newDietType = DietType.entries.find { dietType -> dietType.diet == newDiet  }
+
+                        userDoc!!.update("dietType", newDietType!!.name)
+
+                    } else {
+                        // Document does not exist
+                        Log.e("PROFILE @ SET DIET -> CHECK","Document does not exist.")
+                    }
+                }.addOnFailureListener { e ->
+                    // Handle errors
+                    Log.e("PROFILE @ SET DIET-> CHECK","Error Failire Listener: $e")
+                }
+
+            }
+        } catch (e: Exception) {
+            Log.e("PROFILE @ SET DIET-> GET USR", "Error getting user document", e)
+
+        }
     }
 
 

@@ -5,8 +5,8 @@ data class User(
     var firstName: String = "",
     var lastName: String = "",
     var email: String = "",
-    var dietType: DietType = DietType.NORMAL,
-    var allergies: List<Allergen> = emptyList(),
+    var dietType: DietType = DietType.OMNIVORE,
+    var allergies: List<String> = emptyList(),
 
     var ingredientsInPantry : List<Ingredient> = emptyList(),
 )

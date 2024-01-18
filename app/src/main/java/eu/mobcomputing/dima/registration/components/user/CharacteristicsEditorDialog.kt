@@ -19,6 +19,11 @@ import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +32,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,14 +47,30 @@ import eu.mobcomputing.dima.registration.R
  * @param onConfirmation Callback to be invoked when the user confirms the changes made in the dialog.
  * @param dialogTitle The title of the dialog, describing the characteristics being edited.
  * @param userCharacteristics List of user characteristics to be displayed and edited.
+ * @param singleSelection  Indicates whether only one characteristic can be selected (true) or multiple (false).
  */
 @Composable
 fun CharacteristicsEditorDialog(
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
+    onConfirmation: (List<String>) -> Unit,
     dialogTitle: String,
-    userCharacteristics: List<String>
+    userCharacteristics: List<String>,
+    singleSelection : Boolean,
 ) {
+
+    var newUserCharacteristics by remember { mutableStateOf(emptyList<String>()) }
+    var numberOfSelection : Int = 0
+
+
+    var chipsList = mutableListOf<ChipState>()
+    userCharacteristics.forEach {
+        val chip = ChipState(it)
+        chipsList.add(chip)
+    }
+
+
+
+
     Dialog(onDismissRequest = { onDismissRequest() }) {
         // Draw a rectangle shape with rounded corners inside the dialog
         Card(
@@ -80,19 +102,54 @@ fun CharacteristicsEditorDialog(
 
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 125.dp),
-                    contentPadding = PaddingValues(10.dp),
+                    //contentPadding = PaddingValues(4.dp),
                 ) {
-                    items(userCharacteristics) { it ->
+                    items(chipsList) { it ->
+
                         // Grid item Composable
                         ElevatedFilterChip(
-                            selected = false,
+                            selected = it.selectedState.value,
                             modifier = Modifier
                                 .padding(8.dp)
                                 .align(Alignment.CenterHorizontally),
-                            onClick = {},
+                            onClick = {
+
+                                if(singleSelection == false || (singleSelection==true && numberOfSelection==0)){
+                                    it.selectedState.value = !it.selectedState.value
+
+                                    if(it.selectedState.value){
+                                        // Update the state variable when a chip is clicked
+                                        newUserCharacteristics = newUserCharacteristics.toMutableList().apply {
+                                            add(it.name)
+                                            numberOfSelection++
+                                        }
+                                    }else{
+                                        newUserCharacteristics = newUserCharacteristics.toMutableList().apply {
+                                            remove(it.name)
+                                        }
+                                    }
+                                }else if (singleSelection==true && numberOfSelection >0){
+                                    chipsList.forEach {
+                                        it.selectedState.value = false
+                                    }
+
+
+                                    it.selectedState.value = !it.selectedState.value
+
+                                    if(it.selectedState.value){
+                                        // Update the state variable when a chip is clicked
+                                        newUserCharacteristics = newUserCharacteristics.toMutableList().apply {
+                                            removeAll(newUserCharacteristics)
+                                            add(it.name)
+                                        }
+                                    }
+                                }
+
+
+                            },
                             label = {
                                 Text(
-                                    text = it,
+                                    text = it.name,
                                     style = TextStyle(
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
@@ -145,7 +202,7 @@ fun CharacteristicsEditorDialog(
                         )
                     }
                     TextButton(
-                        onClick = { onConfirmation() },
+                        onClick = { onConfirmation(newUserCharacteristics) },
                         modifier = Modifier.padding(8.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.pink_900)),
                     ) {
@@ -162,9 +219,13 @@ fun CharacteristicsEditorDialog(
 }
 
 
+data class ChipState (
+    val name: String,
+    var selectedState: MutableState<Boolean> = mutableStateOf(false)
+)
 
 
-@Preview
+@Preview(name="PIXEL_4a", device = Devices.PIXEL_4A)
 @Composable
 fun CharacteristicsEditorDialogPreview() {
     CharacteristicsEditorDialog(
@@ -185,6 +246,7 @@ fun CharacteristicsEditorDialogPreview() {
             "Sulfite",
             "Tree Nut",
             "Wheat",
-        )
+        ),
+        singleSelection = true
     )
 }

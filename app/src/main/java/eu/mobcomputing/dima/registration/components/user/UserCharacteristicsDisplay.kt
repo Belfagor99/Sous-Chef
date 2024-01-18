@@ -132,7 +132,7 @@ fun UserCharacteristicsDisplay(
 
             }else{
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 125.dp),
+                    columns = GridCells.Adaptive(minSize = 150.dp),
                     contentPadding = PaddingValues(10.dp),
                 ) {
                     items(userCharacteristics) { it ->

@@ -57,7 +57,7 @@ class SharedUserDataViewModel() : ViewModel() {
         DietOption(DietType.VEGETARIAN, R.drawable.vegetarian_removebg_preview),
         DietOption(DietType.GLUTEN_FREE, R.drawable.glutenfree_removebg_preview),
         DietOption(DietType.LACTOSE_VEGETARIAN, R.drawable.lactofree_removebg_preview),
-        DietOption(DietType.NORMAL, R.drawable.normal_removebg_preview, mutableStateOf(true)),
+        DietOption(DietType.OMNIVORE, R.drawable.normal_removebg_preview, mutableStateOf(true)),
         DietOption(DietType.PESCETARIAN, R.drawable.pescetarian_preview),
     )
 
@@ -80,7 +80,7 @@ class SharedUserDataViewModel() : ViewModel() {
     private fun addAllergenToUser(
         allergen: Allergen
     ) {
-        user.value = user.value.copy(allergies = user.value.allergies + allergen)
+        user.value = user.value.copy(allergies = user.value.allergies + allergen.name)
 
     }
 
@@ -90,7 +90,7 @@ class SharedUserDataViewModel() : ViewModel() {
     private fun removeAllergenFromUser(
         allergen: Allergen
     ) {
-        user.value = user.value.copy(allergies = user.value.allergies - allergen)
+        user.value = user.value.copy(allergies = user.value.allergies - allergen.name)
 
     }
 
@@ -158,7 +158,7 @@ class SharedUserDataViewModel() : ViewModel() {
 
             try {
                 userDocumentRef.update(
-                    "allergies", user.value.allergies.map { it.name },
+                    "allergies", user.value.allergies,
                     "dietType", user.value.dietType.toString()
                 ).await()
 

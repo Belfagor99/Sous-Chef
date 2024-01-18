@@ -10,7 +10,7 @@ enum class DietType(val diet: String) {
     GLUTEN_FREE("Gluten free"),
     LACTOSE_VEGETARIAN("Lacto-\nVegetarian"),
     PESCETARIAN("Pescetarian"),
-    NORMAL("Normal"),
+    OMNIVORE("Omnivore"),
 }
 
 // Data class representing a diet option.
