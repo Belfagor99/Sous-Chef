@@ -25,8 +25,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
+import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
-import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.viewmodels.SuccessfulRegistrationViewModel
 
@@ -58,12 +58,14 @@ fun SignUnSuccessfulScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
-                MyRedHeadingComponent(value = "NAME")
-
-                MyRedHeadingComponent(
+                HeaderTextComponent(
+                    value = successfulRegistrationViewModel.userName.value.toString(),
+                    shouldBeCentered = false, shouldBeRed = true
+                )
+                HeaderTextComponent(
                     value = stringResource(id = R.string.registration_successful),
-                    shouldBeCentered = true
+                    shouldBeCentered = true,
+                    shouldBeRed = true
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Box(
@@ -104,10 +106,16 @@ fun SignUnSuccessfulScreen(
                         .aspectRatio(1f)
                         .fillMaxWidth()
                 ) {
-                    MyRedHeadingComponent(value = successfulRegistrationViewModel.userName.value.toString())
-                    MyRedHeadingComponent(
+                    HeaderTextComponent(
+                        value = successfulRegistrationViewModel.userName.value.toString(),
+                        shouldBeCentered = false,
+                        shouldBeRed = true
+                    )
+                    HeaderTextComponent(
                         value = stringResource(id = R.string.registration_successful),
-                        shouldBeCentered = true
+                        shouldBeCentered = true,
+                        shouldBeRed = true
+
                     )
 
 

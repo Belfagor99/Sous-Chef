@@ -29,9 +29,9 @@ import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.ClickableForgottenPasswordTextComponent
 import eu.mobcomputing.dima.registration.components.ClickableLoginTextComponent
+import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.components.MyPasswordFieldComponent
-import eu.mobcomputing.dima.registration.components.MyRedHeadingComponent
 import eu.mobcomputing.dima.registration.components.MyTextFieldComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.WrongPasswordSubmitterComponent
@@ -62,7 +62,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
-                MyRedHeadingComponent(value = stringResource(id = R.string.welcome_back_text))
+                HeaderTextComponent(value = stringResource(id = R.string.welcome_back_text), shouldBeCentered = true, shouldBeRed = true)
                 Spacer(modifier = Modifier.height(20.dp))
                 NormalTextComponent(value = stringResource(id = R.string.log_in_small_text))
                 Spacer(modifier = Modifier.height(20.dp))
@@ -149,7 +149,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(20.dp))
-                    MyRedHeadingComponent(value = stringResource(id = R.string.welcome_back_text))
+                    HeaderTextComponent(value = stringResource(id = R.string.welcome_back_text), shouldBeCentered = true, shouldBeRed = true)
                     Spacer(modifier = Modifier.height(20.dp))
                     NormalTextComponent(value = stringResource(id = R.string.log_in_small_text))
                     Spacer(modifier = Modifier.height(20.dp))
