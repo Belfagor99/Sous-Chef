@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import eu.mobcomputing.dima.registration.models.Allergen
 import eu.mobcomputing.dima.registration.models.DietType
 import eu.mobcomputing.dima.registration.models.User
+import eu.mobcomputing.dima.registration.navigation.Screen
 import kotlinx.coroutines.launch
 
 
@@ -184,8 +185,6 @@ class ProfileViewModel : ViewModel() {
 
 
 
-
-
     /**
      * Helper function that retrieves the DocumentReference for the current user from Firestore.
      *
@@ -200,6 +199,24 @@ class ProfileViewModel : ViewModel() {
             Log.d("PROFILE->GET USR", "USER is not logged in")
             return null
         }
+    }
+
+    /**
+     * Logs out the user and go back to welcome screen.
+     *
+     * @param navController The NavController used for navigation.
+     */
+    fun logOut(navController: NavController) {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.signOut()
+
+        val authStateListener = FirebaseAuth.AuthStateListener {
+            if (it.currentUser == null) {
+                navController.navigate(route = Screen.Welcome.route)
+            }
+        }
+
+        firebaseAuth.addAuthStateListener(authStateListener)
     }
 
 

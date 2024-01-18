@@ -1,6 +1,5 @@
 package eu.mobcomputing.dima.registration.utils
 
-import eu.mobcomputing.dima.registration.models.Allergen
 
 
 /**

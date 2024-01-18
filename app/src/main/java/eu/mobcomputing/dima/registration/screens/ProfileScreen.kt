@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -101,12 +102,40 @@ fun ProfileScreen(
                     ),
             ) {
                 Box(modifier = Modifier.weight(1f)){
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_person_24),
-                        contentDescription = "user img",
+
+                    Column (
                         modifier = Modifier
-                            .fillMaxSize()
-                    )
+                            .align(Alignment.Center)
+                            .padding(8.dp),
+                    ){
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_person_24),
+                            contentDescription = "user img",
+                            modifier = Modifier
+                                .fillMaxSize(0.7f)
+                                .align(Alignment.CenterHorizontally)
+                        )
+
+                        /*  LOGOUT BUTTON */
+                        OutlinedButton(
+                            onClick = { viewModel.logOut(navController) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        ){
+                            Text(
+                                text = "Logout",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    fontStyle = FontStyle.Normal,
+                                ),
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .wrapContentSize(),
+                            )
+                        }
+                    }
                 }
                 Box(modifier = Modifier.weight(1f)){
                     Column (

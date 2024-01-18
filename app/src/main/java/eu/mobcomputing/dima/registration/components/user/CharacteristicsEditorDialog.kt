@@ -3,7 +3,6 @@ package eu.mobcomputing.dima.registration.components.user
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -129,11 +128,12 @@ fun CharacteristicsEditorDialog(
                                         }
                                     }
                                 }else if (singleSelection==true && numberOfSelection >0){
+
+                                    //reset all selected value to false
                                     chipsList.forEach {
                                         it.selectedState.value = false
                                     }
-
-
+                                    // change the selected value only to the chip clicked
                                     it.selectedState.value = !it.selectedState.value
 
                                     if(it.selectedState.value){
