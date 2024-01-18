@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,6 +38,7 @@ import eu.mobcomputing.dima.registration.R
 
 @Composable
 fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false) {
+
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,7 +64,7 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean
         ) {
             Text(
                 text = value,
-                fontSize = 18.sp,
+                fontSize = if (isInPortraitMode()) 18.sp else 24.sp, // Adjust text size based on the screen orientation
                 color = colorResource(id = R.color.pink_100),
                 fontWeight = FontWeight.Bold
             )
@@ -117,3 +120,10 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
         }
     }
 }
+
+@Composable
+private fun isInPortraitMode(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+

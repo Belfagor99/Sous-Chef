@@ -9,12 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,6 +28,7 @@ import kotlinx.coroutines.delay
 
 // Constant defining length of visibility of the splash screen
 private const val SPLASH_TIMEOUT = 1000L
+
 /**
  * Composable function representing the Splash screen of the application.
  *
@@ -46,32 +48,25 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                colorResource(id = R.color.pink_50)
-            ),
+            .background(colorResource(id = R.color.pink_50)),
         contentAlignment = Alignment.Center
     ) {
-        Surface(
-            color = colorResource(id = R.color.pink_50),
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.pink_50))
-                .padding(18.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .aspectRatio(1f)
+                    .fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                ) {
-                    MyImageComponent(R.drawable.sous_chef, modifier = Modifier.fillMaxSize())
-                }
+                MyImageComponent(
+                    R.drawable.sous_chef,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
             CircularProgressIndicator()
         }
@@ -81,7 +76,8 @@ fun SplashScreen(
 /**
  * Preview annotation for previewing the Splash Screen in Android Studio.
  */
-@Preview
+@Preview(device = PIXEL_TABLET)
+@Preview(device = Devices.PIXEL_6)
 @Composable
 fun PreviewSplashScreen() {
     SplashScreen(
