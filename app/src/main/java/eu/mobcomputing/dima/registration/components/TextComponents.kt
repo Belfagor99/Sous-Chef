@@ -1,10 +1,8 @@
 package eu.mobcomputing.dima.registration.components
 
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
