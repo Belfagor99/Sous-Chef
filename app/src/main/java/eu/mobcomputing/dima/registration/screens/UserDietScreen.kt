@@ -112,7 +112,9 @@ fun UserDietScreen(
 
                 }
             }
-        } else {
+        }
+        // If the screen is wider, if it is a tablet
+        else {
             Row(
                 modifier = Modifier
                     .fillMaxSize()

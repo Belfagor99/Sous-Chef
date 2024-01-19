@@ -72,7 +72,9 @@ fun WelcomeScreen(navController: NavController, welcomeViewModel: WelcomeViewMod
                     isEnabled = true
                 )
             }
-        } else {
+        }
+        // If the screen is wider, if it is a tablet
+        else {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
