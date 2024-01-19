@@ -89,6 +89,7 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.50")
     implementation("androidx.compose.material3:material3-android:1.2.0-beta02")
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
 
 

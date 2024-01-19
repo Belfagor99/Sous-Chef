@@ -91,77 +91,10 @@ fun HomeScreen(
         val isSmallScreen = maxWidth < 600.dp
 
         if (isSmallScreen) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(25.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(end = 16.dp)
-                    ) {
-                        HeaderTextComponent(
-                            "Hi "+ homeViewModel.username.value,
-                            shouldBeCentered = false,
-                            shouldBeRed = false
-                        )
-                        Spacer(modifier = Modifier.height(15.dp))
-                        NormalTextComponent(
-                            "What would you like to cook today?",
-                            shouldBeCentered = false,
-                            shouldBeRed = true
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(2f)
-                            .aspectRatio(1f)
-                            .fillMaxWidth()
-                    ) {
-                        MyImageComponent(
-                            R.drawable.souschef_logo,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(5.dp))
-                Box(modifier = Modifier.padding(25.dp)) {
-                    NormalTextComponent(
-                        "I am your sous chef and I am ready to help you with your cooking today.",
-                        shouldBeCentered = false,
-                    )
-                }
-                Box(modifier = Modifier.padding(25.dp)) {
-                    NormalTextComponent(
-                        value = "Are you searching an ingredient?",
-                        shouldBeCentered = false,
-                        shouldBeRed = true
-                    )
-                }
-                Box(modifier = Modifier.padding(5.dp)) {
-                    SearchBar(onSearchTextChange = {}, onSearch = {})
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                Box(modifier = Modifier.padding(25.dp)) {
-                    NormalTextComponent(
-                        value = "Have a look in your pantry, there are some ingredients that must be used.",
-                        shouldBeCentered = false
-                    )
-                }
-
-                Spacer(Modifier.weight(1f))
-                NavigationBarComponent(
-                    navController = navController,
-                    selectedItemIndex = 0
-                )
-            }
+            eu.mobcomputing.dima.registration.screens.smartphone.HomeScreen(
+                navController = navController,
+                homeViewModel,
+            )
         } else {
             Column(
                 modifier = Modifier

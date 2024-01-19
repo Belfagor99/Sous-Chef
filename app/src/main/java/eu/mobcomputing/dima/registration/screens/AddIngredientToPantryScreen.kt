@@ -228,7 +228,7 @@ fun AddIngredientToPantry(
                     Toast.makeText(context,"Ingredient added to your pantry!",Toast.LENGTH_SHORT).show()
 
                     //go back to home
-                    navController.navigate(Screen.Home.route)
+                    navController.navigate(Screen.SearchIngredientScreen.route)
                 },
                 isEnabled = true)
 
