@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Recipe
 import eu.mobcomputing.dima.registration.models.User
@@ -136,13 +137,36 @@ class HomeViewModel : ViewModel() {
 
         if(response.isSuccessful){
             //get only the recipes with missedIngredients == 0
-            _recipes.value = response.body()?.filter {it.missedIngredientCount == 0}
+
+            val filteredByMissingIngredient : List<Recipe>? = response.body()?.filter {it.missedIngredientCount == 0}
+
+            if(!filteredByMissingIngredient.isNullOrEmpty()){
+                val ids = filteredByMissingIngredient.map { recipe -> recipe.id  }
+
+
+                val recipesBulkList :MutableList<Recipe> = mutableListOf()
+
+                for (id in ids){
+                   val res = APIService().api.getRecipeInfoById(id)
+                    Log.e("RES", res.body().toString())
+                   if (res.isSuccessful){
+                        recipesBulkList.add(res.body()!!)
+                   }
+                }
+
+                _recipes.value = recipesBulkList
+
+            }
+
 
 
             //TODO: filter the recipes based on user's diet and allergies
 
 
-            Log.e("HOME @ getAvailableRecipe",_recipes.value.toString())
+            val gson = Gson()
+
+
+            Log.e("HOME @ getAvailableRecipe",gson.toJson(_recipes.value))
             Log.e("COUNTER RECIPE", _recipes.value?.size.toString())
         }
     }

@@ -27,10 +27,10 @@ import com.google.gson.annotations.SerializedName
 data class Recipe(
         @SerializedName("id") val id: Int = 0,
         @SerializedName("image") val image: String = "",
-        @SerializedName("instructions") val instructions: String ?= "",
+        @SerializedName("analyzedInstructions") val instructions: List<AnalyzedInstruction> ?= null,
         @SerializedName("readyInMinutes") val readyInMinutes: Int = 0,
         @SerializedName("servings") val servings: Int = 0,
-        @SerializedName("summary") val summary: String ?= "",
+        //@SerializedName("summary") val summary: String ?= "",
         @SerializedName("title") val title: String = "",
         @SerializedName("cuisines") val cuisines: List<String> ?= null,
         @SerializedName("diets") val diets : List<String> ?= null,

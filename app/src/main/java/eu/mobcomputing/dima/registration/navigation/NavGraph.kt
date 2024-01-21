@@ -1,6 +1,7 @@
 package eu.mobcomputing.dima.registration.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -9,11 +10,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.gson.Gson
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.models.Recipe
 import eu.mobcomputing.dima.registration.screens.AddIngredientToPantry
 import eu.mobcomputing.dima.registration.screens.HomeScreen
 import eu.mobcomputing.dima.registration.screens.LogInScreen
 import eu.mobcomputing.dima.registration.screens.PantryScreen
 import eu.mobcomputing.dima.registration.screens.ProfileScreen
+import eu.mobcomputing.dima.registration.screens.RecipeDetailScreen
 import eu.mobcomputing.dima.registration.screens.SearchIngredientScreen
 import eu.mobcomputing.dima.registration.screens.SearchScreen
 import eu.mobcomputing.dima.registration.screens.SignUnSuccessfulScreen
@@ -130,6 +133,33 @@ fun SetUpNavGraph(navController: NavHostController) {
                 )
             }
         }
+
+
+        composable(route = Screen.RecipeDetail.route) { backStackEntry ->
+            // Extract the ingredientJSON from the route
+            val recipeJSON = backStackEntry.arguments?.getString("recipe") ?: ""
+
+            Log.e("###", recipeJSON)
+
+            //convert it back into object
+            val recipe: Recipe? = try {
+                val decodedString = URLDecoder.decode(recipeJSON, "utf-8")
+                Gson().fromJson(decodedString, Recipe::class.java)
+            } catch (e: Exception) {
+                null
+            }
+
+            Log.e("XXX",recipe.toString())
+
+            // Display the details screen using the extracted obj
+            recipe?.let {
+                RecipeDetailScreen(
+                    navController = navController,
+                    recipe = it
+                )
+            }
+        }
+
 
 
     }

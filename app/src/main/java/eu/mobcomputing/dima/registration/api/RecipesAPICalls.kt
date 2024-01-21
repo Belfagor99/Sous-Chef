@@ -58,8 +58,9 @@ interface RecipesAPICalls {
     @GET("/recipes/{id}/information")
     suspend fun getRecipeInfoById(
         @Path("id") id: Int,
-        @Query("includeNutrition") includeNutrition : Boolean = true,
+        @Query("includeNutrition") includeNutrition : Boolean = false,
     ): Response<Recipe>
+
 
 
 

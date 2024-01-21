@@ -18,4 +18,5 @@ sealed class Screen(val route: String) {
     data object SearchIngredientScreen: Screen(route="search_ingredients")
     data object AddIngredientToFridgeScreen : Screen(route = "addToFridge/{ingredient}")
     data object SplashScreen: Screen(route = "splash_screen")
+    data object RecipeDetail: Screen(route = "recipeDetail/{recipe}")
 }
