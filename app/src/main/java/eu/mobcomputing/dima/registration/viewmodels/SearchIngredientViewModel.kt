@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -102,6 +103,19 @@ class SearchIngredientViewModel @Inject constructor(
 
         }
     }
+
+
+
+    suspend fun getSelectedIngredientInfo(id : Int): Ingredient{
+        val response = APIService().api.getIngredientInfoById(id = id)
+
+        return if(response.isSuccessful){
+            response.body()!!
+        }else{
+            Ingredient()
+        }
+    }
+
 
 
 

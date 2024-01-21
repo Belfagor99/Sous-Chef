@@ -39,7 +39,7 @@ fun PantryIngredientGrid(ingredients: List<Ingredient>) {
 @Composable
 fun LazyVerticalGridComponentPreview() {
     // Preview your LazyVerticalGridComponent with sample data
-    val sampleIngredients = List(30) { index -> Ingredient(id = index, name = "Ingr $index", userQuantity = index) }
+    val sampleIngredients = List(30) { index -> Ingredient(id = index, name = "Ingr $index", userQuantity = index.toDouble()) }
     PantryIngredientGrid(
         ingredients = sampleIngredients,
     )

@@ -27,8 +27,18 @@ data class Ingredient (
     @SerializedName("image") val image: String = "",
     @SerializedName("original") val original: String = "",
     @SerializedName("amount") val amount: Double = 0.0,
-    @SerializedName("unit") val unit: String = "",
+    @SerializedName("unit") var unit: String = "",
     @SerializedName("consistency") val consistency: String = "",
     @SerializedName("expiring_date") var expiringDate: Date ?= null,
-    @SerializedName("user_quantity") var userQuantity: Int = 0,
+    @SerializedName("user_quantity") var userQuantity: Double = 0.00,
+
+    @SerializedName("possibleUnits") var possibleUnits: List<String> = emptyList(),
+
+    )
+
+data class ConvertedIngredient (
+    @SerializedName("sourceAmount") val sourceAmount: Double = 0.0,
+    @SerializedName("sourceUnit") val sourceUnit: String = "",
+    @SerializedName("targetAmount") val targetAmount: Double = 0.0,
+    @SerializedName("targetUnit") val targetUnit: String = "",
 )

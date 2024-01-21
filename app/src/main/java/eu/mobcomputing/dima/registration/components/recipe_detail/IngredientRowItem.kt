@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.utils.Constants
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -29,7 +30,7 @@ fun IngredientRowItem(
     ingredient : Ingredient
 ){
 
-    val BASE_IMG_URL="https://spoonacular.com/cdn/ingredients_100x100/"
+
 
     ElevatedCard(
         modifier = Modifier
@@ -53,7 +54,7 @@ fun IngredientRowItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GlideImage(
-                model = BASE_IMG_URL+ingredient.image,
+                model = Constants.BASE_IMG_URL+ingredient.image,
                 contentDescription = "recipe image",
                 modifier = Modifier
                     .size(100.dp),

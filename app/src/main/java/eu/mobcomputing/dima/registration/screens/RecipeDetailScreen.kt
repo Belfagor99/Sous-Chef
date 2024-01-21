@@ -133,7 +133,7 @@ fun RecipeDetailScreenPreview(){
                 unit="g",
                 consistency="",
                 expiringDate=null,
-                userQuantity=0
+                userQuantity=0.0
             ),
             Ingredient(
                 id=1001,
@@ -144,7 +144,7 @@ fun RecipeDetailScreenPreview(){
                 unit="tablespoons",
                 consistency="",
                 expiringDate=null,
-                userQuantity=0),
+                userQuantity=0.0),
             Ingredient(
                 id=1123,
                 name="egg",
@@ -154,7 +154,7 @@ fun RecipeDetailScreenPreview(){
                 unit="",
                 consistency="",
                 expiringDate=null,
-                userQuantity=0),
+                userQuantity=0.0),
             Ingredient(
                 id=10511282,
                 name="onion",
@@ -164,7 +164,7 @@ fun RecipeDetailScreenPreview(){
                 unit="small",
                 consistency="",
                 expiringDate=null,
-                userQuantity=0)
+                userQuantity=0.0)
         )
         , missedIngredientCount=0
     )

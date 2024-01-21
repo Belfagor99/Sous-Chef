@@ -88,7 +88,7 @@ fun SearchIngredientScreen(
                 ingredientsList.value?.let {
                     if (it.isNotEmpty()) {
                         //populate grid if ingredients found
-                        IngredientVerticalGrid(ingredients = it, navController)
+                        IngredientVerticalGrid(ingredients = it, navController,viewModel)
                     } else {
 
                         // Ingredients not found

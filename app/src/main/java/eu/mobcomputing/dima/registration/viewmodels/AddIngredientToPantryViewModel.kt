@@ -6,8 +6,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import eu.mobcomputing.dima.registration.api.APIService
+import eu.mobcomputing.dima.registration.models.ConvertedIngredient
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel class for handling the addition of ingredients to the user's pantry.
@@ -44,20 +50,65 @@ class AddIngredientToPantryViewModel : ViewModel() {
                         val array = documentSnapshot.toObject(User::class.java)?.ingredientsInPantry
 
                         if (array != null) {
-                            val existingIngredient = array.find { it.name  == ingredientToAdd.name }
+                            val existingIngredientsByName = array.filter { it.name  == ingredientToAdd.name }
 
-                            if (existingIngredient != null) {
-                                // Object with the specified name already exists, increment the userQuantity
-                                val index = array.indexOf(existingIngredient)
+                            Log.e("PD",existingIngredientsByName.toString())
 
-                                val updatedQuantity = existingIngredient.userQuantity +  ingredientToAdd.userQuantity
+                            if (existingIngredientsByName.isNotEmpty()) {
 
-                                array[index].userQuantity = updatedQuantity
+                                val existingIngredientsByUnit = existingIngredientsByName.filter { it.unit == ingredientToAdd.unit }
 
-                                Log.e("CHECK","Already there. New amount: ${array[index].userQuantity}")
+                                // if i cant find an ingredeint with same unit , try to convert
+                                if(existingIngredientsByUnit.isEmpty()) {
+                                    // Object with the specified name already exists, increment the userQuantity
+                                    val index = array.indexOf(existingIngredientsByName[0])
 
-                                //update all the array in firestore (seems that Firestore can't update just a value from the array)
-                                userDoc!!.update("ingredientsInPantry", array)
+
+                                    /**
+                                     * Try to convert amount ingrToAdd to the unit of the already present ingr
+                                     * if not successful just add it to the db
+                                     * */
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        val response = APIService().api.convertIngredientAmount(
+                                            ingredientName = ingredientToAdd.name,
+                                            sourceAmount = ingredientToAdd.userQuantity,
+                                            sourceUnit = ingredientToAdd.unit,
+                                            targetUnit = existingIngredientsByName[0].unit
+                                        )
+                                        if (response.isSuccessful){
+                                            val convertedIngredient = response.body()!!
+                                            Log.e("CONVERTING", "Already there. Converting ... $convertedIngredient")
+
+                                            //TODO: update the userquantity with the converted value
+
+                                            val updatedQuantity = existingIngredientsByName[0].userQuantity +  convertedIngredient.targetAmount
+
+                                            array[index].userQuantity = updatedQuantity
+
+                                            Log.e("CONVERTED","Already there. New amount: ${array[index].userQuantity}")
+
+                                            //update all the array in firestore (seems that Firestore can't update just a value from the array)
+                                            userDoc!!.update("ingredientsInPantry", array)
+
+                                        }else{
+                                            userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
+                                            Log.e("NOT CONVERTED -> ADDED","Added to db")
+                                        }
+                                    }
+                                }else{
+                                    //just update its user quantity
+                                    val index = array.indexOf(existingIngredientsByUnit[0])
+                                    val updatedQuantity = existingIngredientsByUnit[0].userQuantity +  ingredientToAdd.userQuantity
+
+                                    array[index].userQuantity = updatedQuantity
+
+                                    Log.e("UPDATING QNT","Already there. New amount: ${array[index].userQuantity}")
+
+                                    //update all the array in firestore (seems that Firestore can't update just a value from the array)
+                                    userDoc!!.update("ingredientsInPantry", array)
+
+
+                                }
 
                             } else {
                                 // Object with the specified name doesn't exist, add it to the array

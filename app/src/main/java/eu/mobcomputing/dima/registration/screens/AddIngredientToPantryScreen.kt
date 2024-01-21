@@ -4,11 +4,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -18,6 +24,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +33,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
@@ -36,16 +46,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.add_ingredients.DatePickerView
-import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.add_ingredients.QuantitySelector
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.viewmodels.AddIngredientToPantryViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+import eu.mobcomputing.dima.registration.utils.Constants
 
 
 /**
@@ -54,12 +66,12 @@ import java.util.Locale
  * @param navController The NavController for navigation within the application.
  * @param ingredient The ingredient to be added to the fridge.
  */
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun AddIngredientToPantry(
     navController: NavController,
     ingredient: Ingredient,
-    //TODO: add view model
-     addIngredientToPantryViewModel: AddIngredientToPantryViewModel = viewModel()
+    addIngredientToPantryViewModel: AddIngredientToPantryViewModel = viewModel()
 
 ) {
 
@@ -121,22 +133,70 @@ fun AddIngredientToPantry(
                 modifier = Modifier
                     .weight(1f)
                     .padding(10.dp),
-                verticalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.SpaceBetween
 
             ){
 
+                ElevatedCard (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.3f)
+                        .padding(10.dp),
 
-                HeaderTextComponent(
-                    value =  ingredient.name
-                )
+                    shape = CardDefaults.shape,
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White,
+                        contentColor = Color.Black,
+                    ),
+                ) {
+                    Row{
+
+                        Box(modifier = Modifier.weight(1f)){
+
+                            GlideImage(
+                                model = Constants.BASE_IMG_URL+ingredient.image ,
+                                contentDescription = "recipe image",
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.FillBounds,
+                            )
+                        }
+                        Box(modifier = Modifier.weight(1f)) {
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                            ) {
+
+                                Text(
+                                    text = ingredient.name,
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                    ),
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .weight(1f)
+                                        .wrapContentSize()
+                                        .align(Alignment.Start),
+                                )
+
+
+
+                            }
+
+                        }
+                    }
+                }
+
 
                 /*
                  * Quantity selector row
                  */
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                ){
+                Column{
 
                     Text(
                         text = "Select the quantity: ",
@@ -147,15 +207,20 @@ fun AddIngredientToPantry(
                         ),
                         modifier = Modifier
                             .padding(8.dp)
-                            .weight(1f)
+                            //.weight(1f)
                     )
 
 
                     QuantitySelector(
                         onQuantityChange = {
-                            ingredient.userQuantity=it
+                            ingredient.userQuantity = it
                         },
-                        modifier = Modifier.weight(1f)
+                        onUnitChange = {
+                            ingredient.unit = it
+                            Log.e("@@@@@@",ingredient.unit)
+                            Log.e("@@@@@@",it)
+                        },
+                        listOfUnits = ingredient.possibleUnits
                         )
                 }
 
@@ -217,10 +282,12 @@ fun AddIngredientToPantry(
                 value = "Add to pantry",
                 onClickAction = {
                     // be sure to put a quantity at least  = 1
-                    if (ingredient.userQuantity==0){
-                        ingredient.userQuantity=1
+                    if (ingredient.userQuantity==0.0){
+                        ingredient.userQuantity=1.0
                     }
-
+                    if (ingredient.unit==""){
+                        ingredient.unit=ingredient.possibleUnits[0]
+                    }
                     Log.e("ADDING", ingredient.toString())
                     addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
 

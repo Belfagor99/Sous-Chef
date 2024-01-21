@@ -78,7 +78,7 @@ fun PantryIngredientItem(ingredient: Ingredient) {
                         top = 5.dp,
                         end = 20.dp
                     ),
-                    text = "x"+ingredient.userQuantity.toString(),
+                    text = ingredient.userQuantity.toString()+" "+ingredient.unit,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.inverseOnSurface,
@@ -95,7 +95,7 @@ fun PantryIngredientItem(ingredient: Ingredient) {
 @Preview
 @Composable
 fun AppPreview() {
-    val ingredient = Ingredient(name = "Eggs", userQuantity = 2)
+    val ingredient = Ingredient(name = "Eggs", userQuantity = 2.0, unit = "units")
     MaterialTheme {
         PantryIngredientItem(ingredient= ingredient,)
     }

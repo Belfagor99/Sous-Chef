@@ -2,16 +2,23 @@ package eu.mobcomputing.dima.registration.components.add_ingredients
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +36,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
+import eu.mobcomputing.dima.registration.components.user.CharacteristicsEditorDialog
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  * Composable function representing a quantity selector with a text field and buttons to increase or decrease the quantity.
@@ -39,34 +50,33 @@ import androidx.compose.ui.unit.sp
  */
 @Composable
 fun QuantitySelector(
-    modifier: Modifier = Modifier,
-    initialQuantity: Int = 1,
-    onQuantityChange: (Int) -> Unit,
+    initialQuantity: Double = 1.0,
+    onQuantityChange: (Double) -> Unit,
+    onUnitChange: (String) -> Unit,
+    listOfUnits : List<String>,
 ) {
-    var quantity by remember { mutableStateOf(initialQuantity) }
+    var quantity by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+    /*
+     * State variables for the date picker
+     */
+    var selectedUnit by remember {
+        mutableStateOf(listOfUnits[0])
+    }
+
+    var showUnitSelectorDialog by remember {
+        mutableStateOf(false)
+    }
 
 
 
     Row(
         modifier = Modifier
             .padding(8.dp)
-            .wrapContentSize(),
+            .height(100.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-
-        //--------------- MINUS BUTTON -------------------
-        IconButton(
-            onClick = {
-                if (quantity > 1) {
-                    quantity--
-                    onQuantityChange(quantity)
-                }
-            }
-        ) {
-            Icon(Icons.Default.Remove, contentDescription = "Remove")
-        }
 
         //--------------- TEXT FIELD -------------------
         OutlinedTextField(
@@ -79,9 +89,8 @@ fun QuantitySelector(
 
             value = quantity.toString(),
             onValueChange = {
-                val newQuantity = it.toIntOrNull() ?: 1
-                quantity = if (newQuantity > 0) newQuantity else 1
-                onQuantityChange(quantity)
+                if(it.isNotEmpty() && it.isDigitsOnly())
+                    quantity = it
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -90,32 +99,63 @@ fun QuantitySelector(
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
+                    onQuantityChange(quantity.toDouble())
                 }
             ),
             modifier = Modifier
                 .padding(8.dp)
-                .width(80.dp),
+                //.width(80.dp)
+                .fillMaxHeight()
+                .weight(1f),
         )
 
         //--------------- PLUS BUTTON -------------------
-        IconButton(
-
+        OutlinedButton(
             onClick = {
-                quantity++
-                onQuantityChange(quantity)
-            }
+                showUnitSelectorDialog = true
+            },
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(8.dp),
+            shape = RoundedCornerShape(corner = CornerSize(4.dp))
+
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Add")
+            Text(
+                text = selectedUnit,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Normal,
+                ),
+            )
         }
 
+    }
+
+    if (showUnitSelectorDialog) {
+        CharacteristicsEditorDialog(
+            onDismissRequest = { showUnitSelectorDialog = false },
+            dialogTitle = "Select  the unit type",
+            userCharacteristics = listOfUnits,
+            singleSelection = true,
+            onConfirmation = { it ->
+                selectedUnit = it[0]
+                onUnitChange(selectedUnit)
+                showUnitSelectorDialog = false
+            },
+        )
     }
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun QuantitySelectorPreview(){
    QuantitySelector(
-       onQuantityChange = {}
+
+       onQuantityChange = {},
+       onUnitChange = {},
+       listOfUnits = listOf("cup","tablespoon")
    )
 }
