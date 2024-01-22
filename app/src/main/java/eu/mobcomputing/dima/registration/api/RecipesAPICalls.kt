@@ -53,15 +53,15 @@ interface RecipesAPICalls {
      * The [getRecipeInfoById] method retrieves detailed information about a specific recipe identified
      * by its ID. The function includes an option to include nutrition information in the response.
      *
-     * @param id -> requested recipe's id.
+     * @param ids -> List of ids coma separates
      *
      * @return The function return a Response objects containing the requested recipe information
      * */
-    @GET("/recipes/{id}/information")
+    @GET("/recipes/informationBulk")
     suspend fun getRecipeInfoById(
-        @Path("id") id: Int,
+        @Query("ids") ids: String,
         @Query("includeNutrition") includeNutrition : Boolean = false,
-    ): Response<Recipe>
+    ): Response<List<Recipe>>
 
 
 

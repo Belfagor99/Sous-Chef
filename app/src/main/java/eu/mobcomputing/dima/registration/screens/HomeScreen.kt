@@ -126,7 +126,7 @@ fun HomeScreen(
                     ) {
 
                         HeaderTextComponent(
-                            "Hi "+ homeViewModel.username.value,
+                            "Hi ",
                             shouldBeCentered = false,
                             shouldBeRed = false
                         )

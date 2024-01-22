@@ -28,9 +28,8 @@ class HomeViewModel : ViewModel() {
      */
     var userDoc : DocumentReference? = getUserDocumentRef()
 
-    private val _username = MutableLiveData<String>()
-    val username: LiveData<String>
-        get() = _username
+    private var _name = MutableLiveData<String>()
+    var name : LiveData<String> = _name
 
 
     /**
@@ -141,22 +140,24 @@ class HomeViewModel : ViewModel() {
             val filteredByMissingIngredient : List<Recipe>? = response.body()?.filter {it.missedIngredientCount == 0}
 
             if(!filteredByMissingIngredient.isNullOrEmpty()){
-                val ids = filteredByMissingIngredient.map { recipe -> recipe.id  }
+                val ids = filteredByMissingIngredient.map { recipe -> recipe.id  }.joinToString(separator = ",")
 
 
-                val recipesBulkList :MutableList<Recipe> = mutableListOf()
+                var recipesBulkList : List<Recipe> = emptyList()
 
-                for (id in ids){
-                   val res = APIService().api.getRecipeInfoById(id)
-                    Log.e("RES", res.body().toString())
-                   if (res.isSuccessful){
-                        recipesBulkList.add(res.body()!!)
-                   }
+
+                val res = APIService().api.getRecipeInfoById(ids)
+                Log.e("RES", res.body().toString())
+
+                if (res.isSuccessful){
+                    recipesBulkList = res.body()!!
                 }
 
                 _recipes.value = recipesBulkList
-
             }
+
+
+        }
 
 
 
@@ -169,36 +170,9 @@ class HomeViewModel : ViewModel() {
             Log.e("HOME @ getAvailableRecipe",gson.toJson(_recipes.value))
             Log.e("COUNTER RECIPE", _recipes.value?.size.toString())
         }
-    }
 
 
-    /**
-     *  Fetching user's name from Firestore based on the provided userID.
-     *
-     * @param userID userID that serves as document identifier.
-     *
-     */
-    private fun fetchUserName(userID: String) {
-        val db = FirebaseFirestore.getInstance()
-        val userDocumentRef: DocumentReference = db.collection("users").document(userID)
 
-        // Use viewModelScope for coroutine management
-        viewModelScope.launch {
-            try {
-                val documentSnapshot = userDocumentRef.get().await()
-
-                if (documentSnapshot.exists()) {
-                    val user = documentSnapshot.toObject(User::class.java)
-                    user?.let {
-                        // Update the userName property
-                        _username.postValue(it.firstName)
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error fetching user document", e)
-            }
-        }
-    }
 
     /**
      * Helper function that retrieves the DocumentReference for the current user from Firestore.
@@ -208,7 +182,17 @@ class HomeViewModel : ViewModel() {
     private fun getUserDocumentRef(): DocumentReference? {
         FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
             val db = FirebaseFirestore.getInstance()
-            return db.collection("users").document(userID)
+            val doc = db.collection("users").document(userID)
+
+            doc.get().addOnSuccessListener {
+                if (it.exists()) {
+                    val user = (it.toObject(User::class.java))!!
+                    _name.value = user.firstName
+
+                }
+            }
+
+            return doc
 
         } ?: run {
             Log.d("HOME @ getUserDocRef", "USER is not logged in")

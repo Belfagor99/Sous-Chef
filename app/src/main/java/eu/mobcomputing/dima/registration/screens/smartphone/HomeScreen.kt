@@ -34,6 +34,9 @@ fun HomeScreen(
     // Observe the LiveData containing the list of Ingredients
     val recipesList = homeViewModel.recipes.observeAsState()
 
+    // Observe the LiveData containing the list of Ingredients
+    val username = homeViewModel.name.observeAsState()
+
 
 
     Column(
@@ -56,7 +59,7 @@ fun HomeScreen(
                         .align(Alignment.CenterVertically)
                 ) {
                     HeaderTextComponent(
-                        "Hi ${homeViewModel.username.value}",
+                        "Hi ${username.value}",
                         shouldBeCentered = false,
                         shouldBeRed = false
                     )
