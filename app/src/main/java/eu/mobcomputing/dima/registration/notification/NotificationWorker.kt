@@ -39,6 +39,7 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
     override fun doWork(): Result = runBlocking {
         // Fetch user data and decide whether to send a notification
         var shouldSendNotification = false
+        var numberOfIngredients = 0
 
         FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
             val pantryResult = fetchUserPantry(userID)
@@ -51,12 +52,15 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
 
                 if (checkPantryResult.isNotEmpty()) {
                     shouldSendNotification = true
+                    numberOfIngredients = checkPantryResult.size
+
                 }
             }
 
+
         }
         if (shouldSendNotification) {
-            sendNotification("Notification Title", "Notification Content")
+            sendNotification("Ingredients Notification", numberOfIngredients)
         }
 
         Result.success()
@@ -136,11 +140,14 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
      * Sends a notification using the MyMessagingService.
      *
      * @param title The title of the notification.
-     * @param content The content of the notification.
+     * @param numberOfIngredients The number of ingredients to be used.
      */
-    private fun sendNotification(title: String, content: String) {
+    private fun sendNotification(title: String, numberOfIngredients: Int) {
         val myFirebaseMessagingService = MyMessagingService()
+        val message = "There are $numberOfIngredients ingredients you must use." +
+                "Open your pantry to see."
+
         // Call the showNotification function
-        myFirebaseMessagingService.showNotification(title, content)
+        myFirebaseMessagingService.showNotification(title, message)
     }
 }
