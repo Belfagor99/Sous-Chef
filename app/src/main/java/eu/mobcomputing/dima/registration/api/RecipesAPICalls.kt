@@ -3,6 +3,7 @@ package eu.mobcomputing.dima.registration.api
 import eu.mobcomputing.dima.registration.models.ConvertedIngredient
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.Recipe
+import eu.mobcomputing.dima.registration.models.Result
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -79,6 +80,26 @@ interface RecipesAPICalls {
         @Query("targetUnit") targetUnit : String,
     ): Response<ConvertedIngredient>
 
+
+
+    @GET("/recipes/complexSearch")
+    suspend fun getRecipesComplexSearch(
+        @Query("diet") diet : String,
+        @Query("intolerances") intollerances : String,
+        @Query("includeIngredients") includeIngredients: String,
+        @Query("instructionsRequired") instructionRequired: Boolean = true,
+        @Query("fillIngredients") fillIngredient: Boolean = true,
+        @Query("addRecipeInformation") addRecipeInformation : Boolean = true,
+        @Query("number") number: Int = 10,
+        @Query("ignorePantry ") ignorePantry : Boolean = true,
+    ): Response<Result>
+
+
+    @GET("/food/ingredients/search")
+    suspend fun searchIngredient(
+        @Query("query") query : String,
+        @Query("number") number : Int,
+    ): Response<Result>
 
 
 

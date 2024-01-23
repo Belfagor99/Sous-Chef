@@ -33,8 +33,6 @@ fun RecipeGrid(recipes: List<Recipe>, navController: NavController) {
                     RecipeCardItem(it,navController= navController)
                 }
             }
-
-            HeaderTextComponent(value = "that's all")
         }
     }
 }

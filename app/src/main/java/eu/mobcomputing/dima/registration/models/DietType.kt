@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 
 // Enum class representing different diet types.
 enum class DietType(val diet: String) {
-    VEGAN("Vegan"),
-    VEGETARIAN("Vegetarian"),
-    GLUTEN_FREE("Gluten free"),
-    LACTOSE_VEGETARIAN("Lacto-\nVegetarian"),
-    PESCETARIAN("Pescetarian"),
-    OMNIVORE("Omnivore"),
+    VEGAN("vegan"),
+    VEGETARIAN("vegetarian"),
+    GLUTEN_FREE("gluten free"),
+    LACTOSE_VEGETARIAN("lacto vegetarian"),
+    PESCETARIAN("pescetarian"),
+    OMNIVORE("omnivore"),
 }
 
 // Data class representing a diet option.

@@ -133,7 +133,7 @@ fun AddIngredientToPantry(
                 modifier = Modifier
                     .weight(1f)
                     .padding(10.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceEvenly
 
             ){
 
@@ -157,7 +157,7 @@ fun AddIngredientToPantry(
                         Box(modifier = Modifier.weight(1f)){
 
                             GlideImage(
-                                model = Constants.BASE_IMG_URL+ingredient.image ,
+                                model = Constants.BASE_IMG_URL_500+ingredient.image ,
                                 contentDescription = "recipe image",
                                 modifier = Modifier
                                     .fillMaxSize(),
@@ -196,6 +196,7 @@ fun AddIngredientToPantry(
                 /*
                  * Quantity selector row
                  */
+                /*
                 Column{
 
                     Text(
@@ -223,7 +224,7 @@ fun AddIngredientToPantry(
                         listOfUnits = ingredient.possibleUnits
                         )
                 }
-
+*/
 
                 /*
                  * Expiration date row
@@ -282,18 +283,22 @@ fun AddIngredientToPantry(
                 value = "Add to pantry",
                 onClickAction = {
                     // be sure to put a quantity at least  = 1
-                    if (ingredient.userQuantity==0.0){
+                    /*if (ingredient.userQuantity==0.0){
                         ingredient.userQuantity=1.0
                     }
                     if (ingredient.unit==""){
                         ingredient.unit=ingredient.possibleUnits[0]
-                    }
+                    }*/
                     Log.e("ADDING", ingredient.toString())
-                    addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
+                    val exit = addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
 
-                    //notify user
-                    Toast.makeText(context,"Ingredient added to your pantry!",Toast.LENGTH_SHORT).show()
-
+                    if (exit){
+                        //notify user
+                        Toast.makeText(context,"Ingredient added to your pantry!",Toast.LENGTH_SHORT).show()
+                    }else{
+                        //notify user
+                        Toast.makeText(context,"Ingredient already in your pantry!",Toast.LENGTH_SHORT).show()
+                    }
                     //go back to home
                     navController.navigate(Screen.SearchIngredientScreen.route)
                 },

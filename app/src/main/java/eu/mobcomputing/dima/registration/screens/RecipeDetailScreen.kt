@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,21 +17,30 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
+import eu.mobcomputing.dima.registration.components.recipe_detail.CompletedRecipeDialog
 import eu.mobcomputing.dima.registration.components.recipe_detail.IngredientRowList
 import eu.mobcomputing.dima.registration.components.recipe_detail.RecipeHeaderInfo
 import eu.mobcomputing.dima.registration.components.recipe_detail.RecipeInstructionList
+import eu.mobcomputing.dima.registration.components.user.CharacteristicsEditorDialog
 import eu.mobcomputing.dima.registration.models.AnalyzedInstruction
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.Instruction
 import eu.mobcomputing.dima.registration.models.Recipe
+import eu.mobcomputing.dima.registration.viewmodels.PantryViewModel
 
 /**
  * Composable function for displaying the recipe details' screen.
@@ -43,15 +53,24 @@ import eu.mobcomputing.dima.registration.models.Recipe
 fun RecipeDetailScreen(
     navController: NavController,
     recipe: Recipe,
+    viewModel : PantryViewModel = hiltViewModel(),
 ) {
 
     val listState = rememberLazyListState()
+
+    var showRecipeCompletedDialog by remember {
+        mutableStateOf(0)
+    }
+    /*
+    *   Get local context for Toast message
+    * */
+    val context = LocalContext.current
 
 
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { },
+                onClick = { showRecipeCompletedDialog = 1 },
                 icon = { Icon(Icons.Filled.Done, "Recipe Done.") },
                 text = { Text(text = "Recipe completed") },
                 expanded = !listState.isScrollInProgress
@@ -95,6 +114,24 @@ fun RecipeDetailScreen(
                 }
             }
         }
+
+
+        if(showRecipeCompletedDialog == 1){
+            CompletedRecipeDialog(
+                onDismissRequest = { showRecipeCompletedDialog =0 },
+                onConfirmation = { selected ->
+                    viewModel.removeFromPantry(selected)
+                    showRecipeCompletedDialog = 0
+                    reloadScreen(navController)
+                    Toast.makeText(context,"Yummy! I removed the ingredients from your digital pantry", Toast.LENGTH_SHORT).show()
+                },
+                dialogTitle = "Selects which ingredients are finished",
+                ingredients = recipe.ingredients!!,
+            )
+        }
+
+
+
     }
 }
 

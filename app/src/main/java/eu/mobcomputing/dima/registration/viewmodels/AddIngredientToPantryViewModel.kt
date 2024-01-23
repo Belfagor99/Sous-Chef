@@ -33,7 +33,9 @@ class AddIngredientToPantryViewModel : ViewModel() {
      *
      * @param ingredientToAdd The ingredient to be added to the pantry.
      */
-    fun addIngredientToPantry( ingredientToAdd: Ingredient) {
+    fun addIngredientToPantry( ingredientToAdd: Ingredient) : Boolean {
+
+        var exit : Boolean = false
 
         try {
             if (userDoc == null){
@@ -52,67 +54,13 @@ class AddIngredientToPantryViewModel : ViewModel() {
                         if (array != null) {
                             val existingIngredientsByName = array.filter { it.name  == ingredientToAdd.name }
 
-                            Log.e("PD",existingIngredientsByName.toString())
-
                             if (existingIngredientsByName.isNotEmpty()) {
-
-                                val existingIngredientsByUnit = existingIngredientsByName.filter { it.unit == ingredientToAdd.unit }
-
-                                // if i cant find an ingredeint with same unit , try to convert
-                                if(existingIngredientsByUnit.isEmpty()) {
-                                    // Object with the specified name already exists, increment the userQuantity
-                                    val index = array.indexOf(existingIngredientsByName[0])
-
-
-                                    /**
-                                     * Try to convert amount ingrToAdd to the unit of the already present ingr
-                                     * if not successful just add it to the db
-                                     * */
-                                    CoroutineScope(Dispatchers.Main).launch {
-                                        val response = APIService().api.convertIngredientAmount(
-                                            ingredientName = ingredientToAdd.name,
-                                            sourceAmount = ingredientToAdd.userQuantity,
-                                            sourceUnit = ingredientToAdd.unit,
-                                            targetUnit = existingIngredientsByName[0].unit
-                                        )
-                                        if (response.isSuccessful){
-                                            val convertedIngredient = response.body()!!
-                                            Log.e("CONVERTING", "Already there. Converting ... $convertedIngredient")
-
-                                            //TODO: update the userquantity with the converted value
-
-                                            val updatedQuantity = existingIngredientsByName[0].userQuantity +  convertedIngredient.targetAmount
-
-                                            array[index].userQuantity = updatedQuantity
-
-                                            Log.e("CONVERTED","Already there. New amount: ${array[index].userQuantity}")
-
-                                            //update all the array in firestore (seems that Firestore can't update just a value from the array)
-                                            userDoc!!.update("ingredientsInPantry", array)
-
-                                        }else{
-                                            userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
-                                            Log.e("NOT CONVERTED -> ADDED","Added to db")
-                                        }
-                                    }
-                                }else{
-                                    //just update its user quantity
-                                    val index = array.indexOf(existingIngredientsByUnit[0])
-                                    val updatedQuantity = existingIngredientsByUnit[0].userQuantity +  ingredientToAdd.userQuantity
-
-                                    array[index].userQuantity = updatedQuantity
-
-                                    Log.e("UPDATING QNT","Already there. New amount: ${array[index].userQuantity}")
-
-                                    //update all the array in firestore (seems that Firestore can't update just a value from the array)
-                                    userDoc!!.update("ingredientsInPantry", array)
-
-
-                                }
-
+                                // Object with the specified name already exist, not add
+                                exit = false
                             } else {
                                 // Object with the specified name doesn't exist, add it to the array
                                 userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
+                                exit = true
                             }
                         }else{
                             Log.e("CHECK","array seems to be null!")
@@ -131,6 +79,8 @@ class AddIngredientToPantryViewModel : ViewModel() {
             Log.e("ADD TO PANTRY", "Error adding ingredient to user's pantry", e)
 
         }
+
+        return exit
     }
 
 

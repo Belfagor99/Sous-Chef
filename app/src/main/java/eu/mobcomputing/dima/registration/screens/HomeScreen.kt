@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -42,6 +44,7 @@ import eu.mobcomputing.dima.registration.components.NormalTextComponent
 import eu.mobcomputing.dima.registration.components.SearchBar
 import eu.mobcomputing.dima.registration.utils.Constants
 import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Composable function representing the Home screen of the application.

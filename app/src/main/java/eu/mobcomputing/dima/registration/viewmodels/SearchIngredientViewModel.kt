@@ -43,7 +43,7 @@ class SearchIngredientViewModel @Inject constructor(
      */
     init {
         viewModelScope.launch {
-            loadIngredientFromCsv()
+            //loadIngredientFromCsv()
         }
 
     }
@@ -103,6 +103,31 @@ class SearchIngredientViewModel @Inject constructor(
 
         }
     }
+
+
+
+
+    suspend fun searchIngredient( toSearch : String ){
+
+        val response = APIService().api.searchIngredient(
+            query = toSearch,
+            number = 30
+        )
+
+        if (response.isSuccessful){
+            _ingredients.value = response.body()?.results
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 

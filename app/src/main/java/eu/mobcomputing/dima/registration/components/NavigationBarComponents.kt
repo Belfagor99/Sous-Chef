@@ -43,12 +43,15 @@ fun NavigationBarComponent(
                 selected = selectedItemIndex == index,
                 onClick = {
                     navController.navigate(bottomNavigationItem.screen.route) {
-                        navController.graph.startDestinationRoute?.let { screenRoute ->
+                        navController.graph.id.let { screenRoute ->
                             popUpTo(screenRoute) {
                                 saveState = true
+                                inclusive = true
                             }
+
                         }
-                        launchSingleTop = true
+
+                        launchSingleTop = false
                     }
                 },
                 label = {

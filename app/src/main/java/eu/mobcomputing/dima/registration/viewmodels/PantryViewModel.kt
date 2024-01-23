@@ -2,15 +2,20 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.models.Recipe
 import eu.mobcomputing.dima.registration.models.User
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -61,7 +66,9 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
                     if (documentSnapshot.exists()) {
 
                         // get ingredient List from firestore user's document
-                        val ingredientsList = (documentSnapshot.toObject(User::class.java))!!.ingredientsInPantry
+                        val ingredientsList = (documentSnapshot.toObject(User::class.java))!!.ingredientsInPantry.sortedBy {
+                            it.name.toLowerCase()
+                        }
 
                         _ingredients.value= ingredientsList
                         Log.e("CHECK",_ingredients.toString())
@@ -105,6 +112,29 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
 
         }
     }
+
+
+
+
+    fun removeFromPantry(ingredientsRecipe: List<Ingredient>){
+
+        userDoc?.get()!!.addOnSuccessListener {
+            if(it.exists()){
+                var pantry = it.toObject(User::class.java)?.ingredientsInPantry
+
+                ingredientsRecipe.forEach { ingrRecipe ->
+                    pantry = pantry?.filter { ingredient -> ingredient.id != ingrRecipe.id   }
+                }
+
+                Log.e("NEW PANTRY ",pantry.toString())
+
+                //update the doc
+                userDoc!!.update("ingredientsInPantry", pantry)
+            }
+        }
+    }
+
+
 
 
     /**

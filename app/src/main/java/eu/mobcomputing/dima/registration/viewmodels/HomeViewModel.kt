@@ -1,6 +1,8 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,18 +11,26 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.api.APIService
+import eu.mobcomputing.dima.registration.models.DietType
+import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.Recipe
 import eu.mobcomputing.dima.registration.models.User
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import retrofit2.http.Query
+import javax.inject.Inject
 
 
 /**
  * ViewModel for the home screen responsible for handling home screen.
  */
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    application: Application,
+) : AndroidViewModel(application)  {
     private val TAG = HomeViewModel::class.simpleName
 
     /**
@@ -31,6 +41,9 @@ class HomeViewModel : ViewModel() {
     private var _name = MutableLiveData<String>()
     var name : LiveData<String> = _name
 
+    private var userDiet : DietType? = null
+    private var userPantry : List<Ingredient> = emptyList()
+    private var userIntolerances : String =""
 
     /**
      * LiveData containing the list of recipes based on the ingredients contained in the user's pantry.
@@ -50,8 +63,6 @@ class HomeViewModel : ViewModel() {
             getIngredientsListAsString()
         }
     }
-
-
 
 
     /**
@@ -119,32 +130,35 @@ class HomeViewModel : ViewModel() {
      */
     private suspend fun getAvailableRecipe(){
 
+        //update userDiet if it has been modified
+        updateUserDietType(userDoc!!)
+        getUserPantry(userDoc!!)
+        getUserIntolerances(userDoc!!)
 
-        Log.e("INGR LIST", ingredientsAsString.value.toString())
+        Log.e("CHECK USER DIET", userDiet!!.diet)
+        Log.e("CHECK USER PANTRY", userPantry.toString())
+        Log.e("CHECK USER INTOLERANCES", userIntolerances)
+        Log.e("CHECK RECIPE INGR LIST", ingredientsAsString.value.toString())
 
         val response = APIService().api.getRecipesByIngredients(
             ingredients = ingredientsAsString.value.toString(),
             ranking = 2,
             number = 20,
-            ignorePantry = true,
         )
 
-        Log.e("INGR LIST", response.body()?.size.toString())
-
+        Log.e("RECIPE COUNTER BEF MISSING INGR", response.body()?.size.toString())
         Log.e("RESPONSE",response.body().toString())
 
 
         if(response.isSuccessful){
             //get only the recipes with missedIngredients == 0
-
             val filteredByMissingIngredient : List<Recipe>? = response.body()?.filter {it.missedIngredientCount == 0}
 
+
+            //of this get all recipe info (bulk version)
+            var recipesBulkList : List<Recipe> = emptyList()
             if(!filteredByMissingIngredient.isNullOrEmpty()){
                 val ids = filteredByMissingIngredient.map { recipe -> recipe.id  }.joinToString(separator = ",")
-
-
-                var recipesBulkList : List<Recipe> = emptyList()
-
 
                 val res = APIService().api.getRecipeInfoById(ids)
                 Log.e("RES", res.body().toString())
@@ -153,23 +167,40 @@ class HomeViewModel : ViewModel() {
                     recipesBulkList = res.body()!!
                 }
 
-                _recipes.value = recipesBulkList
             }
 
+            Log.e("RECIPES W/ 0 INGR ", recipesBulkList.size.toString())
 
+            // filter the recipe based on user's diet type
+            //if is not omnivore filter the recipe, otherwise all recipe are good
+            if(userDiet!=null && userDiet!=DietType.OMNIVORE){
+
+                if(userDiet == DietType.LACTOSE_VEGETARIAN) {
+                    recipesBulkList = recipesBulkList
+                        .filter { recipe ->
+                            (recipe.diets!!.contains("lacto vegetarian") or
+                                    recipe.diets!!.contains("lacto ovo vegetarian"))
+                        }
+                }else{
+                    recipesBulkList = recipesBulkList.filter { recipe -> recipe.diets?.contains(userDiet!!.diet)
+                        ?: false }
+                }
+
+
+            }
+            Log.e("RECIPES BY DIET ", recipesBulkList.size.toString())
+
+
+            _recipes.value = recipesBulkList
         }
 
 
-
-            //TODO: filter the recipes based on user's diet and allergies
-
-
-            val gson = Gson()
+        val gson = Gson()
 
 
-            Log.e("HOME @ getAvailableRecipe",gson.toJson(_recipes.value))
-            Log.e("COUNTER RECIPE", _recipes.value?.size.toString())
-        }
+        Log.e("HOME @ getAvailableRecipe",gson.toJson(_recipes.value))
+        Log.e("COUNTER RECIPE", _recipes.value?.size.toString())
+    }
 
 
 
@@ -184,13 +215,7 @@ class HomeViewModel : ViewModel() {
             val db = FirebaseFirestore.getInstance()
             val doc = db.collection("users").document(userID)
 
-            doc.get().addOnSuccessListener {
-                if (it.exists()) {
-                    val user = (it.toObject(User::class.java))!!
-                    _name.value = user.firstName
-
-                }
-            }
+            updateUserDietType(doc)
 
             return doc
 
@@ -202,8 +227,34 @@ class HomeViewModel : ViewModel() {
 
 
 
+    private fun updateUserDietType(doc : DocumentReference){
+        doc.get().addOnSuccessListener {
+            if (it.exists()) {
+                val user = (it.toObject(User::class.java))!!
+                _name.value = user.firstName
+
+                userDiet = user.dietType
+            }
+        }
+    }
+
+    private fun getUserPantry(doc : DocumentReference){
+        doc.get().addOnSuccessListener {
+            if (it.exists()) {
+                val user = (it.toObject(User::class.java))!!
+                userPantry = user.ingredientsInPantry
+            }
+        }
+    }
 
 
-
+    private fun getUserIntolerances(doc : DocumentReference){
+        doc.get().addOnSuccessListener {
+            if (it.exists()) {
+                val user = (it.toObject(User::class.java))!!
+                userIntolerances = user.allergies.joinToString(separator=",")
+            }
+        }
+    }
 
 }

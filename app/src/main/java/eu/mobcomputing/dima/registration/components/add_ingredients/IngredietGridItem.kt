@@ -25,9 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.google.gson.Gson
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.utils.Constants
 import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +47,7 @@ import javax.inject.Scope
  * @param ingredient The [Ingredient] object to display information about.
  * @param navController The NavController for navigation within the application.
  */
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun IngredientCard(ingredient: Ingredient, navController: NavController, viewModel: SearchIngredientViewModel) {
     ElevatedCard(
@@ -82,8 +86,8 @@ fun IngredientCard(ingredient: Ingredient, navController: NavController, viewMod
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+            GlideImage(
+                model = Constants.BASE_IMG_URL+ingredient.image,
                 contentDescription = null,
                 modifier = Modifier.size(120.dp),
                 contentScale = ContentScale.FillBounds,

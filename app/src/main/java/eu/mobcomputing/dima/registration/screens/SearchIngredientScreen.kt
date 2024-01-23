@@ -28,6 +28,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 
 /**
  * Composable function representing the screen for searching and displaying a list of ingredients.
@@ -67,12 +71,22 @@ fun SearchIngredientScreen(
                 onSearch = { newSearchText ->
                     searchText = newSearchText
                     // Call the filter function in the ViewModel
-                    viewModel.filterIngredients(newSearchText)
+                    //viewModel.filterIngredients(newSearchText)
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.searchIngredient(newSearchText)
+                    }
+
+
                 },
                 onSearchTextChange = { newSearchText ->
                     searchText = newSearchText
                     // Call the filter function in the ViewModel
-                    viewModel.filterIngredients(newSearchText)
+
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.searchIngredient(newSearchText)
+                    }
                 }
             )
 
@@ -94,11 +108,12 @@ fun SearchIngredientScreen(
                         // Ingredients not found
                         Column(
                             modifier = Modifier
-                                .fillMaxSize(),
+                                .fillMaxSize()
+                                .padding(40.dp),
                             verticalArrangement = Arrangement.Center,
                         ) {
                             HeaderTextComponent(
-                                value = "No ingredient found"
+                                value = "Please search the ingredient you want to add to your digital pantry"
                             )
                         }
 

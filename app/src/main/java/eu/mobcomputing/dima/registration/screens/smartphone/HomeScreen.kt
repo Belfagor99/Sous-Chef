@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.screens.smartphone
 
+import android.app.Application
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -124,6 +125,6 @@ fun HomeScreenPreview(){
 
     HomeScreen(
         navController = rememberNavController(),
-        homeViewModel = HomeViewModel()
+        homeViewModel = HomeViewModel(Application())
     )
 }
