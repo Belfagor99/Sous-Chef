@@ -8,11 +8,19 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
+import eu.mobcomputing.dima.registration.notification.MyWorker
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Main entry point for the application.
@@ -47,6 +55,21 @@ class MainActivity : ComponentActivity() {
             // Log and the FCM
             Log.d("FCM", token.toString())
         })
+
+        val workRequest = PeriodicWorkRequestBuilder<MyWorker>(
+            repeatInterval = 24, // Repeat every 24 hours
+            repeatIntervalTimeUnit = TimeUnit.HOURS
+        )
+            .setConstraints(
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            )
+            .build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "MyUniqueWorkName",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
 
         super.onCreate(savedInstanceState)
         setContent {

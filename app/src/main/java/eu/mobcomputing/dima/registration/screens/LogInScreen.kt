@@ -123,9 +123,7 @@ fun LogInScreen(navController: NavController, logInViewModel: LogInViewModel = v
             if (logInViewModel.logInInProgress.value) {
                 CircularProgressIndicator()
             }
-        }
-        // If the screen is wider, if it is a tablet
-        else {
+        } else {
             Row(
                 modifier = Modifier
                     .fillMaxSize()

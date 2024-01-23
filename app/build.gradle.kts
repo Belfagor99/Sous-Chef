@@ -166,4 +166,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
+
+    // fow WorkManager
+    implementation("androidx.work:work-runtime:2.9.0")
+
 }
