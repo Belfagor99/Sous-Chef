@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -97,7 +98,7 @@ fun PantryScreen(
                             verticalArrangement = Arrangement.Center,
                         ) {
                             HeaderTextComponent(
-                                value = "No ingredients found!\n\n Let's add some ingredients to the pantry via the button below"
+                                value = stringResource(R.string.no_ingredient_message)
                             )
                         }
 

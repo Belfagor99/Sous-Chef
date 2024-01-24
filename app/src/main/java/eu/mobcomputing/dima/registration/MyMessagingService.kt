@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -16,6 +17,8 @@ import eu.mobcomputing.dima.registration.utils.Constants.Companion.CHANNEL_NAME
  * Service to handle incoming Firebase Cloud Messaging (FCM) messages.
  */
 class MyMessagingService : FirebaseMessagingService() {
+    private val TAG = MyMessagingService::class.java.simpleName
+
     /**
      * Called when a new FCM token is generated for the device.
      *
@@ -58,46 +61,6 @@ class MyMessagingService : FirebaseMessagingService() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(message.notification?.title)
             .setContentText(message.notification?.body)
-            .setSmallIcon(R.drawable.pot_svgrepo_com)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        // Display the notification using the NotificationManager.
-        notificationManager.notify(notificationId, notification)
-    }
-    /**
-     * Show a notification with the given title and content.
-     *
-     * @param title The title of the notification.
-     * @param content The content of the notification.
-     */
-    fun showNotification(title: String?, content: String?) {
-        // Get the NotificationManager service.
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationId = 1
-        val requestCode = 1
-
-        // Define the notification channel.
-        val channelId = CHANNEL_ID
-        val channelName = CHANNEL_NAME
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the notification channel for Android Oreo and above.
-            notificationManager.createNotificationChannel(
-                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-            )
-        }
-
-        // Create an intent to launch the MainActivity when the notification is clicked.
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntentFlag = PendingIntent.FLAG_IMMUTABLE
-        val pendingIntent = PendingIntent.getActivity(this, requestCode, intent, pendingIntentFlag)
-
-        // Build the notification using NotificationCompat.
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle(title)
-            .setContentText(content)
             .setSmallIcon(R.drawable.pot_svgrepo_com)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)

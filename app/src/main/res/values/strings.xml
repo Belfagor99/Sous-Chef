@@ -33,4 +33,5 @@
     <string name="notification_permission">Notification Permission</string>
     <string name="please_allow_this_app_to_send_you_a_notification">Please allow this app to send you a notification</string>
     <string name="ok">OK</string>
+    <string name="no_ingredient_message">No ingredient found!\n\n Let\'s add some ingredients to the pantry via the button below</string>
 </resources>

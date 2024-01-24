@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
-import eu.mobcomputing.dima.registration.notification.MyWorker
+import eu.mobcomputing.dima.registration.notification.MyNotificationWorker
 import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 import java.util.concurrent.TimeUnit
 
@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
             Log.d("FCM", token.toString())
         })
 
-        val workRequest = PeriodicWorkRequestBuilder<MyWorker>(
+        val workRequest = PeriodicWorkRequestBuilder<MyNotificationWorker>(
             repeatInterval = 24, // Repeat every 24 hours
             repeatIntervalTimeUnit = TimeUnit.HOURS
         )
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
             )
             .build()
 
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "MyUniqueWorkName",
             ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
