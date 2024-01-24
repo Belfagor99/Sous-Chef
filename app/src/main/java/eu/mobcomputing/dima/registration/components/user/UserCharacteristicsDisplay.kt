@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -44,18 +43,18 @@ import eu.mobcomputing.dima.registration.ui.theme.PurpleGrey40
  */
 @Composable
 fun UserCharacteristicsDisplay(
-    headerString : String,
+    headerString: String,
     userCharacteristics: List<String>?,
-    clickOnEdit : () -> Unit
-){
+    clickOnEdit: () -> Unit
+) {
 
-    Surface (
+    Surface(
         color = colorResource(id = R.color.pink_50),
-    ){
+    ) {
 
         Column {
 
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -63,7 +62,7 @@ fun UserCharacteristicsDisplay(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.7f)
-                ){
+                ) {
                     Row {
                         Text(
                             text = headerString,
@@ -71,10 +70,10 @@ fun UserCharacteristicsDisplay(
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Normal,
-                            ),
+                                ),
                             modifier = Modifier
-                                .padding(8.dp)
-                                .wrapContentWidth()
+                                .padding(10.dp)
+                                .fillMaxWidth()
                                 .align(Alignment.CenterVertically)
                         )
 
@@ -88,7 +87,6 @@ fun UserCharacteristicsDisplay(
                     }
 
                 }
-
 
                 Button(
                     onClick = clickOnEdit,
@@ -115,10 +113,9 @@ fun UserCharacteristicsDisplay(
             }
 
 
-            if (userCharacteristics.isNullOrEmpty()){
-
+            if (userCharacteristics.isNullOrEmpty()) {
                 Text(
-                    text = "Seems you have not provided this info yet!",
+                    text = "Seems I don't have this info obout you yet!",
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
@@ -130,45 +127,47 @@ fun UserCharacteristicsDisplay(
                         .align(Alignment.CenterHorizontally)
                 )
 
-            }else{
+            } else {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 150.dp),
                     contentPadding = PaddingValues(10.dp),
                 ) {
                     items(userCharacteristics) { it ->
-                        // Grid item Composable
-                        ElevatedSuggestionChip(
+                        // Grid item
+                        Box(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .align(Alignment.CenterHorizontally),
-                            onClick = {},
-                            label = {
-                                Text(
-                                    text = it,
-                                    style = TextStyle(
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        fontStyle = FontStyle.Normal,
-                                        color = Color.White
-                                    ),
-                                    modifier = Modifier
-                                        .padding(8.dp)
-                                        .weight(1f)
-                                        .wrapContentSize()
-                                        .align(Alignment.Start),
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .fillMaxWidth()
+                        ) {
+                            ElevatedSuggestionChip(
+                                onClick = {},
+                                label = {
+                                    Text(
+                                        text = it,
+                                        style = TextStyle(
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            fontStyle = FontStyle.Normal,
+                                            color = Color.White,
+                                        ),
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                            .wrapContentSize()
+                                    )
+                                },
+                                border = BorderStroke(1.dp, colorResource(id = R.color.pink_900)),
+                                colors = ChipColors(
+                                    labelColor = Color.White,
+                                    disabledContainerColor = PurpleGrey40,
+                                    containerColor = colorResource(id = R.color.pink_900),
+                                    disabledLabelColor = PurpleGrey40,
+                                    disabledLeadingIconContentColor = PurpleGrey40,
+                                    leadingIconContentColor = PurpleGrey40,
+                                    disabledTrailingIconContentColor = PurpleGrey40,
+                                    trailingIconContentColor = PurpleGrey40
                                 )
-                            },
-                            border = BorderStroke(1.dp,colorResource(id = R.color.pink_900)),
-                            colors = ChipColors(
-                                labelColor = Color.White,
-                                disabledContainerColor = PurpleGrey40 ,
-                                containerColor = colorResource(id = R.color.pink_900),
-                                disabledLabelColor =  PurpleGrey40 ,
-                                disabledLeadingIconContentColor =  PurpleGrey40  ,
-                                leadingIconContentColor =  PurpleGrey40 ,
-                                disabledTrailingIconContentColor =   PurpleGrey40 ,
-                                trailingIconContentColor =  PurpleGrey40 )
-                        )
+                            )
+                        }
                     }
                 }
             }
@@ -178,13 +177,11 @@ fun UserCharacteristicsDisplay(
 }
 
 
-
-
 @Composable
 @Preview
-fun UserCharacteristicsDisplayPreview(){
+fun UserAllergiesDisplayPreview() {
 
-    val userCharacteristics : List<String> = listOf(
+    val userCharacteristics: List<String> = listOf(
         "Dairy",
         "Egg",
         "Gluten",
@@ -200,5 +197,21 @@ fun UserCharacteristicsDisplayPreview(){
         "Wheat",
     )
 
-    UserCharacteristicsDisplay("Diets",userCharacteristics,{})
+    UserCharacteristicsDisplay("Alergies", userCharacteristics, {})
+}
+
+@Composable
+@Preview
+fun UserDietDisplayPreview() {
+
+    val userCharacteristics: List<String> = listOf(
+        "Vegan",
+        "Vegetarian",
+        "Gluten free",
+        "Lacto-\nVegetarian",
+        "Pescetarian",
+        "Omnivore",
+    )
+
+    UserCharacteristicsDisplay("Diet", userCharacteristics, {})
 }

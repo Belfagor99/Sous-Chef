@@ -3,17 +3,21 @@ package eu.mobcomputing.dima.registration.screens
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -22,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -35,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
+import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import eu.mobcomputing.dima.registration.components.user.CharacteristicsEditorDialog
 import eu.mobcomputing.dima.registration.components.user.UserCharacteristicsDisplay
@@ -54,7 +60,7 @@ import eu.mobcomputing.dima.registration.viewmodels.ProfileViewModel
 fun ProfileScreen(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel(),
-    ){
+) {
 
     // Observe the LiveData from the view model
     val allergies = viewModel.userAllergies.observeAsState()
@@ -80,175 +86,374 @@ fun ProfileScreen(
 
 
 
-    Surface(
-        color = colorResource(id = R.color.pink_50),
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50))
+            .background(
+                colorResource(id = R.color.pink_50)
+            ),
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        val isSmallScreen = maxWidth < 600.dp
 
 
-            /***** USR IMAGE NAME AND EMAIL *****/
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.3f)
-                    .padding(
-                        top = 40.dp,
-                        bottom = 20.dp
-                    ),
+        if (isSmallScreen) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
             ) {
-                Box(modifier = Modifier.weight(1f)){
+                /***** USR IMAGE NAME AND EMAIL *****/
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.3f)
+                        .padding(
+                            top = 40.dp, bottom = 20.dp
+                        ),
+                ) {
+                    Box(modifier = Modifier.weight(1f)) {
 
-                    Column (
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(8.dp),
-                    ){
-                        Image(
-                            painter = painterResource(id = R.drawable.baseline_person_24),
-                            contentDescription = "user img",
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize(0.7f)
-                                .align(Alignment.CenterHorizontally)
-                        )
+                                .align(Alignment.Center)
+                                .padding(8.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.baseline_person_24),
+                                contentDescription = "user img",
+                                modifier = Modifier
+                                    .fillMaxSize(0.7f)
+                                    .align(Alignment.CenterHorizontally)
+                            )
 
-                        /*  LOGOUT BUTTON */
-                        OutlinedButton(
-                            onClick = { viewModel.logOut(navController) },
+                            /*  LOGOUT BUTTON */
+                            OutlinedButton(
+                                onClick = { viewModel.logOut(navController) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterHorizontally)
+                            ) {
+                                Text(
+                                    text = "Logout",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                    ),
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .wrapContentSize(),
+                                )
+                            }
+                        }
+                    }
+                    Box(modifier = Modifier.weight(1f)) {
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
-                        ){
+                                .align(Alignment.Center)
+                                .padding(8.dp),
+
+                            ) {
+
                             Text(
-                                text = "Logout",
+                                text = "${name.value} ${surname.value}",
                                 style = TextStyle(
-                                    fontSize = 12.sp,
+                                    fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal,
                                 ),
                                 modifier = Modifier
                                     .padding(8.dp)
-                                    .wrapContentSize(),
+                                    .weight(1f)
+                                    .wrapContentSize()
+                                    .align(Alignment.Start),
+
+
+                                )
+                            Text(
+                                text = "${email.value}",
+                                style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    fontStyle = FontStyle.Normal,
+                                ),
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .weight(1f)
+                                    .wrapContentSize()
+                                    .align(Alignment.Start),
                             )
                         }
                     }
                 }
-                Box(modifier = Modifier.weight(1f)){
-                    Column (
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(8.dp),
-
-                    ){
-
-                        Text(
-                            text = "${name.value} ${surname.value}",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Normal,
-                            ),
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f)
-                                .wrapContentSize()
-                                .align(Alignment.Start),
 
 
-                        )
-                        Text(
-                            text = "${email.value}",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Normal,
-                            ),
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f)
-                                .wrapContentSize()
-                                .align(Alignment.Start),
-                        )
-                    }
-                }
-            }
+                /***** USR DIET AND ALLERGIES *****/
+                Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+
+                    Column {
+                        /***** USR DIET *****/
+                        UserCharacteristicsDisplay(headerString = "Diet",
+                            userCharacteristics = diet.value,
+                            clickOnEdit = { showEditCharacteristics = 1 })
+
+                        /***** USR ALLERGIES *****/
+
+                        UserCharacteristicsDisplay(headerString = "Allergies",
+                            userCharacteristics = allergies.value,
+                            clickOnEdit = { showEditCharacteristics = 2 })
 
 
-            /***** USR DIET AND ALLERGIES *****/
-            Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
-
-                Column {
-
-                    /***** USR DIET *****/
-                    UserCharacteristicsDisplay(
-                        headerString = "Diets",
-                        userCharacteristics = diet.value,
-                        clickOnEdit = {showEditCharacteristics = 1}
-                    )
-
-                    /***** USR ALLERGIES *****/
-
-                    UserCharacteristicsDisplay(
-                        headerString = "Allergies",
-                        userCharacteristics = allergies.value,
-                        clickOnEdit = {showEditCharacteristics = 2}
-                    )
-
-
-                    /*
+                        /*
                     * Dialog for editing user's diet
                     */
-                    if (showEditCharacteristics == 1) {
-                        CharacteristicsEditorDialog(
-                            onDismissRequest = {
+                        if (showEditCharacteristics == 1) {
+                            CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0
                             },
-                            onConfirmation = {
-                                viewModel.setNewDiet(it[0])
-                                showEditCharacteristics = 0
-                                reloadScreen(navController)
-                                Toast.makeText(context,"Allergies have been modified! ",Toast.LENGTH_SHORT).show()
-                            },
-                            dialogTitle = "Select your diet: ",
-                            userCharacteristics = DietType::class.java.enumConstants?.map { it.diet }
-                                ?: emptyList(),
-                            singleSelection = true
-                        )
-                    }
-                    /*
+                                onConfirmation = {
+                                    viewModel.setNewDiet(it[0])
+                                    showEditCharacteristics = 0
+                                    reloadScreen(navController)
+                                    Toast.makeText(
+                                        context,
+                                        "Allergies have been modified! ",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                },
+                                dialogTitle = "Select your diet: ",
+                                userCharacteristics = DietType::class.java.enumConstants?.map { it.diet }
+                                    ?: emptyList(),
+                                singleSelection = true)
+                        }/*
                     * Dialog for editing user's allergies
                     */
-                    else if (showEditCharacteristics == 2){
-                        CharacteristicsEditorDialog(
-                            onDismissRequest = {
+                        else if (showEditCharacteristics == 2) {
+                            CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0
-                           },
-                            onConfirmation = {
-                                viewModel.setNewAllergies(it)
-                                showEditCharacteristics = 0
-                                reloadScreen(navController)
-                                Toast.makeText(context,"Allergies have been modified! ",Toast.LENGTH_SHORT).show()
                             },
-                            dialogTitle = "Select your allergies: ",
-                            userCharacteristics = Constants.allergies,
-                            singleSelection = false
-                        )
+                                onConfirmation = {
+                                    viewModel.setNewAllergies(it)
+                                    showEditCharacteristics = 0
+                                    reloadScreen(navController)
+                                    Toast.makeText(
+                                        context,
+                                        "Allergies have been modified! ",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                },
+                                dialogTitle = "Select your allergies: ",
+                                userCharacteristics = Constants.allergies,
+                                singleSelection = false
+                            )
+                        }
                     }
                 }
+
+
+                /***** NAVBAR *****/
+
+                NavigationBarComponent(
+                    navController = navController, selectedItemIndex = 2
+                )
             }
 
-
-            /***** NAVBAR *****/
-            NavigationBarComponent(
-                navController = navController,
-                selectedItemIndex = 2
-            )
         }
+        // If the screen is wider, if it is a tablet
+        else {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Column(modifier = Modifier.padding(15.dp)) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    HeaderTextComponent(
+                        value = "There are the information I know about you",
+                        shouldBeCentered = false,
+                        extraModifier = Modifier.padding(15.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.3f)
+                            .padding(
+                                top = 40.dp, bottom = 20.dp
+                            ),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .border(
+                                    5.dp, colorResource(id = R.color.pink_900)
+                                )
+                        ) {
 
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(8.dp),
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_person_24),
+                                    contentDescription = "user img",
+                                    modifier = Modifier
+                                        .fillMaxSize(0.7f)
+                                        .align(Alignment.CenterHorizontally)
+                                )
+
+                                /*  LOGOUT BUTTON */
+                                OutlinedButton(
+                                    onClick = { },
+                                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                                ) {
+                                    Text(
+                                        text = "Logout",
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            fontStyle = FontStyle.Normal,
+                                        ),
+                                        modifier = Modifier
+                                            .padding(8.dp)
+                                            .wrapContentSize(),
+                                    )
+                                }
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .border(5.dp, colorResource(id = R.color.pink_900))
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(5.dp),
+                                verticalArrangement = Arrangement.SpaceBetween
+                            ) {
+
+                                Text(
+                                    text = "Your name:",
+                                    style = TextStyle(
+                                        fontSize = 23.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                        color = Color.Red
+                                    ),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 10.dp)
+                                        .wrapContentSize(),
+                                )
+                                Text(
+                                    text = "${name.value} ${surname.value}",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                    ),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 20.dp)
+                                        .wrapContentSize(),
+                                )
+
+                                Text(
+                                    text = "Your E-mail:",
+                                    style = TextStyle(
+                                        fontSize = 23.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                        color = Color.Red
+                                    ),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 10.dp)
+                                        .wrapContentSize(),
+                                )
+                                Text(
+                                    text = "${email.value}",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal,
+                                    ),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 20.dp)
+                                        .wrapContentSize(),
+                                )
+                            }
+                        }
+                    }
+                }
+                /***** USR DIET AND ALLERGIES *****/
+                Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+
+                    Column {
+                        /***** USR DIET *****/
+                        UserCharacteristicsDisplay(headerString = "Diet",
+                            userCharacteristics = diet.value,
+                            clickOnEdit = { showEditCharacteristics = 1 })
+
+                        /***** USR ALLERGIES *****/
+
+                        UserCharacteristicsDisplay(headerString = "Allergies",
+                            userCharacteristics = allergies.value,
+                            clickOnEdit = { showEditCharacteristics = 2 })
+
+
+                        /*
+                    * Dialog for editing user's diet
+                    */
+                        if (showEditCharacteristics == 1) {
+                            CharacteristicsEditorDialog(onDismissRequest = {
+                                showEditCharacteristics = 0
+                            },
+                                onConfirmation = {
+                                    viewModel.setNewDiet(it[0])
+                                    showEditCharacteristics = 0
+                                    reloadScreen(navController)
+                                    Toast.makeText(
+                                        context,
+                                        "Allergies have been modified! ",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                },
+                                dialogTitle = "Select your diet: ",
+                                userCharacteristics = DietType::class.java.enumConstants?.map { it.diet }
+                                    ?: emptyList(),
+                                singleSelection = true)
+                        }/*
+                    * Dialog for editing user's allergies
+                    */
+                        else if (showEditCharacteristics == 2) {
+                            CharacteristicsEditorDialog(onDismissRequest = {
+                                showEditCharacteristics = 0
+                            },
+                                onConfirmation = {
+                                    viewModel.setNewAllergies(it)
+                                    showEditCharacteristics = 0
+                                    reloadScreen(navController)
+                                    Toast.makeText(
+                                        context,
+                                        "Allergies have been modified! ",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                },
+                                dialogTitle = "Select your allergies: ",
+                                userCharacteristics = Constants.allergies,
+                                singleSelection = false
+                            )
+                        }
+                    }
+                }
+
+
+                /***** NAVBAR *****/
+
+                NavigationBarComponent(
+                    navController = navController, selectedItemIndex = 2
+                )
+            }
+        }
     }
 }
 
@@ -261,7 +466,7 @@ fun ProfileScreen(
  *
  * - mutableStateOf on a observered variable doesn't work..
  */
-fun reloadScreen(navController: NavController){
+fun reloadScreen(navController: NavController) {
 
     navController.navigate(Screen.Home.route)
 
@@ -272,6 +477,6 @@ fun reloadScreen(navController: NavController){
  */
 @Preview
 @Composable
-fun PreviewProfileScreen(){
+fun PreviewProfileScreen() {
     ProfileScreen(navController = rememberNavController(), ProfileViewModel())
 }
