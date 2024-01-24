@@ -25,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
-import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.viewmodels.WelcomeViewModel
 
 /**
@@ -44,67 +43,88 @@ fun WelcomeScreen(navController: NavController, welcomeViewModel: WelcomeViewMod
         val isSmallScreen = maxWidth < 600.dp
 
         if (isSmallScreen) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxWidth()
-                ) {
-                    MyImageComponent(
-                        R.drawable.sous_chef,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                ButtonComponent(
-                    value = stringResource(id = R.string.sign_up_log_in),
-                    onClickAction = { welcomeViewModel.redirection(navController) },
-                    isEnabled = true
-                )
-            }
+            SmallWelcomeScreenView(navController, welcomeViewModel)
         }
         // If the screen is wider, if it is a tablet
         else {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(50.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxWidth()
-                ) {
-                    MyImageComponent(
-                        R.drawable.sous_chef,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                ButtonComponent(
-                    value = stringResource(id = R.string.sign_up_log_in),
-                    onClickAction = { navController.navigate(route = Screen.Register.route) },
-                    isEnabled = true
-                )
-
-
-            }
-
+            WideWelcomeScreenView(navController = navController, welcomeViewModel)
         }
+    }
+}
+
+/**
+ * Composable function representing the Welcome screen of the application for smaller screens (mobile).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param welcomeViewModel ViewModel of the Welcome screen to support the logic behind the screen.
+ */
+@Composable
+fun SmallWelcomeScreenView(navController: NavController, welcomeViewModel: WelcomeViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            MyImageComponent(
+                R.drawable.sous_chef,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        ButtonComponent(
+            value = stringResource(id = R.string.sign_up_log_in),
+            onClickAction = { welcomeViewModel.redirection(navController) },
+            isEnabled = true
+        )
+    }
+}
+
+/**
+ * Composable function representing the Welcome screen of the application for wider screens (tablet).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param welcomeViewModel ViewModel of the Welcome screen to support the logic behind the screen.
+ */
+@Composable
+fun WideWelcomeScreenView(navController: NavController, welcomeViewModel: WelcomeViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            MyImageComponent(
+                R.drawable.sous_chef,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        ButtonComponent(
+            value = stringResource(id = R.string.sign_up_log_in),
+            onClickAction = { welcomeViewModel.redirection(navController) },
+            isEnabled = true
+        )
+
+
     }
 }
 

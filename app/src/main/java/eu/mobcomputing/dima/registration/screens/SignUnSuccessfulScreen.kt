@@ -34,6 +34,7 @@ import eu.mobcomputing.dima.registration.viewmodels.SuccessfulRegistrationViewMo
  * Composable function representing the SignUp screen of the application.
  *
  * @param navController NavController for navigating between screens.
+ * @param successfulRegistrationViewModel View model to handle the actions of the screen
  */
 @Composable
 fun SignUnSuccessfulScreen(
@@ -51,94 +52,130 @@ fun SignUnSuccessfulScreen(
     {
         val isSmallScreen = maxWidth < 600.dp
         if (isSmallScreen) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(18.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                HeaderTextComponent(
-                    value = successfulRegistrationViewModel.userName.value.toString(),
-                    shouldBeCentered = false, shouldBeRed = true
-                )
-                HeaderTextComponent(
-                    value = stringResource(id = R.string.registration_successful),
-                    shouldBeCentered = true,
-                    shouldBeRed = true
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                ) {
-                    MyImageComponent(R.drawable.souschef_logo, modifier = Modifier.fillMaxSize())
-                }
-
-
-                Spacer(modifier = Modifier.height(5.dp))
-                NormalTextComponent(value = stringResource(id = R.string.after_registration))
-
-                Spacer(
-                    modifier = Modifier.weight(1f)
-                )
-                ButtonComponent(
-                    value = stringResource(
-                        id = R.string.next_step
-                    ),
-                    onClickAction = { successfulRegistrationViewModel.redirect(navController) },
-                    isEnabled = true
-                )
-            }
+            SmallSingUpSuccessfulScreen(
+                navController = navController,
+                successfulRegistrationViewModel = successfulRegistrationViewModel
+            )
         }
         // If the screen is wider, if it is a tablet
         else {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(50.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            WideSingUpSuccessfulScreen(
+                navController = navController,
+                successfulRegistrationViewModel = successfulRegistrationViewModel
+            )
+        }
+    }
+}
 
-            ) {
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxWidth()
-                ) {
-                    HeaderTextComponent(
-                        value = successfulRegistrationViewModel.userName.value.toString(),
-                        shouldBeCentered = false,
-                        shouldBeRed = true
-                    )
-                    HeaderTextComponent(
-                        value = stringResource(id = R.string.registration_successful),
-                        shouldBeCentered = true,
-                        shouldBeRed = true
+/**
+ * Composable function representing the SignUp screen of the application for small screen (mobile).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param successfulRegistrationViewModel View model to handle the actions of the screen
+ */
+@Composable
+fun SmallSingUpSuccessfulScreen(
+    navController: NavController,
+    successfulRegistrationViewModel: SuccessfulRegistrationViewModel
+) {
 
-                    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        HeaderTextComponent(
+            value = successfulRegistrationViewModel.userName.value.toString(),
+            shouldBeCentered = false, shouldBeRed = true
+        )
+        HeaderTextComponent(
+            value = stringResource(id = R.string.registration_successful),
+            shouldBeCentered = true,
+            shouldBeRed = true
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        ) {
+            MyImageComponent(R.drawable.souschef_logo, modifier = Modifier.fillMaxSize())
+        }
 
 
-                    MyImageComponent(
-                        R.drawable.souschef_logo,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+        Spacer(modifier = Modifier.height(5.dp))
+        NormalTextComponent(value = stringResource(id = R.string.after_registration))
 
-                Column {
-                    NormalTextComponent(value = stringResource(id = R.string.after_registration))
-                    ButtonComponent(
-                        value = stringResource(
-                            id = R.string.next_step
-                        ),
-                        onClickAction = { successfulRegistrationViewModel.redirect(navController) },
-                        isEnabled = true
-                    )
+        Spacer(
+            modifier = Modifier.weight(1f)
+        )
+        ButtonComponent(
+            value = stringResource(
+                id = R.string.next_step
+            ),
+            onClickAction = { successfulRegistrationViewModel.redirect(navController) },
+            isEnabled = true
+        )
+    }
+}
 
-                }
-            }
+/**
+ * Composable function representing the SignUp screen of the application for wide screen (tablet).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param successfulRegistrationViewModel View model to handle the actions of the screen
+ */
+@Composable
+fun WideSingUpSuccessfulScreen(
+    navController: NavController,
+    successfulRegistrationViewModel: SuccessfulRegistrationViewModel
+) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            HeaderTextComponent(
+                value = successfulRegistrationViewModel.userName.value.toString(),
+                shouldBeCentered = false,
+                shouldBeRed = true
+            )
+            HeaderTextComponent(
+                value = stringResource(id = R.string.registration_successful),
+                shouldBeCentered = true,
+                shouldBeRed = true
+
+            )
+
+
+            MyImageComponent(
+                R.drawable.souschef_logo,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        Column {
+            NormalTextComponent(value = stringResource(id = R.string.after_registration))
+            ButtonComponent(
+                value = stringResource(
+                    id = R.string.next_step
+                ),
+                onClickAction = { successfulRegistrationViewModel.redirect(navController) },
+                isEnabled = true
+            )
+
         }
     }
 }

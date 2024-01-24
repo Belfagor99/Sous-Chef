@@ -57,213 +57,248 @@ fun SignUpScreen(
     ) {
         val isSmallScreen = maxWidth < 600.dp
         if (isSmallScreen) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(18.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                HeaderTextComponent(
-                    value = stringResource(id = R.string.create_account_text),
-                    shouldBeCentered = true,
-                    shouldBeRed = true
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                HeaderTextComponent(value = stringResource(id = R.string.personal_information))
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // First name Component
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.first_name),
-                    leadingIcon = painterResource(
-                        id = R.drawable.baseline_person_24
-                    ),
-                    onTextSelected = {
-                        registrationViewModel.onEvent(
-                            RegistrationUIEvent.FirstNameChanged(it), navController
-                        )
-                    },
-                    errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
-
-                    )
-
-                // Last name component
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.last_name),
-                    leadingIcon = painterResource(
-                        id = R.drawable.baseline_person_24
-                    ),
-                    onTextSelected = {
-                        registrationViewModel.onEvent(
-                            RegistrationUIEvent.LastNameChanged(it), navController
-                        )
-                    },
-                    errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
-                )
-
-                //R-mail component
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.email),
-                    leadingIcon = painterResource(
-                        id = R.drawable.baseline_alternate_email_24
-                    ),
-                    onTextSelected = {
-                        registrationViewModel.onEvent(
-                            RegistrationUIEvent.EmailChanged(it), navController
-                        )
-                    },
-                    errorStatus = registrationViewModel.registrationUIState.value.emailError,
-                )
-
-                // Password component
-                MyPasswordFieldComponent(
-                    labelValue = stringResource(id = R.string.password),
-                    leadingIcon = painterResource(
-                        id = R.drawable.baseline_lock_24
-                    ),
-                    onTextSelected = {
-                        registrationViewModel.onEvent(
-                            RegistrationUIEvent.PasswordChanged(it), navController
-                        )
-                    },
-                    errorStatus = registrationViewModel.registrationUIState.value.passwordError,
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-                ButtonComponent(value = stringResource(id = R.string.sign_up),
-                    isEnabled = registrationViewModel.allValidationPassed.value,
-                    onClickAction = {
-                        registrationViewModel.onEvent(
-                            RegistrationUIEvent.RegistrationButtonClicked, navController
-                        )
-                    })
-                Spacer(modifier = Modifier.height(10.dp))
-                NormalTextComponent(value = stringResource(id = R.string.or))
-                ClickableRegisterTextComponent(onClickAction = {
-                    registrationViewModel.redirectToLogInScreen(navController)
-                })
-            }
-
-
-
-            if (registrationViewModel.registrationInProgress.value) {
-                CircularProgressIndicator()
-            }
+            SmallRegistrationScreen(
+                navController = navController,
+                registrationViewModel = registrationViewModel
+            )
         }
         // If the screen is wider, if it is a tablet
         else {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(50.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxWidth()
-                ) {
-                    MyImageComponent(
-                        R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    HeaderTextComponent(
-                        value = stringResource(id = R.string.create_account_text),
-                        shouldBeCentered = true,
-                        shouldBeRed = true
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    HeaderTextComponent(value = stringResource(id = R.string.personal_information))
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // First name Component
-                    MyTextFieldComponent(
-                        labelValue = stringResource(id = R.string.first_name),
-                        leadingIcon = painterResource(
-                            id = R.drawable.baseline_person_24
-                        ),
-                        onTextSelected = {
-                            registrationViewModel.onEvent(
-                                RegistrationUIEvent.FirstNameChanged(it), navController
-                            )
-                        },
-                        errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
-
-                        )
-
-                    // Last name component
-                    MyTextFieldComponent(
-                        labelValue = stringResource(id = R.string.last_name),
-                        leadingIcon = painterResource(
-                            id = R.drawable.baseline_person_24
-                        ),
-                        onTextSelected = {
-                            registrationViewModel.onEvent(
-                                RegistrationUIEvent.LastNameChanged(it), navController
-                            )
-                        },
-                        errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
-                    )
-
-                    //R-mail component
-                    MyTextFieldComponent(
-                        labelValue = stringResource(id = R.string.email),
-                        leadingIcon = painterResource(
-                            id = R.drawable.baseline_alternate_email_24
-                        ),
-                        onTextSelected = {
-                            registrationViewModel.onEvent(
-                                RegistrationUIEvent.EmailChanged(it), navController
-                            )
-                        },
-                        errorStatus = registrationViewModel.registrationUIState.value.emailError,
-                    )
-
-                    // Password component
-                    MyPasswordFieldComponent(
-                        labelValue = stringResource(id = R.string.password),
-                        leadingIcon = painterResource(
-                            id = R.drawable.baseline_lock_24
-                        ),
-                        onTextSelected = {
-                            registrationViewModel.onEvent(
-                                RegistrationUIEvent.PasswordChanged(it), navController
-                            )
-                        },
-                        errorStatus = registrationViewModel.registrationUIState.value.passwordError,
-                    )
-                    ButtonComponent(value = stringResource(id = R.string.sign_up),
-                        isEnabled = registrationViewModel.allValidationPassed.value,
-                        onClickAction = {
-                            registrationViewModel.onEvent(
-                                RegistrationUIEvent.RegistrationButtonClicked, navController
-                            )
-                        })
-                    NormalTextComponent(value = stringResource(id = R.string.or))
-                    ClickableRegisterTextComponent(onClickAction = {
-                        registrationViewModel.redirectToLogInScreen(navController)
-                    })
-                }
-
-                if (registrationViewModel.registrationInProgress.value) {
-                    CircularProgressIndicator()
-                }
-            }
+            WideRegistrationScreen(
+                navController = navController,
+                registrationViewModel = registrationViewModel
+            )
         }
     }
 }
+
+/**
+ * Composable function representing the SignUp screen of the application for small screen (mobile).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param registrationViewModel ViewModel managing the logic for the LogIn screen.
+ */
+@Composable
+fun SmallRegistrationScreen(
+    navController: NavController,
+    registrationViewModel: RegistrationViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        HeaderTextComponent(
+            value = stringResource(id = R.string.create_account_text),
+            shouldBeCentered = true,
+            shouldBeRed = true
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        HeaderTextComponent(value = stringResource(id = R.string.personal_information))
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // First name Component
+        MyTextFieldComponent(
+            labelValue = stringResource(id = R.string.first_name),
+            leadingIcon = painterResource(
+                id = R.drawable.baseline_person_24
+            ),
+            onTextSelected = {
+                registrationViewModel.onEvent(
+                    RegistrationUIEvent.FirstNameChanged(it), navController
+                )
+            },
+            errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
+
+            )
+
+        // Last name component
+        MyTextFieldComponent(
+            labelValue = stringResource(id = R.string.last_name),
+            leadingIcon = painterResource(
+                id = R.drawable.baseline_person_24
+            ),
+            onTextSelected = {
+                registrationViewModel.onEvent(
+                    RegistrationUIEvent.LastNameChanged(it), navController
+                )
+            },
+            errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
+        )
+
+        //R-mail component
+        MyTextFieldComponent(
+            labelValue = stringResource(id = R.string.email),
+            leadingIcon = painterResource(
+                id = R.drawable.baseline_alternate_email_24
+            ),
+            onTextSelected = {
+                registrationViewModel.onEvent(
+                    RegistrationUIEvent.EmailChanged(it), navController
+                )
+            },
+            errorStatus = registrationViewModel.registrationUIState.value.emailError,
+        )
+
+        // Password component
+        MyPasswordFieldComponent(
+            labelValue = stringResource(id = R.string.password),
+            leadingIcon = painterResource(
+                id = R.drawable.baseline_lock_24
+            ),
+            onTextSelected = {
+                registrationViewModel.onEvent(
+                    RegistrationUIEvent.PasswordChanged(it), navController
+                )
+            },
+            errorStatus = registrationViewModel.registrationUIState.value.passwordError,
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+        ButtonComponent(value = stringResource(id = R.string.sign_up),
+            isEnabled = registrationViewModel.allValidationPassed.value,
+            onClickAction = {
+                registrationViewModel.onEvent(
+                    RegistrationUIEvent.RegistrationButtonClicked, navController
+                )
+            })
+        Spacer(modifier = Modifier.height(10.dp))
+        NormalTextComponent(value = stringResource(id = R.string.or))
+        ClickableRegisterTextComponent(onClickAction = {
+            registrationViewModel.redirectToLogInScreen(navController)
+        })
+    }
+
+
+
+    if (registrationViewModel.registrationInProgress.value) {
+        CircularProgressIndicator()
+    }
+}
+
+/**
+ * Composable function representing the SignUp screen of the application for wide screen (tablet).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param registrationViewModel ViewModel managing the logic for the LogIn screen.
+ */
+@Composable
+fun WideRegistrationScreen(
+    navController: NavController,
+    registrationViewModel: RegistrationViewModel
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            MyImageComponent(
+                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            HeaderTextComponent(
+                value = stringResource(id = R.string.create_account_text),
+                shouldBeCentered = true,
+                shouldBeRed = true
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            HeaderTextComponent(value = stringResource(id = R.string.personal_information))
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // First name Component
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.first_name),
+                leadingIcon = painterResource(
+                    id = R.drawable.baseline_person_24
+                ),
+                onTextSelected = {
+                    registrationViewModel.onEvent(
+                        RegistrationUIEvent.FirstNameChanged(it), navController
+                    )
+                },
+                errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
+
+                )
+
+            // Last name component
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.last_name),
+                leadingIcon = painterResource(
+                    id = R.drawable.baseline_person_24
+                ),
+                onTextSelected = {
+                    registrationViewModel.onEvent(
+                        RegistrationUIEvent.LastNameChanged(it), navController
+                    )
+                },
+                errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
+            )
+
+            //R-mail component
+            MyTextFieldComponent(
+                labelValue = stringResource(id = R.string.email),
+                leadingIcon = painterResource(
+                    id = R.drawable.baseline_alternate_email_24
+                ),
+                onTextSelected = {
+                    registrationViewModel.onEvent(
+                        RegistrationUIEvent.EmailChanged(it), navController
+                    )
+                },
+                errorStatus = registrationViewModel.registrationUIState.value.emailError,
+            )
+
+            // Password component
+            MyPasswordFieldComponent(
+                labelValue = stringResource(id = R.string.password),
+                leadingIcon = painterResource(
+                    id = R.drawable.baseline_lock_24
+                ),
+                onTextSelected = {
+                    registrationViewModel.onEvent(
+                        RegistrationUIEvent.PasswordChanged(it), navController
+                    )
+                },
+                errorStatus = registrationViewModel.registrationUIState.value.passwordError,
+            )
+            ButtonComponent(value = stringResource(id = R.string.sign_up),
+                isEnabled = registrationViewModel.allValidationPassed.value,
+                onClickAction = {
+                    registrationViewModel.onEvent(
+                        RegistrationUIEvent.RegistrationButtonClicked, navController
+                    )
+                })
+            NormalTextComponent(value = stringResource(id = R.string.or))
+            ClickableRegisterTextComponent(onClickAction = {
+                registrationViewModel.redirectToLogInScreen(navController)
+            })
+        }
+
+        if (registrationViewModel.registrationInProgress.value) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
 
 /**
  * Preview annotation for previewing the SignUpScreen in Android Studio.

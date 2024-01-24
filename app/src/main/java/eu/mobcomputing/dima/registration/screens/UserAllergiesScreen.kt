@@ -55,129 +55,164 @@ fun UserAllergiesScreen(
     {
         val isSmallScreen = maxWidth < 600.dp
         if (isSmallScreen) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(18.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Spacer(modifier = Modifier.height(10.dp))
-                HeaderTextComponent(
-                    value = stringResource(id = R.string.create_account_text),
-                    shouldBeCentered = true,
-                    shouldBeRed = true
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                StepperBar(
-                    steps = sharedUserDataViewModel.steps,
-                    currentStep = sharedUserDataViewModel.allergiesStep.value
-                )
-                NormalTextComponent(value = stringResource(id = R.string.allergies))
-                Column {
-                    AllergenGrid(
-                        allergens = sharedUserDataViewModel.allergens,
-                        onAllergenClick = {
-                            sharedUserDataViewModel.allergenOnClick(it)
-                            it.selectedState.value = !it.selectedState.value
-                            it.selectedState.value = !it.selectedState.value
-                        }
-
-                    )
-                }
-
-
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    SmallButtonComponent(
-                        value = stringResource(id = R.string.next_step),
-                        onClickAction = {
-                            sharedUserDataViewModel.allergiesScreenNext(navController)
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-
-
-            }
+            SmallUserAllergiesScreen(
+                navController = navController,
+                sharedUserDataViewModel = sharedUserDataViewModel
+            )
         }
         // If the screen is wider, if it is a tablet
         else {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(50.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxWidth()
-                ) {
-                    MyImageComponent(
-                        R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(18.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    HeaderTextComponent(
-                        value = stringResource(id = R.string.create_account_text),
-                        shouldBeCentered = true,
-                        shouldBeRed = true
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    StepperBar(
-                        steps = sharedUserDataViewModel.steps,
-                        currentStep = sharedUserDataViewModel.allergiesStep.value
-                    )
-                    NormalTextComponent(value = stringResource(id = R.string.allergies))
-                    Column {
-                        AllergenGrid(
-                            allergens = sharedUserDataViewModel.allergens,
-                            onAllergenClick = {
-                                sharedUserDataViewModel.allergenOnClick(it)
-                                it.selectedState.value = !it.selectedState.value
-                                it.selectedState.value = !it.selectedState.value
-                            }
-
-                        )
-                    }
-
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                    ) {
-                        Spacer(modifier = Modifier.width(10.dp))
-                        SmallButtonComponent(
-                            value = stringResource(id = R.string.next_step),
-                            onClickAction = {
-                                sharedUserDataViewModel.allergiesScreenNext(navController)
-                            },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-
-                }
-            }
+            WiderUserAllergiesScreen(
+                navController = navController,
+                sharedUserDataViewModel = sharedUserDataViewModel
+            )
         }
     }
 }
+
+/**
+ * Composable function representing the UserAllergies screen of the application for small screen (mobile).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param sharedUserDataViewModel ViewModel managing the logic for the UserAllergies screen.
+ */
+@Composable
+fun SmallUserAllergiesScreen(
+    navController: NavController,
+    sharedUserDataViewModel: SharedUserDataViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        HeaderTextComponent(
+            value = stringResource(id = R.string.create_account_text),
+            shouldBeCentered = true,
+            shouldBeRed = true
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        StepperBar(
+            steps = sharedUserDataViewModel.steps,
+            currentStep = sharedUserDataViewModel.allergiesStep.value
+        )
+        NormalTextComponent(value = stringResource(id = R.string.allergies))
+        Column {
+            AllergenGrid(
+                allergens = sharedUserDataViewModel.allergens,
+                onAllergenClick = {
+                    sharedUserDataViewModel.allergenOnClick(it)
+                    it.selectedState.value = !it.selectedState.value
+                    it.selectedState.value = !it.selectedState.value
+                }
+
+            )
+        }
+
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Spacer(modifier = Modifier.width(10.dp))
+            SmallButtonComponent(
+                value = stringResource(id = R.string.next_step),
+                onClickAction = {
+                    sharedUserDataViewModel.allergiesScreenNext(navController)
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+
+    }
+}
+
+/**
+ * Composable function representing the UserAllergies screen of the application for wide screen (tablet).
+ *
+ * @param navController NavController for navigating between screens.
+ * @param sharedUserDataViewModel ViewModel managing the logic for the UserAllergies screen.
+ */
+@Composable
+fun WiderUserAllergiesScreen(
+    navController: NavController,
+    sharedUserDataViewModel: SharedUserDataViewModel
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxWidth()
+        ) {
+            MyImageComponent(
+                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(18.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Spacer(modifier = Modifier.height(10.dp))
+            HeaderTextComponent(
+                value = stringResource(id = R.string.create_account_text),
+                shouldBeCentered = true,
+                shouldBeRed = true
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            StepperBar(
+                steps = sharedUserDataViewModel.steps,
+                currentStep = sharedUserDataViewModel.allergiesStep.value
+            )
+            NormalTextComponent(value = stringResource(id = R.string.allergies))
+            Column {
+                AllergenGrid(
+                    allergens = sharedUserDataViewModel.allergens,
+                    onAllergenClick = {
+                        sharedUserDataViewModel.allergenOnClick(it)
+                        it.selectedState.value = !it.selectedState.value
+                        it.selectedState.value = !it.selectedState.value
+                    }
+
+                )
+            }
+
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Spacer(modifier = Modifier.width(10.dp))
+                SmallButtonComponent(
+                    value = stringResource(id = R.string.next_step),
+                    onClickAction = {
+                        sharedUserDataViewModel.allergiesScreenNext(navController)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+
+        }
+    }
+}
+
 
 
 /**
