@@ -3,9 +3,9 @@ package eu.mobcomputing.dima.registration.components.recipe_detail
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
@@ -41,6 +41,7 @@ fun RecipeHeaderInfo(
     ElevatedCard (
         modifier = Modifier
             .fillMaxWidth()
+            .wrapContentHeight()
             .padding(10.dp),
 
         shape = CardDefaults.shape,
@@ -53,21 +54,21 @@ fun RecipeHeaderInfo(
         ),
 
         ) {
-        Column {
+
 
             Row{
 
-                Box(modifier = Modifier.weight(1f)){
+                Box(modifier = Modifier.weight(1f).wrapContentHeight()){
 
                     GlideImage(
                         model = img_url ,
                         contentDescription = "recipe image",
                         modifier = Modifier
-                            .fillMaxSize(),
+                            .fillMaxWidth(),
                         contentScale = ContentScale.FillBounds,
                     )
                 }
-                Box(modifier = Modifier.weight(1f)) {
+                Box(modifier = Modifier.weight(1f).wrapContentHeight()) {
                     Column(
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -91,7 +92,8 @@ fun RecipeHeaderInfo(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(4.dp)
-                                .weight(0.4f)
+                                .weight(1f)
+                                .wrapContentSize()
                                 .align(Alignment.CenterHorizontally)
                         ) {
 
@@ -153,7 +155,7 @@ fun RecipeHeaderInfo(
 
                 }
             }
-        }
+        
     }
 }
 

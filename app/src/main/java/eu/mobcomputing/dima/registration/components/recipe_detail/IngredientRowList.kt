@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,10 +24,11 @@ import eu.mobcomputing.dima.registration.models.Ingredient
 
 @Composable
 fun IngredientRowList(
-    ingredients : List<Ingredient>
+    ingredients : List<Ingredient>,
+    isSmallScreen: Boolean,
 ){
     Column(
-        modifier = Modifier.padding(10.dp)
+       modifier = Modifier.padding(start = 10.dp)
     ) {
 
         Text(
@@ -42,14 +46,29 @@ fun IngredientRowList(
                 .padding(4.dp),
         )
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ){
-            items(ingredients){
-                IngredientRowItem(ingredient = it)
+        if (isSmallScreen) {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                items(ingredients){
+                    IngredientRowItem(ingredient = it)
+                }
             }
+        } else {
+
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 120.dp),
+            ) {
+                items(ingredients) { it ->
+                    // Grid item
+                    IngredientRowItem(ingredient = it)
+                }
+            }
+
         }
+
+
     }
 
 }
@@ -62,8 +81,15 @@ fun IngredientRowListPreview(){
         Ingredient(id=0, name = "milk",image="", amount = 10.0, unit = "g"),
         Ingredient(id=0, name = "chocolate",image="", amount = 10.0, unit = "g"),
         Ingredient(id=0, name = "cornstarch",image="", amount = 150.0, unit = "g"),
-
+        Ingredient(id=0, name = "egg",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "milk",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "chocolate",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "cornstarch",image="", amount = 150.0, unit = "g"),
+        Ingredient(id=0, name = "egg",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "milk",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "chocolate",image="", amount = 10.0, unit = "g"),
+        Ingredient(id=0, name = "cornstarch",image="", amount = 150.0, unit = "g")
     )
-    IngredientRowList(ingrs)
+    IngredientRowList(ingrs, false)
 
 }

@@ -3,11 +3,12 @@ package eu.mobcomputing.dima.registration.screens
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -35,7 +37,6 @@ import eu.mobcomputing.dima.registration.components.recipe_detail.CompletedRecip
 import eu.mobcomputing.dima.registration.components.recipe_detail.IngredientRowList
 import eu.mobcomputing.dima.registration.components.recipe_detail.RecipeHeaderInfo
 import eu.mobcomputing.dima.registration.components.recipe_detail.RecipeInstructionList
-import eu.mobcomputing.dima.registration.components.user.CharacteristicsEditorDialog
 import eu.mobcomputing.dima.registration.models.AnalyzedInstruction
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.Instruction
@@ -55,7 +56,28 @@ fun RecipeDetailScreen(
     recipe: Recipe,
     viewModel : PantryViewModel = hiltViewModel(),
 ) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                colorResource(id = R.color.pink_50)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        val isSmallScreen = maxWidth < 600.dp
 
+        if (isSmallScreen) {
+            smartphoneRecipeDetailScreen(navController = navController,recipe = recipe,viewModel = viewModel,screenType = isSmallScreen)
+        } else {
+            tabletRecipeDetailScreen(navController = navController, recipe = recipe, viewModel = viewModel, screenType = isSmallScreen)
+        }
+    }
+
+}
+
+
+@Composable
+fun smartphoneRecipeDetailScreen( navController: NavController, recipe: Recipe, viewModel: PantryViewModel, screenType: Boolean){
     val listState = rememberLazyListState()
 
     var showRecipeCompletedDialog by remember {
@@ -96,16 +118,18 @@ fun RecipeDetailScreen(
             ) {
 
                 /*RECIPE CARD HEADER INFO*/
-                Box(modifier = Modifier.weight(weight = 0.4f, fill = true)) {
+                Box(modifier = Modifier
+                    .weight(weight = 0.5f, fill = true)
+                    .wrapContentSize()) {
                     RecipeHeaderInfo(title = recipe.title,
                         img_url = recipe.image ,
                         readyInMinutes = recipe.readyInMinutes ,
                         servings = recipe.servings
                     )
-                    Spacer(modifier = Modifier.height(200.dp))
+
                 }
 
-                IngredientRowList(ingredients = recipe.ingredients!!)
+                IngredientRowList(ingredients = recipe.ingredients!!,screenType)
 
                 Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
 
@@ -134,6 +158,100 @@ fun RecipeDetailScreen(
 
     }
 }
+
+@Composable
+fun tabletRecipeDetailScreen( navController: NavController,recipe: Recipe,viewModel: PantryViewModel, screenType: Boolean){
+    val listState = rememberLazyListState()
+
+    var showRecipeCompletedDialog by remember {
+        mutableStateOf(0)
+    }
+    /*
+    *   Get local context for Toast message
+    * */
+    val context = LocalContext.current
+
+
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { showRecipeCompletedDialog = 1 },
+                icon = { Icon(Icons.Filled.Done, "Recipe Done.") },
+                text = { Text(text = "Recipe completed") },
+                expanded = !listState.isScrollInProgress
+            )
+        },
+        bottomBar = {
+            NavigationBarComponent(
+                navController = navController,
+                selectedItemIndex = 0
+            )
+        },
+    ) {
+        Surface(
+            color = colorResource(id = R.color.pink_50),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .background(colorResource(id = R.color.pink_50))
+        ) {
+
+            Row(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+
+                Column (
+                    modifier = Modifier.weight(1f)
+                ){
+
+
+                    /*RECIPE CARD HEADER INFO*/
+                    Box(modifier = Modifier.weight(weight = 0.7f, fill = true).wrapContentSize()) {
+
+                        Row {
+                            RecipeHeaderInfo(
+                                title = recipe.title,
+                                img_url = recipe.image,
+                                readyInMinutes = recipe.readyInMinutes,
+                                servings = recipe.servings
+                            )
+
+                        }
+                    }
+                    Box(modifier = Modifier.weight(weight = 1f, fill = true).wrapContentSize()) {
+
+                        IngredientRowList(ingredients = recipe.ingredients!!, screenType)
+                    }
+                }
+
+                Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+
+                    RecipeInstructionList(instructions = recipe.instructions!![0].steps, listState = listState)
+
+                }
+            }
+        }
+
+
+        if(showRecipeCompletedDialog == 1){
+            CompletedRecipeDialog(
+                onDismissRequest = { showRecipeCompletedDialog =0 },
+                onConfirmation = { selected ->
+                    viewModel.removeFromPantry(selected)
+                    showRecipeCompletedDialog = 0
+                    reloadScreen(navController)
+                    Toast.makeText(context,"Yummy! I removed the ingredients from your digital pantry", Toast.LENGTH_SHORT).show()
+                },
+                dialogTitle = "Selects which ingredients are finished",
+                ingredients = recipe.ingredients!!,
+            )
+        }
+
+
+    }
+}
+
+
 
 
 @Preview

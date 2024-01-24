@@ -16,8 +16,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,8 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -41,10 +42,9 @@ import eu.mobcomputing.dima.registration.components.HeaderTextComponent
 import eu.mobcomputing.dima.registration.components.MyImageComponent
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import eu.mobcomputing.dima.registration.components.NormalTextComponent
-import eu.mobcomputing.dima.registration.components.SearchBar
+import eu.mobcomputing.dima.registration.components.home.RecipeGrid
 import eu.mobcomputing.dima.registration.utils.Constants
 import eu.mobcomputing.dima.registration.viewmodels.HomeViewModel
-import kotlinx.coroutines.launch
 
 /**
  * Composable function representing the Home screen of the application.
@@ -94,24 +94,158 @@ fun HomeScreen(
         val isSmallScreen = maxWidth < 600.dp
 
         if (isSmallScreen) {
-            eu.mobcomputing.dima.registration.screens.smartphone.HomeScreen(
-                navController = navController,
-                homeViewModel,
-            )
+            smartphoneHomeScreen(navController = navController,homeViewModel)
         } else {
+            tabletHomeScreen(navController = navController, homeViewModel = homeViewModel )
+        }
+    }
+}
+
+
+
+
+@Composable
+fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
+
+
+    // Observe the LiveData containing the list of Ingredients
+    val recipesList = homeViewModel.recipes.observeAsState()
+
+    // Observe the LiveData containing the list of Ingredients
+    val username = homeViewModel.name.observeAsState()
+
+
+
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.pink_50)),
+
+        bottomBar = {NavigationBarComponent(
+            navController = navController,
+            selectedItemIndex = 0
+        )}
+
+    ) {
+        Surface(
+            modifier = Modifier.padding(it)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+
+                /***** HEADER *****/
+                Column (
+                    modifier = Modifier.padding(25.dp)
+                ){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 16.dp)
+                                .align(Alignment.CenterVertically)
+                        ) {
+                            HeaderTextComponent(
+                                "Hi ${username.value}",
+                                shouldBeCentered = false,
+                                shouldBeRed = false
+                            )
+                            Spacer(modifier = Modifier.height(15.dp))
+                            NormalTextComponent(
+                                "I am your sous chef and I am ready to help you with your cooking today.",
+                                shouldBeCentered = false,
+                                shouldBeRed = true
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f)
+                                .fillMaxWidth()
+                        ) {
+                            MyImageComponent(
+                                R.drawable.souschef_logo,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+
+                    NormalTextComponent(
+                        "These are the recipes we can make with the ingredients in your pantry :",
+                        shouldBeCentered = false,
+                    )
+
+                }
+
+                /***** LIST OF RECIPE *****/
+                Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+
+                    if(recipesList.value.isNullOrEmpty()){
+                        Box(modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(40.dp)
+                        ){
+                            HeaderTextComponent(value = "Seems there is nothing we can do :( ")
+                        }
+                    }else{
+                        RecipeGrid(recipes = recipesList.value!!, navController = navController)
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
+
+
+
+
+@Composable
+fun tabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
+
+
+    // Observe the LiveData containing the list of Ingredients
+    val recipesList = homeViewModel.recipes.observeAsState()
+
+    // Observe the LiveData containing the list of Ingredients
+    val username = homeViewModel.name.observeAsState()
+
+
+
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.pink_50)),
+
+        bottomBar = {NavigationBarComponent(
+            navController = navController,
+            selectedItemIndex = 0
+        )}
+
+    ) {
+        Surface(
+            modifier = Modifier.padding(it)
+        ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                        .fillMaxSize(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
 
                 ) {
-                    Spacer(modifier = Modifier.weight(1f))
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
@@ -129,43 +263,53 @@ fun HomeScreen(
                     ) {
 
                         HeaderTextComponent(
-                            "Hi ",
+                            "Hi ${username.value}",
                             shouldBeCentered = false,
                             shouldBeRed = false
                         )
-                        Spacer(modifier = Modifier.height(25.dp))
-                        NormalTextComponent(
-                            "What would you like to cook today?",
-                            shouldBeCentered = false,
-                            shouldBeRed = true
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
                         NormalTextComponent(
                             "I am your sous chef and I am ready to help you with your cooking today.",
-                            shouldBeCentered = false
-                        )
-                        NormalTextComponent(
-                            value = "Are you searching an ingredient?",
                             shouldBeCentered = false,
                             shouldBeRed = true
                         )
-                        SearchBar(onSearchTextChange = {}, onSearch = {})
-
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
                         NormalTextComponent(
-                            value = "Have a look in your pantry, there are some ingredients that must be used.",
-                            shouldBeCentered = false
+                            "These are the recipes we can make with the ingredients in your pantry :",
+                            shouldBeCentered = false,
                         )
+
+                        Spacer(modifier = Modifier.height(15.dp))
+
+                        /***** LIST OF RECIPE *****/
+                        Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+
+                            if(recipesList.value.isNullOrEmpty()){
+                                Box(modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(
+                                        top = 40.dp,
+                                        bottom= 0.dp,
+                                        start = 40.dp,
+                                        end=40.dp,)
+                                ){
+                                    HeaderTextComponent(value = "Seems there is nothing we can do :( ")
+                                }
+                            }else{
+                                RecipeGrid(recipes = recipesList.value!!, navController = navController)
+                            }
+
+                        }
                     }
                 }
-                NavigationBarComponent(
-                    navController = navController,
-                    selectedItemIndex = 0
-                )
             }
+
         }
     }
 }
+
+
+
 
 
 /**

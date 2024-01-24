@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -17,7 +19,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ChipColors
 import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,9 +50,6 @@ fun UserCharacteristicsDisplay(
     clickOnEdit: () -> Unit
 ) {
 
-    Surface(
-        color = colorResource(id = R.color.pink_50),
-    ) {
 
         Column {
 
@@ -61,7 +60,7 @@ fun UserCharacteristicsDisplay(
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.7f)
+                        .weight(1f)
                 ) {
                     Row {
                         Text(
@@ -73,7 +72,7 @@ fun UserCharacteristicsDisplay(
                                 ),
                             modifier = Modifier
                                 .padding(10.dp)
-                                .fillMaxWidth()
+                                .wrapContentSize()
                                 .align(Alignment.CenterVertically)
                         )
 
@@ -92,7 +91,7 @@ fun UserCharacteristicsDisplay(
                     onClick = clickOnEdit,
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.pink_900)),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .wrapContentWidth()
                         .align(Alignment.CenterVertically)
                 ) {
                     Image(
@@ -115,7 +114,7 @@ fun UserCharacteristicsDisplay(
 
             if (userCharacteristics.isNullOrEmpty()) {
                 Text(
-                    text = "Seems I don't have this info obout you yet!",
+                    text = "Seems I don't have this info about you yet!",
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
@@ -149,10 +148,11 @@ fun UserCharacteristicsDisplay(
                                             fontWeight = FontWeight.Bold,
                                             fontStyle = FontStyle.Normal,
                                             color = Color.White,
+                                            textAlign = TextAlign.Center
                                         ),
                                         modifier = Modifier
                                             .padding(10.dp)
-                                            .wrapContentSize()
+                                            .fillMaxSize()
                                     )
                                 },
                                 border = BorderStroke(1.dp, colorResource(id = R.color.pink_900)),
@@ -172,13 +172,13 @@ fun UserCharacteristicsDisplay(
                 }
             }
 
-        }
+
     }
 }
 
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun UserAllergiesDisplayPreview() {
 
     val userCharacteristics: List<String> = listOf(
@@ -201,7 +201,7 @@ fun UserAllergiesDisplayPreview() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun UserDietDisplayPreview() {
 
     val userCharacteristics: List<String> = listOf(

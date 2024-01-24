@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,71 +51,70 @@ fun PantryScreen(
 
 
 
-
-    Surface(
-        color = colorResource(id = R.color.pink_50),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            //verticalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            SearchBar(
-                onSearch = { newSearchText ->
-                    searchText = newSearchText
-                    // Call the filter function in the ViewModel
-                    viewModel.filterIngredients(newSearchText)
-                },
-
-                onSearchTextChange = { newSearchText ->
-                    searchText = newSearchText
-                    // Call the filter function in the ViewModel
-                    viewModel.filterIngredients(newSearchText)
-                }
-            )
-
-            HorizontalDivider(
-                modifier = Modifier.padding(
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 8.dp,
-                ), thickness = 1.dp, color = Color.LightGray
-            )
-
-            Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
-                ingredientsList.value?.let {
-                    if (it.isNotEmpty()) {
-                        //populate grid if ingredients found
-                        PantryIngredientGrid(ingredients = it)
-                    } else {
-
-                        // Ingredients not found
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            HeaderTextComponent(
-                                value = stringResource(R.string.no_ingredient_message)
-                            )
-                        }
-
-                    }
-
-                }
-            }
-
-
+    Scaffold (
+        bottomBar = {
             NavigationBarComponent(
                 navController = navController,
                 selectedItemIndex = 1
             )
 
         }
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .background(colorResource(id = R.color.pink_50))
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                //verticalArrangement = Arrangement.SpaceBetween
+            ) {
 
+                SearchBar(
+                    onSearch = { newSearchText ->
+                        searchText = newSearchText
+                        // Call the filter function in the ViewModel
+                        viewModel.filterIngredients(newSearchText)
+                    },
+
+                    onSearchTextChange = { newSearchText ->
+                        searchText = newSearchText
+                        // Call the filter function in the ViewModel
+                        viewModel.filterIngredients(newSearchText)
+                    }
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 8.dp,
+                    ), thickness = 1.dp, color = Color.LightGray
+                )
+
+                Box(modifier = Modifier.weight(weight = 1f, fill = true)) {
+                    ingredientsList.value?.let {
+                        if (it.isNotEmpty()) {
+                            //populate grid if ingredients found
+                            PantryIngredientGrid(ingredients = it)
+                        } else {
+
+                            // Ingredients not found
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                HeaderTextComponent(
+                                    value = stringResource(R.string.no_ingredient_message)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -31,7 +31,6 @@ import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 /**
  * Composable function representing the screen for searching and displaying a list of ingredients.
@@ -55,15 +54,22 @@ fun SearchIngredientScreen(
 
 
 
-    Surface(
-        color = colorResource(id = R.color.pink_50),
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50))
+            .background(colorResource(id = R.color.pink_50)),
+
+        bottomBar = {
+            NavigationBarComponent(
+                navController = navController,
+                selectedItemIndex = 3
+        )}
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            //verticalArrangement = Arrangement.Top
         ) {
 
             SearchBar(
@@ -98,7 +104,7 @@ fun SearchIngredientScreen(
                 ), thickness = 1.dp, color = Color.LightGray
             )
 
-            Box(modifier = Modifier.weight(weight = 1f, fill = false)) {
+            Box(modifier = Modifier.fillMaxSize().weight(weight = 1f, fill = true)) {
                 ingredientsList.value?.let {
                     if (it.isNotEmpty()) {
                         //populate grid if ingredients found
@@ -116,16 +122,9 @@ fun SearchIngredientScreen(
                                 value = "Please search the ingredient you want to add to your digital pantry"
                             )
                         }
-
                     }
-
                 }
             }
-
-            NavigationBarComponent(
-                navController = navController,
-                selectedItemIndex = 3
-            )
         }
     }
 }
