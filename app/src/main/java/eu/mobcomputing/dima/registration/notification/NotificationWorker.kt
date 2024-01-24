@@ -115,7 +115,6 @@ class MyNotificationWorker(context: Context, params: WorkerParameters) : Worker(
             val tomorrow = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 1) }
             val dayAfterTomorrow = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 2) }
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             // Use async for concurrent execution of checks
             val checks = userPantry.map { ingredient ->
                 async {
