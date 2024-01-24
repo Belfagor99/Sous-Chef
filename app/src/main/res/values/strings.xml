@@ -34,4 +34,7 @@
     <string name="please_allow_this_app_to_send_you_a_notification">Please allow this app to send you a notification</string>
     <string name="ok">OK</string>
     <string name="no_ingredient_message">No ingredient found!\n\n Let\'s add some ingredients to the pantry via the button below</string>
+    <string name="your_e_mail">Your E-mail:</string>
+    <string name="your_name">Your name:</string>
+    <string name="here_is_all_the_information_i_know_about_you">Here is all the information I know about you</string>
 </resources>

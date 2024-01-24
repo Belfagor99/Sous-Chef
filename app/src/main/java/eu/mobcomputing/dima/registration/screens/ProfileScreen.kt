@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -126,7 +127,11 @@ fun ProfileScreen(
 
                             /*  LOGOUT BUTTON */
                             OutlinedButton(
-                                onClick = { viewModel.logOut(navController) },
+                                onClick = {
+                                    viewModel.showLogoutConfirmationDialog(
+                                        context = context, navController = navController
+                                    )
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .align(Alignment.CenterHorizontally)
@@ -202,9 +207,7 @@ fun ProfileScreen(
                             clickOnEdit = { showEditCharacteristics = 2 })
 
 
-                        /*
-                    * Dialog for editing user's diet
-                    */
+                        /** Dialog for editing user's diet*/
                         if (showEditCharacteristics == 1) {
                             CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0
@@ -223,9 +226,8 @@ fun ProfileScreen(
                                 userCharacteristics = DietType::class.java.enumConstants?.map { it.diet }
                                     ?: emptyList(),
                                 singleSelection = true)
-                        }/*
-                    * Dialog for editing user's allergies
-                    */
+                        }
+                        /** Dialog for editing user's allergies*/
                         else if (showEditCharacteristics == 2) {
                             CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0
@@ -265,7 +267,7 @@ fun ProfileScreen(
                 Column(modifier = Modifier.padding(15.dp)) {
                     Spacer(modifier = Modifier.height(10.dp))
                     HeaderTextComponent(
-                        value = "There are the information I know about you",
+                        value = stringResource(R.string.here_is_all_the_information_i_know_about_you),
                         shouldBeCentered = false,
                         extraModifier = Modifier.padding(15.dp)
                     )
@@ -300,8 +302,11 @@ fun ProfileScreen(
 
                                 /*  LOGOUT BUTTON */
                                 OutlinedButton(
-                                    onClick = { },
-                                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                                    onClick = {
+                                        viewModel.showLogoutConfirmationDialog(
+                                            context = context, navController = navController
+                                        )
+                                    }, modifier = Modifier.align(Alignment.CenterHorizontally)
                                 ) {
                                     Text(
                                         text = "Logout",
@@ -330,7 +335,7 @@ fun ProfileScreen(
                             ) {
 
                                 Text(
-                                    text = "Your name:",
+                                    text = stringResource(R.string.your_name),
                                     style = TextStyle(
                                         fontSize = 23.sp,
                                         fontWeight = FontWeight.Bold,
@@ -356,7 +361,7 @@ fun ProfileScreen(
                                 )
 
                                 Text(
-                                    text = "Your E-mail:",
+                                    text = stringResource(R.string.your_e_mail),
                                     style = TextStyle(
                                         fontSize = 23.sp,
                                         fontWeight = FontWeight.Bold,
@@ -400,9 +405,7 @@ fun ProfileScreen(
                             clickOnEdit = { showEditCharacteristics = 2 })
 
 
-                        /*
-                    * Dialog for editing user's diet
-                    */
+                        /** Dialog for editing user's diet*/
                         if (showEditCharacteristics == 1) {
                             CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0
@@ -421,9 +424,8 @@ fun ProfileScreen(
                                 userCharacteristics = DietType::class.java.enumConstants?.map { it.diet }
                                     ?: emptyList(),
                                 singleSelection = true)
-                        }/*
-                    * Dialog for editing user's allergies
-                    */
+                        }
+                        /** Dialog for editing user's allergies*/
                         else if (showEditCharacteristics == 2) {
                             CharacteristicsEditorDialog(onDismissRequest = {
                                 showEditCharacteristics = 0

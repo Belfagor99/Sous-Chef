@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,21 +39,20 @@ class ProfileViewModel : ViewModel() {
 
 
     private var _name = MutableLiveData<String>()
-    var name : LiveData<String> = _name
+    var name: LiveData<String> = _name
 
 
     private var _surname = MutableLiveData<String>()
-    var surname : LiveData<String> = _surname
+    var surname: LiveData<String> = _surname
 
     private var _email = MutableLiveData<String>()
-    var email : LiveData<String> = _email
-
+    var email: LiveData<String> = _email
 
 
     /**
      * Reference to the user's document in Firestore.
      */
-    var userDoc : DocumentReference? = getUserDocumentRef()
+    var userDoc: DocumentReference? = getUserDocumentRef()
 
 
     /**
@@ -68,12 +69,12 @@ class ProfileViewModel : ViewModel() {
      * Retrieve user characteristics from the Firestore database.
      * If the user document is not available or an error occurs during retrieval, appropriate logs are generated.
      */
-    private fun getUserCharacteristics(){
+    private fun getUserCharacteristics() {
 
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
                 Log.e("PROFILE->GET USER", "Error fetching user doc")
-            }else{
+            } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
@@ -95,20 +96,20 @@ class ProfileViewModel : ViewModel() {
                         _userAllergies.value = allergies
 
 
-                        val diet =  listOf(user.dietType.toString())
+                        val diet = listOf(user.dietType.toString())
                         _userDiet.value = diet
 
 
-                        Log.e("PROFILE @ GET USR CHAR ->CHECK:allergies",allergies.toString())
-                        Log.e("PROFILE @ GET USR CHAR ->CHECK:diet",_userDiet.value.toString())
+                        Log.e("PROFILE @ GET USR CHAR ->CHECK:allergies", allergies.toString())
+                        Log.e("PROFILE @ GET USR CHAR ->CHECK:diet", _userDiet.value.toString())
 
                     } else {
                         // Document does not exist
-                        Log.e("PROFILE @ GET USR CHAR -> CHECK","Document does not exist.")
+                        Log.e("PROFILE @ GET USR CHAR -> CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ GET USR CHAR -> CHECK","Error Failire Listener: $e")
+                    Log.e("PROFILE @ GET USR CHAR -> CHECK", "Error Failire Listener: $e")
                 }
 
             }
@@ -124,23 +125,23 @@ class ProfileViewModel : ViewModel() {
      *
      * @param newAllergies The list of new allergies to be set for the user.
      */
-    fun setNewAllergies(newAllergies : List<String>){
+    fun setNewAllergies(newAllergies: List<String>) {
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
                 Log.e("PROFILE @ SET ALLERG ->SET ALLERGIES", "Error fetching user doc")
-            }else{
+            } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
-                        userDoc!!.update("allergies",newAllergies)
+                        userDoc!!.update("allergies", newAllergies)
 
                     } else {
                         // Document does not exist
-                        Log.e("PROFILE @ SET ALLERG -> CHECK","Document does not exist.")
+                        Log.e("PROFILE @ SET ALLERG -> CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ SET ALLERG -> CHECK","Error Failire Listener: $e")
+                    Log.e("PROFILE @ SET ALLERG -> CHECK", "Error Failire Listener: $e")
                 }
 
             }
@@ -155,25 +156,26 @@ class ProfileViewModel : ViewModel() {
      *
      * @param newDiet The new diet type to be set for the user.
      */
-    fun setNewDiet(newDiet : String){
+    fun setNewDiet(newDiet: String) {
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
                 Log.e("PROFILE @ SET DIET", "Error fetching user doc")
-            }else{
+            } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
-                        val newDietType = DietType.entries.find { dietType -> dietType.diet == newDiet  }
+                        val newDietType =
+                            DietType.entries.find { dietType -> dietType.diet == newDiet }
 
                         userDoc!!.update("dietType", newDietType!!.name)
 
                     } else {
                         // Document does not exist
-                        Log.e("PROFILE @ SET DIET -> CHECK","Document does not exist.")
+                        Log.e("PROFILE @ SET DIET -> CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ SET DIET-> CHECK","Error Failire Listener: $e")
+                    Log.e("PROFILE @ SET DIET-> CHECK", "Error Failire Listener: $e")
                 }
 
             }
@@ -182,7 +184,6 @@ class ProfileViewModel : ViewModel() {
 
         }
     }
-
 
 
     /**
@@ -217,6 +218,31 @@ class ProfileViewModel : ViewModel() {
         }
 
         firebaseAuth.addAuthStateListener(authStateListener)
+    }
+
+    /**
+     * Shows an alert dialog before the user is actually logged out.
+     *
+     * @param context context of the application
+     * @param navController The NavController used for navigation
+     */
+    fun showLogoutConfirmationDialog(context: Context, navController: NavController) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Log Out")
+        builder.setMessage("Are you sure you want to log out?")
+
+        builder.setPositiveButton("Yes") { _, _ ->
+            // User clicked Yes, perform log out
+            logOut(navController)
+        }
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            // User clicked No, dismiss the dialog
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

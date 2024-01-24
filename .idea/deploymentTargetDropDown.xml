@@ -2,23 +2,21 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="LazyVerticalGridComponentPreview">
-        <State />
-      </entry>
-      <entry key="PreviewSearchBarExample">
-        <State />
-      </entry>
-      <entry key="RecipeDetailScreenPreview">
-        <State />
-      </entry>
-      <entry key="SearchBarPreview">
-        <State />
-      </entry>
-      <entry key="SearchIngredientScreenPreview">
-        <State />
-      </entry>
       <entry key="app">
-        <State />
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fekia\.android\avd\Medium_Tablet_API_TiramisuPrivacySandbox.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-01-24T12:29:04.490190200Z" />
+        </State>
       </entry>
     </value>
   </component>
