@@ -96,7 +96,7 @@ class ProfileViewModel : ViewModel() {
                         _userAllergies.value = allergies
 
 
-                        val diet = listOf(user.dietType.toString())
+                        val diet = listOf(user.dietType.diet)
                         _userDiet.value = diet
 
 

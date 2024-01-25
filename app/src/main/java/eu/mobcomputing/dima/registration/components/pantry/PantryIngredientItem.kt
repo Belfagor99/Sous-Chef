@@ -58,10 +58,12 @@ fun PantryIngredientItem(ingredient: Ingredient) {
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(20.dp)
                     .align(Alignment.CenterVertically)
+                    .weight(1f)
+                    .fillMaxWidth()
 
             )
 
@@ -73,6 +75,8 @@ fun PantryIngredientItem(ingredient: Ingredient) {
                         .clip(shape = RoundedCornerShape(25.dp))
                         .background(colorResource(R.color.pink_900))
                         .wrapContentHeight()
+                        .weight(1f)
+                        .fillMaxWidth()
                 ){
                     Text(
                         modifier = Modifier.padding(
@@ -80,7 +84,7 @@ fun PantryIngredientItem(ingredient: Ingredient) {
                             bottom = 5.dp,
                             top = 5.dp,
                             end = 20.dp
-                        ),
+                        ).align(Alignment.Center),
                         text = SimpleDateFormat("dd/MM/YYYY").format(ingredient.expiringDate!!),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
@@ -100,7 +104,7 @@ fun PantryIngredientItem(ingredient: Ingredient) {
 @Preview
 @Composable
 fun AppPreview() {
-    val ingredient = Ingredient(name = "Eggs", userQuantity = 2.0, unit = "units", expiringDate = Date("12/02/2021"))
+    val ingredient = Ingredient(name = "coconut cooking oil", userQuantity = 2.0, unit = "units", expiringDate = Date("12/02/2021"))
     MaterialTheme {
         PantryIngredientItem(ingredient= ingredient,)
     }

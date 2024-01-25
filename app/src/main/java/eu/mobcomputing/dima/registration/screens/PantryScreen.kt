@@ -52,6 +52,9 @@ fun PantryScreen(
 
 
     Scaffold (
+        modifier = Modifier
+            .fillMaxSize(),
+
         bottomBar = {
             NavigationBarComponent(
                 navController = navController,
@@ -64,10 +67,9 @@ fun PantryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .background(colorResource(id = R.color.pink_50))
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.pink_50)),
                 //verticalArrangement = Arrangement.SpaceBetween
             ) {
 

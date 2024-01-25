@@ -56,8 +56,7 @@ fun SearchIngredientScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50)),
+            .fillMaxSize(),
 
         bottomBar = {
             NavigationBarComponent(
@@ -68,7 +67,8 @@ fun SearchIngredientScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(it)
+                .background(colorResource(id = R.color.pink_50)),
             //verticalArrangement = Arrangement.Top
         ) {
 

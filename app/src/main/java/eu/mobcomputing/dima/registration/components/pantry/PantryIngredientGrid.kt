@@ -16,7 +16,7 @@ fun PantryIngredientGrid(ingredients: List<Ingredient>) {
         Column {
             // LazyVerticalGrid with filtered ingredients
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 240.dp),
+                columns = GridCells.Adaptive(minSize = 350.dp),
                 contentPadding = PaddingValues(10.dp),
             ) {
                 items(ingredients) { ingredient ->

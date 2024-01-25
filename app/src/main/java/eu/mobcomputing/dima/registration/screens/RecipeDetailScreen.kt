@@ -58,10 +58,7 @@ fun RecipeDetailScreen(
 ) {
     BoxWithConstraints(
         modifier = Modifier
-            .fillMaxSize()
-            .background(
-                colorResource(id = R.color.pink_50)
-            ),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         val isSmallScreen = maxWidth < 600.dp
@@ -90,6 +87,8 @@ fun smartphoneRecipeDetailScreen( navController: NavController, recipe: Recipe, 
 
 
     Scaffold(
+        modifier = Modifier
+            .background(colorResource(id = R.color.pink_50)),
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { showRecipeCompletedDialog = 1 },

@@ -6,14 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -34,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
@@ -51,7 +47,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.add_ingredients.DatePickerView
-import eu.mobcomputing.dima.registration.components.add_ingredients.QuantitySelector
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.viewmodels.AddIngredientToPantryViewModel
@@ -100,12 +95,12 @@ fun AddIngredientToPantry(
         color = colorResource(id = R.color.pink_50),
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50))
-            .padding(10.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(10.dp)
+                .background(colorResource(id = R.color.pink_50))
         ){
             /*
              * Back button row
@@ -140,7 +135,8 @@ fun AddIngredientToPantry(
                 ElevatedCard (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.3f)
+                        .weight(1f)
+                        .wrapContentHeight()
                         .padding(10.dp),
 
                     shape = CardDefaults.shape,
@@ -154,14 +150,14 @@ fun AddIngredientToPantry(
                 ) {
                     Row{
 
-                        Box(modifier = Modifier.weight(1f)){
+                        Box(modifier = Modifier.weight(1f).align(Alignment.CenterVertically)){
 
                             GlideImage(
                                 model = Constants.BASE_IMG_URL_500+ingredient.image ,
                                 contentDescription = "recipe image",
                                 modifier = Modifier
-                                    .fillMaxSize(),
-                                contentScale = ContentScale.FillBounds,
+                                    .wrapContentSize().align(Alignment.Center),
+                                //contentScale = ContentScale.FillBounds,
                             )
                         }
                         Box(modifier = Modifier.weight(1f)) {
@@ -192,44 +188,11 @@ fun AddIngredientToPantry(
                     }
                 }
 
-
-                /*
-                 * Quantity selector row
-                 */
-                /*
-                Column{
-
-                    Text(
-                        text = "Select the quantity: ",
-                        style =  TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontStyle = FontStyle.Normal,
-                        ),
-                        modifier = Modifier
-                            .padding(8.dp)
-                            //.weight(1f)
-                    )
-
-
-                    QuantitySelector(
-                        onQuantityChange = {
-                            ingredient.userQuantity = it
-                        },
-                        onUnitChange = {
-                            ingredient.unit = it
-                            Log.e("@@@@@@",ingredient.unit)
-                            Log.e("@@@@@@",it)
-                        },
-                        listOfUnits = ingredient.possibleUnits
-                        )
-                }
-*/
-
                 /*
                  * Expiration date row
                  */
                 Row (
+                    modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -280,6 +243,7 @@ fun AddIngredientToPantry(
              * Button to add to pantry
              */
             ButtonComponent(
+
                 value = "Add to pantry",
                 onClickAction = {
                     // be sure to put a quantity at least  = 1

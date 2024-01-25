@@ -128,7 +128,7 @@ fun UserCharacteristicsDisplay(
 
             } else {
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 150.dp),
+                    columns = GridCells.Adaptive(minSize = 180.dp),
                     contentPadding = PaddingValues(10.dp),
                 ) {
                     items(userCharacteristics) { it ->
@@ -151,7 +151,7 @@ fun UserCharacteristicsDisplay(
                                             textAlign = TextAlign.Center
                                         ),
                                         modifier = Modifier
-                                            .padding(10.dp)
+                                            .padding(top= 10.dp,bottom =10.dp)
                                             .fillMaxSize()
                                     )
                                 },
@@ -210,7 +210,7 @@ fun UserDietDisplayPreview() {
         "Gluten free",
         "Lacto-\nVegetarian",
         "Pescetarian",
-        "Omnivore",
+        "OMNIVORE",
     )
 
     UserCharacteristicsDisplay("Diet", userCharacteristics, {})

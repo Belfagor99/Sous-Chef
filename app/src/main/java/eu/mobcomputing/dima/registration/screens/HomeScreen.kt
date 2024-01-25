@@ -118,8 +118,7 @@ fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewMo
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50)),
+            .fillMaxSize(),
 
         bottomBar = {NavigationBarComponent(
             navController = navController,
@@ -128,7 +127,7 @@ fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewMo
 
     ) {
         Surface(
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it).background(colorResource(id = R.color.pink_50))
         ) {
 
             Column(
@@ -222,8 +221,7 @@ fun tabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel)
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.pink_50)),
+            .fillMaxSize(),
 
         bottomBar = {NavigationBarComponent(
             navController = navController,
@@ -238,6 +236,7 @@ fun tabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(colorResource(id = R.color.pink_50)),
             ) {
                 Row(
                     modifier = Modifier

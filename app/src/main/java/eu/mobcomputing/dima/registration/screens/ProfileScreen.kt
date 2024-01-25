@@ -121,7 +121,8 @@ fun smartphoneProfileScreen( navController: NavController,viewModel: ProfileView
 
 
     Scaffold (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         bottomBar = {
             NavigationBarComponent(
                 navController = navController, selectedItemIndex = 2
@@ -131,7 +132,8 @@ fun smartphoneProfileScreen( navController: NavController,viewModel: ProfileView
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(it)
+                .background(colorResource(id = R.color.pink_50)),
         ) {
                 Column(
                     modifier = Modifier
@@ -373,6 +375,7 @@ fun tabletProfileScreen( navController: NavController,viewModel: ProfileViewMode
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .background(colorResource(id = R.color.pink_50))
                 //.verticalScroll(state = rememberScrollState())
         ) {
             Column(

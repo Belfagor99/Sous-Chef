@@ -100,7 +100,7 @@ fun CharacteristicsEditorDialog(
 
 
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 125.dp),
+                    columns = GridCells.Adaptive(minSize = 130.dp),
                     //contentPadding = PaddingValues(4.dp),
                 ) {
                     items(chipsList) { it ->
@@ -154,9 +154,10 @@ fun CharacteristicsEditorDialog(
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
                                         fontStyle = FontStyle.Normal,
+                                        textAlign = TextAlign.Center
                                     ),
                                     modifier = Modifier
-                                        .padding(8.dp)
+                                        .padding(top=8.dp,bottom=8.dp)
                                         .wrapContentSize()
                                 )
                             },
@@ -233,6 +234,7 @@ fun CharacteristicsEditorDialogPreview() {
         {},
         "select your allergies: ",
         listOf(
+            "Pescetarian",
             "Dairy",
             "Egg",
             "Gluten",

@@ -18,7 +18,6 @@ import eu.mobcomputing.dima.registration.screens.PantryScreen
 import eu.mobcomputing.dima.registration.screens.ProfileScreen
 import eu.mobcomputing.dima.registration.screens.RecipeDetailScreen
 import eu.mobcomputing.dima.registration.screens.SearchIngredientScreen
-import eu.mobcomputing.dima.registration.screens.SearchScreen
 import eu.mobcomputing.dima.registration.screens.SignUnSuccessfulScreen
 import eu.mobcomputing.dima.registration.screens.SignUpScreen
 import eu.mobcomputing.dima.registration.screens.SplashScreen
@@ -102,12 +101,6 @@ fun SetUpNavGraph(navController: NavHostController) {
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController = navController)
         }
-
-        // Search Screen
-        composable(route = Screen.Search.route) {
-            SearchScreen(navController = navController)
-        }
-
 
         composable(route = Screen.SearchIngredientScreen.route) {
             SearchIngredientScreen(navController = navController)
