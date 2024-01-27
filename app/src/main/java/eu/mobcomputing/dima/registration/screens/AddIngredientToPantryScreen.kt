@@ -43,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -236,7 +235,7 @@ fun AddIngredientToPantry(
                     if (showDatePicker) {
                         DatePickerView(
                             onDismiss = { showDatePicker = false },
-                            onDateSelected = { it ->
+                            onDateSelected = {
                                 date = it
                                 ingredient.expiringDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                                     .parse(it)
@@ -279,13 +278,13 @@ fun AddIngredientToPantry(
         }
 
         if(isNetworkAvailable.value==false){
-            val context = LocalContext.current
-            val builder = AlertDialog.Builder(context)
+            val myContext = LocalContext.current
+            val builder = AlertDialog.Builder(myContext)
             builder.setTitle("Connection Lost")
             builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
 
             builder.setPositiveButton("Ok") { _, _ ->
-                (context as Activity).finishAffinity()
+                (myContext as Activity).finishAffinity()
             }
 
             val dialog = builder.create()

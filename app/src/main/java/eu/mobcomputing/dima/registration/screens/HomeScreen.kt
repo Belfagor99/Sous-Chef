@@ -102,9 +102,9 @@ fun HomeScreen(
         val isSmallScreen = maxWidth < 600.dp
 
         if (isSmallScreen) {
-            smartphoneHomeScreen(navController = navController,homeViewModel)
+            SmartphoneHomeScreen(navController = navController,homeViewModel)
         } else {
-            tabletHomeScreen(navController = navController, homeViewModel = homeViewModel )
+            TabletHomeScreen(navController = navController, homeViewModel = homeViewModel )
         }
     }
 
@@ -127,7 +127,7 @@ fun HomeScreen(
 
 
 @Composable
-fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
+fun SmartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
 
 
     // Observe the LiveData containing the list of Ingredients
@@ -232,7 +232,7 @@ fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewMo
 
 
 @Composable
-fun tabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
+fun TabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel){
 
 
     // Observe the LiveData containing the list of Ingredients

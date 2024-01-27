@@ -72,9 +72,9 @@ fun RecipeDetailScreen(
         val isSmallScreen = maxWidth < 600.dp
 
         if (isSmallScreen) {
-            smartphoneRecipeDetailScreen(navController = navController,recipe = recipe,viewModel = viewModel,screenType = isSmallScreen)
+            SmartphoneRecipeDetailScreen(navController = navController,recipe = recipe,viewModel = viewModel,screenType = isSmallScreen)
         } else {
-            tabletRecipeDetailScreen(navController = navController, recipe = recipe, viewModel = viewModel, screenType = isSmallScreen)
+            TabletRecipeDetailScreen(navController = navController, recipe = recipe, viewModel = viewModel, screenType = isSmallScreen)
         }
     }
 
@@ -96,7 +96,7 @@ fun RecipeDetailScreen(
 
 
 @Composable
-fun smartphoneRecipeDetailScreen( navController: NavController, recipe: Recipe, viewModel: PantryViewModel, screenType: Boolean){
+fun SmartphoneRecipeDetailScreen( navController: NavController, recipe: Recipe, viewModel: PantryViewModel, screenType: Boolean){
     val listState = rememberLazyListState()
 
     var showRecipeCompletedDialog by remember {
@@ -181,7 +181,7 @@ fun smartphoneRecipeDetailScreen( navController: NavController, recipe: Recipe, 
 }
 
 @Composable
-fun tabletRecipeDetailScreen( navController: NavController,recipe: Recipe,viewModel: PantryViewModel, screenType: Boolean){
+fun TabletRecipeDetailScreen( navController: NavController,recipe: Recipe,viewModel: PantryViewModel, screenType: Boolean){
     val listState = rememberLazyListState()
 
     var showRecipeCompletedDialog by remember {
