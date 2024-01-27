@@ -1,6 +1,8 @@
 package eu.mobcomputing.dima.registration.screens
 
 import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,6 +62,11 @@ fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = viewModel()
 ) {
+
+
+    val isNetworkAvailable = homeViewModel.connectionStatus.observeAsState()
+
+
     val notificationPermissionState = rememberPermissionState(
         permission = Manifest.permission.POST_NOTIFICATIONS
     )
@@ -99,6 +107,20 @@ fun HomeScreen(
             tabletHomeScreen(navController = navController, homeViewModel = homeViewModel )
         }
     }
+
+    if(isNetworkAvailable.value==false){
+        val context = LocalContext.current
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Connection Lost")
+        builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+        builder.setPositiveButton("Ok") { _, _ ->
+            (context as Activity).finishAffinity()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
 
 
@@ -127,7 +149,9 @@ fun smartphoneHomeScreen( navController: NavController,homeViewModel: HomeViewMo
 
     ) {
         Surface(
-            modifier = Modifier.padding(it).background(colorResource(id = R.color.pink_50))
+            modifier = Modifier
+                .padding(it)
+                .background(colorResource(id = R.color.pink_50))
         ) {
 
             Column(
@@ -288,9 +312,10 @@ fun tabletHomeScreen( navController: NavController,homeViewModel: HomeViewModel)
                                     .align(Alignment.Center)
                                     .padding(
                                         top = 40.dp,
-                                        bottom= 0.dp,
+                                        bottom = 0.dp,
                                         start = 40.dp,
-                                        end=40.dp,)
+                                        end = 40.dp,
+                                    )
                                 ){
                                     HeaderTextComponent(value = "Seems there is nothing we can do :( ")
                                 }

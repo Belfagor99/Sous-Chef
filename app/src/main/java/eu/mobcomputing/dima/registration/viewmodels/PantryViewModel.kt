@@ -2,21 +2,17 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
-import eu.mobcomputing.dima.registration.models.Recipe
 import eu.mobcomputing.dima.registration.models.User
+import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +27,12 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class PantryViewModel @Inject constructor(application: Application,) : AndroidViewModel(application) {
+
+
+
+    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus : LiveData<Boolean> = _connectionStatus
+
 
     /**
      * LiveData containing the list of ingredients in the user's pantry.

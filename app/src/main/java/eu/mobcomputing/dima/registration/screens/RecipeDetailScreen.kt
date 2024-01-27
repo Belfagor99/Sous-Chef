@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,6 +59,11 @@ fun RecipeDetailScreen(
     recipe: Recipe,
     viewModel : PantryViewModel = hiltViewModel(),
 ) {
+
+
+    val isNetworkAvailable = viewModel.connectionStatus.observeAsState()
+
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize(),
@@ -68,6 +76,20 @@ fun RecipeDetailScreen(
         } else {
             tabletRecipeDetailScreen(navController = navController, recipe = recipe, viewModel = viewModel, screenType = isSmallScreen)
         }
+    }
+
+    if(isNetworkAvailable.value==false){
+        val context = LocalContext.current
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Connection Lost")
+        builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+        builder.setPositiveButton("Ok") { _, _ ->
+            (context as Activity).finishAffinity()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 }

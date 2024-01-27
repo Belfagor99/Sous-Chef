@@ -13,7 +13,7 @@ import androidx.work.WorkerParameters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import eu.mobcomputing.dima.registration.MainActivity
+import eu.mobcomputing.dima.registration.activities.MainActivity
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.User

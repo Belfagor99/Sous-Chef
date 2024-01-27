@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -25,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -66,9 +70,13 @@ import eu.mobcomputing.dima.registration.utils.Constants
 fun AddIngredientToPantry(
     navController: NavController,
     ingredient: Ingredient,
-    addIngredientToPantryViewModel: AddIngredientToPantryViewModel = viewModel()
+    addIngredientToPantryViewModel: AddIngredientToPantryViewModel = hiltViewModel()
 
 ) {
+
+    val isNetworkAvailable = addIngredientToPantryViewModel.connectionStatus.observeAsState()
+
+
 
     /*
      * State variables for the date picker
@@ -268,6 +276,20 @@ fun AddIngredientToPantry(
                 },
                 isEnabled = true)
 
+        }
+
+        if(isNetworkAvailable.value==false){
+            val context = LocalContext.current
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Connection Lost")
+            builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+            builder.setPositiveButton("Ok") { _, _ ->
+                (context as Activity).finishAffinity()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
         }
     }
 }

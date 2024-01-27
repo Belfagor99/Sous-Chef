@@ -1,25 +1,36 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import eu.mobcomputing.dima.registration.api.APIService
-import eu.mobcomputing.dima.registration.models.ConvertedIngredient
+import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
+import javax.inject.Inject
 
 /**
  * ViewModel class for handling the addition of ingredients to the user's pantry.
  *
  */
-class AddIngredientToPantryViewModel : ViewModel() {
+@HiltViewModel
+class AddIngredientToPantryViewModel  @Inject constructor(
+    application: Application,
+) : AndroidViewModel(application)  {
+
+
+
+    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus : LiveData<Boolean> = _connectionStatus
+
+
+
 
     /**
      * Reference to the user's document in Firestore.

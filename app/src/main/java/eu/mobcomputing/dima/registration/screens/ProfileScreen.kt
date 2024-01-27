@@ -1,5 +1,8 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -64,6 +67,9 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
 
+
+    val isNetworkAvailable = viewModel.connectionStatus.observeAsState()
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -82,6 +88,21 @@ fun ProfileScreen(
         else {
             tabletProfileScreen(navController = navController, viewModel =viewModel )
         }
+    }
+
+
+    if(isNetworkAvailable.value==false){
+        val context = LocalContext.current
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Connection Lost")
+        builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+        builder.setPositiveButton("Ok") { _, _ ->
+            (context as Activity).finishAffinity()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }
 
@@ -596,5 +617,5 @@ fun reloadScreen(navController: NavController) {
 @Preview
 @Composable
 fun PreviewProfileScreen() {
-    ProfileScreen(navController = rememberNavController(), ProfileViewModel())
+    ProfileScreen(navController = rememberNavController(), ProfileViewModel(Application()))
 }

@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import eu.mobcomputing.dima.registration.activities.MainActivity
 import eu.mobcomputing.dima.registration.utils.Constants.Companion.CHANNEL_ID
 import eu.mobcomputing.dima.registration.utils.Constants.Companion.CHANNEL_NAME
 

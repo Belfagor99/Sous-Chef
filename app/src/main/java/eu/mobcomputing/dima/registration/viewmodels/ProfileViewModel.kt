@@ -1,20 +1,24 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.models.DietType
 import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
+import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 /**
@@ -26,7 +30,15 @@ import kotlinx.coroutines.launch
  * @property userDiet Exposed LiveData for observing the list of user diet.
  * @property userDoc Reference to the user's document in Firestore.
  */
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(application: Application,) : AndroidViewModel(application)  {
+
+
+    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus : LiveData<Boolean> = _connectionStatus
+
+
+
 
     /**
      * LiveData containing the list of allergies and diets for the logged user.

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
@@ -32,6 +33,14 @@ import javax.inject.Inject
 class SearchIngredientViewModel @Inject constructor(
     application: Application,
 ) : AndroidViewModel(application) {
+
+
+    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus : LiveData<Boolean> = _connectionStatus
+
+
+
+
 
     private val _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     val ingredients: LiveData<List<Ingredient>> = _ingredients

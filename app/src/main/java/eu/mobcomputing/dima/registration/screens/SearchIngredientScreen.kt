@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.app.Activity
+import android.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +46,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchIngredientScreen(
     navController: NavController,
-    viewModel: SearchIngredientViewModel = hiltViewModel() ) {
+    viewModel: SearchIngredientViewModel = hiltViewModel()
+) {
+
+
+    val isNetworkAvailable = viewModel.connectionStatus.observeAsState()
 
     // Observe the LiveData containing the list of Ingredients
     val ingredientsList = viewModel.ingredients.observeAsState()
@@ -125,6 +132,20 @@ fun SearchIngredientScreen(
                     }
                 }
             }
+        }
+
+        if(isNetworkAvailable.value==false){
+            val context = LocalContext.current
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Connection Lost")
+            builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+            builder.setPositiveButton("Ok") { _, _ ->
+                (context as Activity).finishAffinity()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
         }
     }
 }

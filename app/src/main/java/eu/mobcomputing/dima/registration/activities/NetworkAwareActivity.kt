@@ -1,4 +1,4 @@
-package eu.mobcomputing.dima.registration
+package eu.mobcomputing.dima.registration.activities
 
 import android.os.Build
 import android.os.Bundle
@@ -6,8 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.Composable
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -16,19 +15,12 @@ import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
-import eu.mobcomputing.dima.registration.navigation.SetUpNavGraph
 import eu.mobcomputing.dima.registration.notification.MyNotificationWorker
-import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
+import eu.mobcomputing.dima.registration.screens.ConnectionLostScreen
 import java.util.concurrent.TimeUnit
 
-
-/**
- * Main entry point for the application.
- * Configures the navigation and sets up the initial screen.
- */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
+abstract class NetworkAwareActivity : ComponentActivity(){
 
     /**
      * Called when the activity is first created.
@@ -73,12 +65,17 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            RegistrationTheme {
-                navController = rememberNavController()
-                SetUpNavGraph(navController = navController)
+            ConnectionLostScreen {
+                // Your main content here
+                setContent()
             }
         }
     }
+
+
+    @Composable
+    abstract fun setContent()
+
+
+
 }
-
-

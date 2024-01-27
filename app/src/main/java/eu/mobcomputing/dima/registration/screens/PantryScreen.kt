@@ -1,5 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +47,11 @@ fun PantryScreen(
 
     // Observe the LiveData containing the list of Ingredients
     val ingredientsList = viewModel.ingredients.observeAsState()
+
+
+
+    val isNetworkAvailable = viewModel.connectionStatus.observeAsState()
+
 
 
     // State for holding the search text
@@ -117,6 +125,21 @@ fun PantryScreen(
                 }
             }
         }
+
+        if(isNetworkAvailable.value==false){
+            val context = LocalContext.current
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Connection Lost")
+            builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+
+            builder.setPositiveButton("Ok") { _, _ ->
+                (context as Activity).finishAffinity()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        }
+
     }
 }
 
