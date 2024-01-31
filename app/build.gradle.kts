@@ -171,4 +171,6 @@ dependencies {
     // fow WorkManager
     implementation("androidx.work:work-runtime:2.9.0")
 
+    testImplementation("com.google.truth:truth:1.3.0")
+    androidTestImplementation("com.google.truth:truth:1.3.0")
 }

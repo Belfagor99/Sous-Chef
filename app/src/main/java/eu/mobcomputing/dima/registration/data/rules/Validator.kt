@@ -1,9 +1,10 @@
 package eu.mobcomputing.dima.registration.data.rules
 
-import android.util.Patterns
+import java.util.regex.Pattern
 
 // Validator object contains functions for validating different user input
 object Validator {
+
 
     /**
      *  Function to validate the format of a first name.
@@ -37,10 +38,13 @@ object Validator {
      * @param email e-mail to be validated.
      */
     fun validateEmail(email: String): ValidationResult {
-        return ValidationResult(
-            (email.isNotEmpty()) &&
-                    Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        )
+        // This regular expression follows a simplified version of the email standard (RFC 5322)
+        val emailPattern =
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+
+        val pattern = Pattern.compile(emailPattern)
+        return ValidationResult(pattern.matcher(email).matches())
+
     }
 
     /**
@@ -49,9 +53,14 @@ object Validator {
      * @param password password to be validated.
      */
     fun validatePassword(password: String): ValidationResult {
+        val hasCapitalLetter = password.any { it.isUpperCase() }
+        val numberOfDigits = password.count { it.isDigit() }
+
         return ValidationResult(
             (password.isNotEmpty()) &&
-            password.length >= 8
+                    password.length >= 8 &&
+                    hasCapitalLetter &&
+                    numberOfDigits >= 3
         )
     }
 }

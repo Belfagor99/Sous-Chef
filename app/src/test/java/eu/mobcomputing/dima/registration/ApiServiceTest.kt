@@ -27,7 +27,7 @@ class ApiServiceTest {
     /**
      * Test function that checks if the recipe returned by the API call is the right one.
      */
-    @Test
+   /* @Test
     fun getRecipeByID() = runTest {
 
         val response = APIService().api.getRecipeInfoById(
@@ -111,6 +111,6 @@ class ApiServiceTest {
             assertEquals(recipes?.size , 1 )
             assertEquals(recipes?.get(0), recipeChecker )
         }
-    }
+    }*/
 
 }

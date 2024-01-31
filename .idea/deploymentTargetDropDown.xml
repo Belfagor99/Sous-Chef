@@ -18,6 +18,12 @@
           <timeTargetWasSelectedWithDropDown value="2024-01-27T20:13:40.945289300Z" />
         </State>
       </entry>
+      <entry key="error flags are initially false()">
+        <State />
+      </entry>
+      <entry key="errorFlagsAreInitiallyFalse()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
