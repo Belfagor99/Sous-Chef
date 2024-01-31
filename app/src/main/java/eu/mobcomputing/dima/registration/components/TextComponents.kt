@@ -80,9 +80,9 @@ fun NormalTextComponent(value: String, shouldBeCentered: Boolean = true, shouldB
  *
  */
 @Composable
-fun HeaderTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false, extraModifier: Modifier = Modifier) {
+fun HeaderTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false) {
     Text(
-        text = value, modifier = extraModifier
+        text = value, modifier = Modifier
             .fillMaxWidth()
             .heightIn(), style = TextStyle(
             fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
