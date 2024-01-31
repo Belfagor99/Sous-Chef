@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,13 +17,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
@@ -44,8 +46,10 @@ import eu.mobcomputing.dima.registration.viewmodels.RegistrationViewModel
  */
 @Composable
 fun SignUpScreen(
-    navController: NavController, registrationViewModel: RegistrationViewModel = viewModel()
-) {
+    navController: NavController, registrationViewModel: RegistrationViewModel = hiltViewModel(),
+    )
+{
+    val context = LocalContext.current
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -59,14 +63,16 @@ fun SignUpScreen(
         if (isSmallScreen) {
             SmallRegistrationScreen(
                 navController = navController,
-                registrationViewModel = registrationViewModel
+                registrationViewModel = registrationViewModel,
+                context
             )
         }
         // If the screen is wider, if it is a tablet
         else {
             WideRegistrationScreen(
                 navController = navController,
-                registrationViewModel = registrationViewModel
+                registrationViewModel = registrationViewModel,
+                context
             )
         }
     }
@@ -81,7 +87,8 @@ fun SignUpScreen(
 @Composable
 fun SmallRegistrationScreen(
     navController: NavController,
-    registrationViewModel: RegistrationViewModel
+    registrationViewModel: RegistrationViewModel,
+    context : Context
 ) {
     Column(
         modifier = Modifier
@@ -107,7 +114,7 @@ fun SmallRegistrationScreen(
             ),
             onTextSelected = {
                 registrationViewModel.onEvent(
-                    RegistrationUIEvent.FirstNameChanged(it), navController
+                    RegistrationUIEvent.FirstNameChanged(it), navController, context
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
@@ -122,7 +129,8 @@ fun SmallRegistrationScreen(
             ),
             onTextSelected = {
                 registrationViewModel.onEvent(
-                    RegistrationUIEvent.LastNameChanged(it), navController
+                    RegistrationUIEvent.LastNameChanged(it), navController,
+                    context
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
@@ -136,7 +144,8 @@ fun SmallRegistrationScreen(
             ),
             onTextSelected = {
                 registrationViewModel.onEvent(
-                    RegistrationUIEvent.EmailChanged(it), navController
+                    RegistrationUIEvent.EmailChanged(it), navController,
+                    context
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.emailError,
@@ -150,7 +159,8 @@ fun SmallRegistrationScreen(
             ),
             onTextSelected = {
                 registrationViewModel.onEvent(
-                    RegistrationUIEvent.PasswordChanged(it), navController
+                    RegistrationUIEvent.PasswordChanged(it), navController,
+                    context
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.passwordError,
@@ -161,7 +171,7 @@ fun SmallRegistrationScreen(
             isEnabled = registrationViewModel.allValidationPassed.value,
             onClickAction = {
                 registrationViewModel.onEvent(
-                    RegistrationUIEvent.RegistrationButtonClicked, navController
+                    RegistrationUIEvent.RegistrationButtonClicked, navController, context = context
                 )
             })
         Spacer(modifier = Modifier.height(10.dp))
@@ -187,7 +197,8 @@ fun SmallRegistrationScreen(
 @Composable
 fun WideRegistrationScreen(
     navController: NavController,
-    registrationViewModel: RegistrationViewModel
+    registrationViewModel: RegistrationViewModel,
+    context : Context
 ) {
     Row(
         modifier = Modifier
@@ -232,7 +243,7 @@ fun WideRegistrationScreen(
                 ),
                 onTextSelected = {
                     registrationViewModel.onEvent(
-                        RegistrationUIEvent.FirstNameChanged(it), navController
+                        RegistrationUIEvent.FirstNameChanged(it), navController, context
                     )
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
@@ -247,7 +258,7 @@ fun WideRegistrationScreen(
                 ),
                 onTextSelected = {
                     registrationViewModel.onEvent(
-                        RegistrationUIEvent.LastNameChanged(it), navController
+                        RegistrationUIEvent.LastNameChanged(it), navController, context
                     )
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
@@ -261,7 +272,7 @@ fun WideRegistrationScreen(
                 ),
                 onTextSelected = {
                     registrationViewModel.onEvent(
-                        RegistrationUIEvent.EmailChanged(it), navController
+                        RegistrationUIEvent.EmailChanged(it), navController, context
                     )
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.emailError,
@@ -275,7 +286,7 @@ fun WideRegistrationScreen(
                 ),
                 onTextSelected = {
                     registrationViewModel.onEvent(
-                        RegistrationUIEvent.PasswordChanged(it), navController
+                        RegistrationUIEvent.PasswordChanged(it), navController, context
                     )
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.passwordError,
@@ -284,7 +295,7 @@ fun WideRegistrationScreen(
                 isEnabled = registrationViewModel.allValidationPassed.value,
                 onClickAction = {
                     registrationViewModel.onEvent(
-                        RegistrationUIEvent.RegistrationButtonClicked, navController
+                        RegistrationUIEvent.RegistrationButtonClicked, navController, context
                     )
                 })
             NormalTextComponent(value = stringResource(id = R.string.or))

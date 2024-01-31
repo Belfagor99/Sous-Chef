@@ -1,23 +1,33 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
+import android.app.AlertDialog
+import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
 import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
+import javax.inject.Inject
 
 /**
  * ViewModel responsible for handling registration-related logic and managing the UI state.
  */
-class RegistrationViewModel : ViewModel() {
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(application: Application,) : AndroidViewModel(application)  {
+//class RegistrationViewModel : ViewModel() {
     private val TAG = RegistrationViewModel::class.simpleName
 
     // Represents the current state of the registration user interface
@@ -35,7 +45,7 @@ class RegistrationViewModel : ViewModel() {
      * @param event The UI event to be processed.
      * @param navController The NavController for navigation purposes.
      */
-    fun onEvent(event: RegistrationUIEvent, navController: NavController) {
+    fun onEvent(event: RegistrationUIEvent, navController: NavController, context: Context) {
 
         when (event) {
             is RegistrationUIEvent.FirstNameChanged -> {
@@ -64,7 +74,7 @@ class RegistrationViewModel : ViewModel() {
             }
 
             is RegistrationUIEvent.RegistrationButtonClicked -> {
-                register(navController = navController)
+                register(navController = navController, context = context)
             }
         }
         validateDataWithRules()
@@ -106,11 +116,12 @@ class RegistrationViewModel : ViewModel() {
      *
      * @param navController The NavController for navigation purposes.
      */
-    private fun register(navController: NavController) {
+    private fun register(navController: NavController, context: Context) {
         createFirebaseUser(
             email = registrationUIState.value.email,
             password = registrationUIState.value.password,
-            navController = navController
+            navController = navController,
+            context = context
         )
     }
 
@@ -166,9 +177,12 @@ class RegistrationViewModel : ViewModel() {
      * @param password User's chosen password.
      * @param navController The NavController for navigation purposes.
      */
-    private fun createFirebaseUser(email: String, password: String, navController: NavController) {
+    private fun createFirebaseUser(email: String, password: String, navController: NavController, context: Context) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
+
+
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 Log.d(TAG, "Inside on Complete Lister")
@@ -187,13 +201,46 @@ class RegistrationViewModel : ViewModel() {
                 }
 
             }
-            .addOnFailureListener {
+            .addOnFailureListener { exception ->
+
                 registrationInProgress.value = false
-                Log.d(TAG, "Inside on Failure Lister")
-                Log.d(TAG, "Exception = ${it.message}")
-
+                // Check if the exception is an FirebaseAuthUserCollisionException
+                if (exception is FirebaseAuthUserCollisionException) {
+                    // Check the error code
+                    val errorCode = exception.errorCode
+                    Log.d(TAG, "Exception eorror code = ${exception.errorCode}")
+                    // Handle the case where the email is already in use
+                    if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
+                       showEmailAlreadyRegisteredDialog(context, navController)
+                    }
+                } else {
+                    registrationInProgress.value = false
+                    Log.d(TAG, "Inside on Failure Lister")
+                    Log.d(TAG, "Exception = ${exception.message}")
+                }
             }
+    }
 
+    private fun showEmailAlreadyRegisteredDialog(context: Context, navController: NavController) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("E-mail already registered")
+        builder.setMessage("I am sorry, the e-mail you are trying to register, I already know. " +
+                "Please provide different e-mail or log in via provided e-mail. " +
+                "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
+                "reset your password.")
+
+        builder.setPositiveButton("Yes, go to log in") { _, _ ->
+            // User clicked Yes, perform log out
+            redirectToLogInScreen(navController)
+        }
+
+        builder.setNegativeButton("No, create new account") { dialog, _ ->
+            // User clicked No, dismiss the dialog
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     /**
