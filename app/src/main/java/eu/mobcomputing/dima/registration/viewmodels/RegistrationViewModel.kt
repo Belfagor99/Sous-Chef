@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.navigation.NavController
@@ -13,19 +14,19 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
-import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
+import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
+import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 import javax.inject.Inject
 
 /**
  * ViewModel responsible for handling registration-related logic and managing the UI state.
  */
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(application: Application,) : AndroidViewModel(application)  {
-//class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
     private val TAG = RegistrationViewModel::class.simpleName
 
     // Represents the current state of the registration user interface
@@ -107,6 +108,7 @@ class RegistrationViewModel @Inject constructor(application: Application,) : And
                 emailValidation.status &&
                 passwordValidation.status
 
+
     }
 
     /**
@@ -175,7 +177,12 @@ class RegistrationViewModel @Inject constructor(application: Application,) : And
      * @param password User's chosen password.
      * @param navController The NavController for navigation purposes.
      */
-    private fun createFirebaseUser(email: String, password: String, navController: NavController, context: Context) {
+    private fun createFirebaseUser(
+        email: String,
+        password: String,
+        navController: NavController,
+        context: Context
+    ) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
 
@@ -209,7 +216,7 @@ class RegistrationViewModel @Inject constructor(application: Application,) : And
                     Log.d(TAG, "Exception eorror code = ${exception.errorCode}")
                     // Handle the case where the email is already in use
                     if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
-                       showEmailAlreadyRegisteredDialog(context, navController)
+                        showEmailAlreadyRegisteredDialog(context, navController)
                     }
                 } else {
                     registrationInProgress.value = false
@@ -219,16 +226,25 @@ class RegistrationViewModel @Inject constructor(application: Application,) : And
             }
     }
 
+
+    /**
+     *  Shows user an alert dialog with information that e-mail is already registered.
+     *
+     *  @param context Context of the application.
+     *  @param navController The NavController for navigation purposes.
+     */
     private fun showEmailAlreadyRegisteredDialog(context: Context, navController: NavController) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("E-mail already registered")
-        builder.setMessage("I am sorry, the e-mail you are trying to register, I already know. " +
-                "Please provide different e-mail or log in via provided e-mail. " +
-                "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
-                "reset your password.")
+        builder.setMessage(
+            "I am sorry, the e-mail you are trying to register, I already know. " +
+                    "Please provide different e-mail or log in via provided e-mail. " +
+                    "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
+                    "reset your password."
+        )
 
         builder.setPositiveButton("Yes, go to log in") { _, _ ->
-            // User clicked Yes, perform log out
+            // User clicked Yes, navigate to login page
             redirectToLogInScreen(navController)
         }
 
@@ -249,4 +265,6 @@ class RegistrationViewModel @Inject constructor(application: Application,) : And
     fun redirectToLogInScreen(navController: NavController) {
         navController.navigate(route = Screen.LogIn.route)
     }
+
+
 }

@@ -3,6 +3,8 @@ package eu.mobcomputing.dima.registration.components
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -163,6 +166,9 @@ fun MyPasswordFieldComponent(
     leadingIcon: Painter,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false,
+    onFocusChanged: (Boolean) -> Unit = {},
+    supportingText: String = "",
+
 ) {
     val password = remember {
         mutableStateOf("")
@@ -176,7 +182,8 @@ fun MyPasswordFieldComponent(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
+            .clip(RoundedCornerShape(4.dp))
+            .onFocusChanged { onFocusChanged(it.isFocused) },
 
         label = {
             Text(text = labelValue)
@@ -211,7 +218,18 @@ fun MyPasswordFieldComponent(
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !errorStatus,
     )
+    if (supportingText.isNotEmpty()) {
+        Text(
+            text = supportingText,
+            color = colorResource(id = R.color.pink_900), // Customize the color if needed
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+    }
 }
+
 
 /**
  * ClickableLoginTextComponent: A composable function for creating clickable text with a login-related action.

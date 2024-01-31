@@ -1,6 +1,7 @@
 package eu.mobcomputing.dima.registration.screens
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,8 +48,7 @@ import eu.mobcomputing.dima.registration.viewmodels.RegistrationViewModel
 @Composable
 fun SignUpScreen(
     navController: NavController, registrationViewModel: RegistrationViewModel = hiltViewModel(),
-    )
-{
+) {
     val context = LocalContext.current
     BoxWithConstraints(
         modifier = Modifier
@@ -88,7 +88,7 @@ fun SignUpScreen(
 fun SmallRegistrationScreen(
     navController: NavController,
     registrationViewModel: RegistrationViewModel,
-    context : Context
+    context: Context
 ) {
     Column(
         modifier = Modifier
@@ -164,7 +164,9 @@ fun SmallRegistrationScreen(
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.passwordError,
+            supportingText = "The password must contain 8 characters, 1 upper case letter and 3 numbers."
         )
+
 
         Spacer(modifier = Modifier.weight(1f))
         ButtonComponent(value = stringResource(id = R.string.sign_up),
@@ -198,7 +200,7 @@ fun SmallRegistrationScreen(
 fun WideRegistrationScreen(
     navController: NavController,
     registrationViewModel: RegistrationViewModel,
-    context : Context
+    context: Context
 ) {
     Row(
         modifier = Modifier
@@ -263,7 +265,6 @@ fun WideRegistrationScreen(
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
             )
-
             //R-mail component
             MyTextFieldComponent(
                 labelValue = stringResource(id = R.string.email),
@@ -290,7 +291,10 @@ fun WideRegistrationScreen(
                     )
                 },
                 errorStatus = registrationViewModel.registrationUIState.value.passwordError,
+                supportingText = "The password must contain 8 characters, 1 upper case letter and 3 numbers."
+
             )
+
             ButtonComponent(value = stringResource(id = R.string.sign_up),
                 isEnabled = registrationViewModel.allValidationPassed.value,
                 onClickAction = {

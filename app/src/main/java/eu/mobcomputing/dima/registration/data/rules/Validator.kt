@@ -38,7 +38,6 @@ object Validator {
      * @param email e-mail to be validated.
      */
     fun validateEmail(email: String): ValidationResult {
-        // This regular expression follows a simplified version of the email standard (RFC 5322)
         val emailPattern =
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
 
