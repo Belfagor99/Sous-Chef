@@ -4,9 +4,7 @@ package eu.mobcomputing.dima.registration
 import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.models.Recipe
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
-import org.junit.Test
 
 /**
  * The [ApiServiceTest] class contains test functions for the [APIService] and [RecipesAPICalls] implementation.
