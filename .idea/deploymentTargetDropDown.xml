@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="RegistrationViewModelTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -17,6 +20,12 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-01-31T18:08:29.369386400Z" />
         </State>
+      </entry>
+      <entry key="testEmailAlreadyRegisteredDialog()">
+        <State />
+      </entry>
+      <entry key="testRegistrationButtonClicked()">
+        <State />
       </entry>
     </value>
   </component>

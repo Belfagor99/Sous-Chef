@@ -88,19 +88,23 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
 
     implementation("com.google.dagger:hilt-android:2.50")
-    implementation("androidx.compose.material3:material3-android:1.2.0-beta02")
+    implementation("androidx.compose.material3:material3-android:1.2.0-rc01")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    testImplementation("junit:junit:4.12")
+    testImplementation("org.testng:testng:6.9.6")
+    testImplementation("junit:junit:4.12")
+    androidTestImplementation("junit:junit:4.13.2")
+    androidTestImplementation("junit:junit:4.12")
     //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
 
 
     kapt("com.google.dagger:hilt-android-testing:2.50")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0-beta01")
 
 
 
-    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -173,4 +177,25 @@ dependencies {
 
     testImplementation("com.google.truth:truth:1.3.0")
     androidTestImplementation("com.google.truth:truth:1.3.0")
+
+    // Required -- JUnit 4 framework
+    testImplementation("junit:junit:4.13.3")
+    // Optional -- Robolectric environment
+    testImplementation("androidx.test:core:1.5.0")
+    // Optional -- Mockito framework
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    // Optional -- mockito-kotlin
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    // Optional -- Mockk framework
+    testImplementation("io.mockk:mockk:1.12.0")
+
+
+    testImplementation ("io.mockk:mockk:1.12.0")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1")
+    testImplementation ("org.jetbrains.kotlin:kotlin-test-junit:1.5.21")
+    androidTestImplementation("io.mockk:mockk-android:1.12.0")
+    androidTestImplementation("org.mockito:mockito-android:3.12.4")
+
+
 }
