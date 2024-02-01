@@ -28,7 +28,7 @@ class RegistrationViewModelTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this)
     }
 
     @Test

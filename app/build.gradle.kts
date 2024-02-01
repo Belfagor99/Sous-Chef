@@ -177,8 +177,6 @@ dependencies {
     testImplementation("com.google.truth:truth:1.3.0")
     androidTestImplementation("com.google.truth:truth:1.3.0")
 
-    // Required -- JUnit 4 framework
-    testImplementation("junit:junit:4.13.3")
     // Optional -- Robolectric environment
     testImplementation("androidx.test:core:1.5.0")
     // Optional -- Mockito framework
