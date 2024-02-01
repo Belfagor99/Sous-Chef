@@ -90,11 +90,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     implementation("androidx.compose.material3:material3-android:1.2.0-rc01")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.testng:testng:6.9.6")
-    testImplementation("junit:junit:4.12")
     androidTestImplementation("junit:junit:4.13.2")
-    androidTestImplementation("junit:junit:4.12")
+    androidTestImplementation("junit:junit:4.13.2")
     //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
 
 
