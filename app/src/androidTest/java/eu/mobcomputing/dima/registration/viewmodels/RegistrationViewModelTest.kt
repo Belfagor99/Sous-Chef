@@ -1,6 +1,5 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +15,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
+
 
 @RunWith(MockitoJUnitRunner::class)
 class RegistrationViewModelTest {
@@ -55,9 +55,8 @@ class RegistrationViewModelTest {
     }
 
 
-    @SuppressLint("CheckResult")
     @Test
-    fun testEmailAlreadyRegisteredDialog() {
+    fun testValidateDataWithRules() {
         val viewModel = RegistrationViewModel(mock(Application::class.java))
 
         // Mock the required data
@@ -65,18 +64,21 @@ class RegistrationViewModelTest {
         viewModel.registrationUIState.value = RegistrationUIState(
             firstName = "John",
             lastName = "Smith",
-            email = "sisilienka@gmail.com",
-            password = "Password123",
+            email = "john.smith@example.com",
+            password = "password123",
             firstNameError = false,
             lastNameError = false,
             emailError = false,
             passwordError = false
         )
 
-        viewModel.onEvent(RegistrationUIEvent.RegistrationButtonClicked, navController, context)
-        Truth.assertThat(viewModel.registrationSuccessful.intValue == 1)
-
+        viewModel.validateDataWithRules()
+        Truth.assertThat(viewModel.registrationUIState.value.passwordError).isFalse()
+        Truth.assertThat(viewModel.registrationUIState.value.firstNameError).isTrue()
+        Truth.assertThat(viewModel.registrationUIState.value.lastNameError).isTrue()
+        Truth.assertThat(viewModel.registrationUIState.value.emailError).isTrue()
+        Truth.assertThat(viewModel.allValidationPassed.value)
+            .isFalse() // checking also that the button to register is not clickable
     }
-
 
 }

@@ -7,24 +7,24 @@
       </entry>
       <entry key="app">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="RF8RB09ABFL" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-31T18:08:29.369386400Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-02T10:47:35.771790200Z" />
         </State>
       </entry>
       <entry key="testEmailAlreadyRegisteredDialog()">
         <State />
       </entry>
-      <entry key="testRegistrationButtonClicked()">
+      <entry key="testValidateDataWithRules()">
         <State />
       </entry>
     </value>

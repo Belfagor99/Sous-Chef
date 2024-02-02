@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
@@ -88,7 +89,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
     /**
      * Validates user input data based on predefined rules and updates the UI state accordingly.
      */
-    private fun validateDataWithRules() {
+    fun validateDataWithRules() {
         val firstNameValidation = Validator.validateFirstName(
             registrationUIState.value.firstName
         )
@@ -183,7 +184,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      * @param password User's chosen password.
      * @param navController The NavController for navigation purposes.
      */
-    private fun createFirebaseUser(
+    fun createFirebaseUser(
         email: String,
         password: String,
         navController: NavController,
@@ -217,10 +218,11 @@ class RegistrationViewModel @Inject constructor(application: Application) :
                 if (exception is FirebaseAuthUserCollisionException) {
                     // Check the error code
                     val errorCode = exception.errorCode
-                    Log.d(TAG, "Exception eorror code = ${exception.errorCode}")
+                    Log.d(TAG, "Exception error code = ${exception.errorCode}")
                     // Handle the case where the email is already in use
                     if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
                         registrationSuccessful.intValue = 1
+                        Log.d(TAG, "registration successful value = ${registrationSuccessful.intValue}")
                         showEmailAlreadyRegisteredDialog(context, navController)
                     }
                 } else {
