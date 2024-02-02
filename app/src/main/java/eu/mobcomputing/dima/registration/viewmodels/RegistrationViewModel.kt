@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.data.rules.Validator
 import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
