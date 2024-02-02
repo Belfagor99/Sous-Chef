@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import com.google.common.truth.Truth
 import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
 import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
-import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +31,40 @@ class RegistrationViewModelTest {
     }
 
     @Test
+    fun validateFirstName_ValidInput_ReturnsFalse() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        viewModel.registrationUIState.value = RegistrationUIState(firstName = "John")
+
+        viewModel.validateDataWithRules()
+
+        Truth.assertThat(viewModel.registrationInProgress.value).isFalse()
+    }
+
+    @Test
+    fun validateFirstName_And_LastName_ValidInput_ReturnsFalse() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        viewModel.registrationUIState.value = RegistrationUIState(
+            firstName = "John",
+            lastName = "Smith"
+        )
+        viewModel.validateDataWithRules()
+        Truth.assertThat(viewModel.registrationInProgress.value).isFalse()
+    }
+
+    @Test
+    fun validateFirstName_And_LastName_And_Email_ValidInput_ReturnsFalse() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        viewModel.registrationUIState.value = RegistrationUIState(
+            firstName = "John",
+            lastName = "Smith",
+            email = "john.smith@email.com"
+        )
+        viewModel.validateDataWithRules()
+        Truth.assertThat(viewModel.registrationInProgress.value).isFalse()
+
+    }
+
+    @Test
     fun testRegistrationButtonClicked() {
         val viewModel = RegistrationViewModel(mock(Application::class.java))
 
@@ -51,7 +84,7 @@ class RegistrationViewModelTest {
         viewModel.onEvent(RegistrationUIEvent.RegistrationButtonClicked, navController, context)
 
         // Check if the registration process has started
-        assertEquals(true, viewModel.registrationInProgress.value)
+        Truth.assertThat(viewModel.registrationInProgress.value).isTrue()
     }
 
 
