@@ -2,22 +2,16 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavController
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
-import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
 import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -169,35 +163,35 @@ class RegistrationViewModelTest {
             .isFalse() // checking also that the button to register is not clickable
     }
 
-/*
+    /*
 
-Not good
-    @Test
-    fun createFirebaseUser_SuccessfulRegistration_NavigatesCorrectly() {
-        val viewModel = RegistrationViewModel(mock(Application::class.java))
-        val navController = mock(NavController::class.java)
+    Not good
+        @Test
+        fun createFirebaseUser_SuccessfulRegistration_NavigatesCorrectly() {
+            val viewModel = RegistrationViewModel(mock(Application::class.java))
+            val navController = mock(NavController::class.java)
 
-        // Mock the required data
-        viewModel.registrationUIState = mutableStateOf(RegistrationUIState())
-        viewModel.registrationUIState.value = RegistrationUIState(
-            firstName = "John",
-            lastName = "Smith",
-            email = "john.smith@example.com",
-            password = "password123",
-            firstNameError = false,
-            lastNameError = false,
-            emailError = false,
-            passwordError = false
-        )
-        // Mock FirebaseAuth and other dependencies
+            // Mock the required data
+            viewModel.registrationUIState = mutableStateOf(RegistrationUIState())
+            viewModel.registrationUIState.value = RegistrationUIState(
+                firstName = "John",
+                lastName = "Smith",
+                email = "john.smith@example.com",
+                password = "password123",
+                firstNameError = false,
+                lastNameError = false,
+                emailError = false,
+                passwordError = false
+            )
+            // Mock FirebaseAuth and other dependencies
 
-        viewModel.createFirebaseUser("john.smith@example.com", "Password123", navController, context)
+            viewModel.createFirebaseUser("john.smith@example.com", "Password123", navController, context)
 
-        // Verify that navigation occurs as expected
-        val uriCaptor = ArgumentCaptor.forClass(Uri::class.java) // Adjust Uri to the correct type
-        verify(navController).navigate(uriCaptor.capture(), any(), any())
+            // Verify that navigation occurs as expected
+            val uriCaptor = ArgumentCaptor.forClass(Uri::class.java) // Adjust Uri to the correct type
+            verify(navController).navigate(uriCaptor.capture(), any(), any())
 
-        val capturedUri = uriCaptor.value
-        assertThat(capturedUri).isEqualTo(Screen.SignUnSuccessful.route)
-    }*/
+            val capturedUri = uriCaptor.value
+            assertThat(capturedUri).isEqualTo(Screen.SignUnSuccessful.route)
+        }*/
 }
