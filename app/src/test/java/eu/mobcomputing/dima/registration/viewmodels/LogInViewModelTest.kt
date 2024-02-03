@@ -2,7 +2,6 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import androidx.navigation.NavController
 import com.google.common.truth.Truth
-import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.uiEvents.LogInUIEvent
 import org.junit.Before
 import org.junit.Test
