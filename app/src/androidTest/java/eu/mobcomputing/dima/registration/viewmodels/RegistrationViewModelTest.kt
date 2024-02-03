@@ -41,6 +41,16 @@ class RegistrationViewModelTest {
     }
 
     @Test
+    fun onEvent_FirstNameChanged_UpdateStateCorrectly() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        val navController = mock(NavController::class.java)
+
+        viewModel.onEvent(RegistrationUIEvent.FirstNameChanged("John"), navController, context)
+
+        Truth.assertThat("John").isEqualTo(viewModel.registrationUIState.value.firstName)
+    }
+
+    @Test
     fun validateFirstName_And_LastName_ValidInput_ReturnsFalse() {
         val viewModel = RegistrationViewModel(mock(Application::class.java))
         viewModel.registrationUIState.value = RegistrationUIState(
@@ -52,6 +62,15 @@ class RegistrationViewModelTest {
     }
 
     @Test
+    fun onEvent_LastNameChanged_UpdateStateCorrectly() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        val navController = mock(NavController::class.java)
+
+        viewModel.onEvent(RegistrationUIEvent.LastNameChanged("Smith"), navController, context)
+
+        Truth.assertThat("Smith").isEqualTo(viewModel.registrationUIState.value.lastName)
+    }
+    @Test
     fun validateFirstName_And_LastName_And_Email_ValidInput_ReturnsFalse() {
         val viewModel = RegistrationViewModel(mock(Application::class.java))
         viewModel.registrationUIState.value = RegistrationUIState(
@@ -62,6 +81,26 @@ class RegistrationViewModelTest {
         viewModel.validateDataWithRules()
         Truth.assertThat(viewModel.registrationInProgress.value).isFalse()
 
+    }
+
+    @Test
+    fun onEvent_EmailChanged_UpdateStateCorrectly() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        val navController = mock(NavController::class.java)
+
+        viewModel.onEvent(RegistrationUIEvent.EmailChanged("john.smith@email.com"), navController, context)
+
+        Truth.assertThat("john.smith@email.com").isEqualTo(viewModel.registrationUIState.value.email)
+    }
+
+    @Test
+    fun onEvent_PasswordChanged_UpdateStateCorrectly() {
+        val viewModel = RegistrationViewModel(mock(Application::class.java))
+        val navController = mock(NavController::class.java)
+
+        viewModel.onEvent(RegistrationUIEvent.PasswordChanged("Password123"), navController, context)
+
+        Truth.assertThat("Password123").isEqualTo(viewModel.registrationUIState.value.password)
     }
 
     @Test
@@ -113,5 +152,7 @@ class RegistrationViewModelTest {
         Truth.assertThat(viewModel.allValidationPassed.value)
             .isFalse() // checking also that the button to register is not clickable
     }
+
+
 
 }
