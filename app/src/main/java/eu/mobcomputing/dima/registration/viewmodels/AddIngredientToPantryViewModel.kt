@@ -46,7 +46,7 @@ class AddIngredientToPantryViewModel  @Inject constructor(
      */
     fun addIngredientToPantry( ingredientToAdd: Ingredient) : Boolean {
 
-        var exit : Boolean = false
+        var needToBeAdded : Boolean = false
 
         try {
             if (userDoc == null){
@@ -67,31 +67,24 @@ class AddIngredientToPantryViewModel  @Inject constructor(
 
                             if (existingIngredientsByName.isNotEmpty()) {
                                 // Object with the specified name already exist, not add
-                                exit = false
+                                needToBeAdded = false
                             } else {
                                 // Object with the specified name doesn't exist, add it to the array
                                 userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
-                                exit = true
+                                needToBeAdded = true
                             }
-                        }else{
-                            Log.e("CHECK","array seems to be null!")
                         }
-                    } else {
-                        // Document does not exist
-                        Log.e("CHECK","Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
                     Log.e("CHECK","Error checking array: $e")
                 }
-
             }
         } catch (e: Exception) {
             Log.e("ADD TO PANTRY", "Error adding ingredient to user's pantry", e)
-
         }
 
-        return exit
+        return needToBeAdded
     }
 
 

@@ -94,12 +94,6 @@ dependencies {
 
 
     implementation("org.mockito:mockito-core:5.10.0")
-    implementation("androidx.test.ext:junit-ktx:1.1.5")
-    implementation("androidx.arch.core:core-testing:2.2.0")
-    implementation("org.robolectric:robolectric:4.11.1")
-    implementation("androidx.test:core:1.6.0-alpha05")
-    implementation("io.mockk:mockk:1.13.9")
-    implementation("com.google.gms:google-services:4.4.0")
     //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
 
 
