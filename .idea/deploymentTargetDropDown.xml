@@ -2,22 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="RegistrationViewModelTest">
-        <State />
-      </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="createFirebaseUser_SuccessfulRegistration_NavigatesCorrectly()">
-        <State />
-      </entry>
-      <entry key="onEvent_FirstNameChanged_UpdateStateCorrectly()">
-        <State />
-      </entry>
-      <entry key="validateFirstName_And_LastName_And_Email_And_Password_ValidInput_ReturnsTrue()">
-        <State />
-      </entry>
-      <entry key="validateFirstName_ValidInput_ReturnsTrue()">
         <State />
       </entry>
     </value>
