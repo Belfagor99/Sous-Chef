@@ -7,14 +7,9 @@ import eu.mobcomputing.dima.registration.uiEvents.LogInUIEvent
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.spy
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
 class LogInViewModelTest{
-    @Mock
-    lateinit var firebaseAuth: FirebaseAuth
 
     @Mock
     lateinit var navController: NavController
