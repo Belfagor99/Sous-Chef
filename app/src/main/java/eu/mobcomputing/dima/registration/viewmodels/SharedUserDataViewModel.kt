@@ -44,7 +44,6 @@ class SharedUserDataViewModel() : ViewModel() {
         Allergen("Seafood"),
         Allergen("Sesame"),
         Allergen("Shellfish"),
-        Allergen("Peanuts"),
         Allergen("Soy"),
         Allergen("Sulfite"),
         Allergen("Tree Nut"),

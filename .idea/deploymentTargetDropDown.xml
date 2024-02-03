@@ -8,6 +8,9 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="createFirebaseUser_SuccessfulRegistration_NavigatesCorrectly()">
+        <State />
+      </entry>
       <entry key="onEvent_FirstNameChanged_UpdateStateCorrectly()">
         <State />
       </entry>

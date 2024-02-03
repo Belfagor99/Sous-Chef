@@ -81,12 +81,12 @@ fun ProfileScreen(
 
 
         if (isSmallScreen) {
-            smartphoneProfileScreen(navController = navController, viewModel = viewModel)
+            SmartphoneProfileScreen(navController = navController, viewModel = viewModel)
 
         }
         // If the screen is wider, if it is a tablet
         else {
-            tabletProfileScreen(navController = navController, viewModel =viewModel )
+            TabletProfileScreen(navController = navController, viewModel =viewModel )
         }
     }
 
@@ -113,7 +113,7 @@ fun ProfileScreen(
 
 
 @Composable
-fun smartphoneProfileScreen( navController: NavController,viewModel: ProfileViewModel) {
+fun SmartphoneProfileScreen( navController: NavController,viewModel: ProfileViewModel) {
 
     // Observe the LiveData from the view model
     val allergies = viewModel.userAllergies.observeAsState()
@@ -353,7 +353,7 @@ fun smartphoneProfileScreen( navController: NavController,viewModel: ProfileView
 
 
 @Composable
-fun tabletProfileScreen( navController: NavController,viewModel: ProfileViewModel) {
+fun TabletProfileScreen( navController: NavController,viewModel: ProfileViewModel) {
 
 
 
