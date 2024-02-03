@@ -64,19 +64,19 @@ class SharedUserDataViewModel() : ViewModel() {
     private var selectedDietOption: MutableState<DietOption> = mutableStateOf(this.dietOptions[4])
 
     // User information state
-    private var user = mutableStateOf(User())
+    var user = mutableStateOf(User())
 
     /**
      * Sets the selected diet type for the user.
      */
-    private fun setDietType(dietType: DietType) {
+    fun setDietType(dietType: DietType) {
         user.value = user.value.copy(dietType = dietType)
     }
 
     /**
      * Adds an allergen to the user's list of allergies.
      */
-    private fun addAllergenToUser(
+    fun addAllergenToUser(
         allergen: Allergen
     ) {
         user.value = user.value.copy(allergies = user.value.allergies + allergen.name)
@@ -86,7 +86,7 @@ class SharedUserDataViewModel() : ViewModel() {
     /**
      * Removes an allergen from the user's list of allergies.
      */
-    private fun removeAllergenFromUser(
+    fun removeAllergenFromUser(
         allergen: Allergen
     ) {
         user.value = user.value.copy(allergies = user.value.allergies - allergen.name)
@@ -105,9 +105,6 @@ class SharedUserDataViewModel() : ViewModel() {
             addAllergenToUser(allergen)
         }
         allergen.selectedState.value = !allergen.selectedState.value
-        Log.d(TAG, "allergen clicked")
-        Log.d(TAG, allergens.toString())
-        Log.d(TAG, user.toString())
     }
 
     /**
@@ -139,11 +136,6 @@ class SharedUserDataViewModel() : ViewModel() {
         if (dietOption.selected.value) {
             setDietType(dietOption.type)
         }
-
-        Log.d(TAG, "dietOption clicked")
-        Log.d(TAG, dietOption.toString())
-        Log.d(TAG, user.toString())
-
     }
 
     /**
