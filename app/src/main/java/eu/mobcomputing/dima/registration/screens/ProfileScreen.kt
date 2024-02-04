@@ -19,13 +19,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.MyAlertDialog
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import eu.mobcomputing.dima.registration.components.user.CharacteristicsEditorDialog
 import eu.mobcomputing.dima.registration.components.user.UserCharacteristicsDisplay
@@ -88,21 +92,34 @@ fun ProfileScreen(
         else {
             TabletProfileScreen(navController = navController, viewModel = viewModel)
         }
+
+        if (viewModel.openAlertDialog.value) {
+            MyAlertDialog(
+                onDismissRequest = { viewModel.openAlertDialog.value = false },
+                onConfirmation = { viewModel.logOut(navController) },
+                dialogTitle = stringResource(id = R.string.log_out),
+                dialogText = stringResource(R.string.are_you_sure_you_want_to_log_out),
+                icon = Icons.Default.QuestionMark,
+                confirmationText = stringResource(R.string.yes_log_me_out),
+                dismissText = stringResource(R.string.no_i_want_to_stay_logged_in)
+            )
+
+        }
     }
+
+    val context = LocalContext.current
 
 
     if (isNetworkAvailable.value == false) {
-        val context = LocalContext.current
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Connection Lost")
-        builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
-
-        builder.setPositiveButton("Ok") { _, _ ->
-            (context as Activity).finishAffinity()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
+        MyAlertDialog(
+            onDismissRequest = { viewModel.openAlertDialog.value = false },
+            onConfirmation = { (context as Activity).finishAffinity() },
+            dialogTitle = stringResource(id = R.string.connection_not_available),
+            dialogText = stringResource(id = R.string.i_need_conection_txt),
+            icon = Icons.Default.SignalCellularConnectedNoInternet0Bar,
+            confirmationText = stringResource(id = R.string.ok) ,
+            dismissText = ""
+        )
     }
 }
 
@@ -124,17 +141,13 @@ fun SmartphoneProfileScreen(navController: NavController, viewModel: ProfileView
     * = 2 -> show dialog for edit allergies
     */
     var showEditCharacteristics by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
     /*
     *   Get local context for Toast message
     * */
     val context = LocalContext.current
-
-
-
-
 
     Scaffold(
         modifier = Modifier
@@ -196,9 +209,10 @@ fun SmartphoneProfileScreen(navController: NavController, viewModel: ProfileView
                             /*  LOGOUT BUTTON */
                             OutlinedButton(
                                 onClick = {
-                                    viewModel.showLogoutConfirmationDialog(
+                                    /*viewModel.showLogoutConfirmationDialog(
                                         context = context, navController = navController
-                                    )
+                                    )*/
+                                    viewModel.openAlertDialog.value = true
                                 },
                                 modifier = Modifier
                                     .wrapContentHeight()
@@ -364,7 +378,7 @@ fun TabletProfileScreen(navController: NavController, viewModel: ProfileViewMode
     * = 2 -> show dialog for edit allergies
     */
     var showEditCharacteristics by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
     /*
@@ -378,7 +392,6 @@ fun TabletProfileScreen(navController: NavController, viewModel: ProfileViewMode
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        //.verticalScroll(state = rememberScrollState()),
         bottomBar = {
             NavigationBarComponent(
                 navController = navController, selectedItemIndex = 2
@@ -436,9 +449,7 @@ fun TabletProfileScreen(navController: NavController, viewModel: ProfileViewMode
                             /*  LOGOUT BUTTON */
                             OutlinedButton(
                                 onClick = {
-                                    viewModel.showLogoutConfirmationDialog(
-                                        context = context, navController = navController
-                                    )
+                                    viewModel.openAlertDialog.value = true
                                 },
                                 modifier = Modifier
                                     .wrapContentHeight()
@@ -526,13 +537,13 @@ fun TabletProfileScreen(navController: NavController, viewModel: ProfileViewMode
 
                 Column {
                     /***** USR DIET *****/
-                    UserCharacteristicsDisplay(headerString = "Diet",
+                    UserCharacteristicsDisplay(headerString = stringResource(R.string.diet),
                         userCharacteristics = diet.value,
                         clickOnEdit = { showEditCharacteristics = 1 })
 
                     /***** USR ALLERGIES *****/
 
-                    UserCharacteristicsDisplay(headerString = "Allergies",
+                    UserCharacteristicsDisplay(headerString = stringResource(R.string.allergies_capital),
                         userCharacteristics = allergies.value,
                         clickOnEdit = { showEditCharacteristics = 2 })
 
@@ -592,7 +603,7 @@ fun TabletProfileScreen(navController: NavController, viewModel: ProfileViewMode
  * and allergies without a full reload of the page
  * (Maybe there is a better way to achieve this!! )
  *
- * - mutableStateOf on a observered variable doesn't work..
+ * - mutableStateOf on a observed variable doesn't work..
  */
 fun reloadScreen(navController: NavController) {
 

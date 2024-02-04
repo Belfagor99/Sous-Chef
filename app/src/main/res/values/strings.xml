@@ -46,4 +46,9 @@
     <string name="i_ve_stored_the_ingredient_to_our_pantry">I\'ve stored the ingredient to our pantry!</string>
     <string name="i_ve_added_the_ingredient_in_our_pantry">I\'ve added the ingredient to our pantry!</string>
     <string name="e_mail_already_registered">E-mail already registered</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="diet">Diet</string>
+    <string name="allergies_capital">Allergies</string>
+    <string name="yes_log_me_out">Yes, log me out</string>
+    <string name="no_i_want_to_stay_logged_in">No, I want to stay logged in</string>
 </resources>
