@@ -16,6 +16,6 @@ data class LogInUIState (
 
     var emailError: Boolean = false,
     var passwordError: Boolean = false,
-    var numberOfRemainingSubmissions: Int = 2,
+    var numberOfRemainingSubmissions: Int = 3,
     var passwordResetSent: Boolean = false
 )

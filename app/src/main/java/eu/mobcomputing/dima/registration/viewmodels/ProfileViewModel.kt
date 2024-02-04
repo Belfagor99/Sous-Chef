@@ -206,6 +206,7 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
     private fun getUserDocumentRef(): DocumentReference? {
         FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
             val db = FirebaseFirestore.getInstance()
+            Log.d("USER PROFILE", "user ID: $userID")
             return db.collection("users").document(userID)
 
         } ?: run {

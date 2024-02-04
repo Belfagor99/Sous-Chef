@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.navigation.NavController
@@ -36,6 +37,12 @@ class RegistrationViewModel @Inject constructor(application: Application) :
 
     // Indicates whether the registration process is in progress
     var registrationInProgress = mutableStateOf(false)
+
+    // Indicates whether the registration has been successful
+    // 0 -> successful
+    // 1 -> e-mail address already used
+    // 2 -> other issue
+    var registrationSuccessful = mutableIntStateOf(0)
 
     /**
      * Handles UI events triggered by user interactions.
@@ -81,7 +88,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
     /**
      * Validates user input data based on predefined rules and updates the UI state accordingly.
      */
-    private fun validateDataWithRules() {
+    fun validateDataWithRules() {
         val firstNameValidation = Validator.validateFirstName(
             registrationUIState.value.firstName
         )
@@ -176,7 +183,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      * @param password User's chosen password.
      * @param navController The NavController for navigation purposes.
      */
-    private fun createFirebaseUser(
+    fun createFirebaseUser(
         email: String,
         password: String,
         navController: NavController,
@@ -185,14 +192,13 @@ class RegistrationViewModel @Inject constructor(application: Application) :
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
 
-
-
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 Log.d(TAG, "Inside on Complete Lister")
                 Log.d(TAG, "is Successful = ${it.isSuccessful}")
                 if (it.isSuccessful) {
                     val userID = auth.currentUser?.uid
+                    registrationSuccessful.intValue = 0
                     if (userID != null) {
                         createUserInDatabase(
                             firstName = registrationUIState.value.firstName,
@@ -206,19 +212,20 @@ class RegistrationViewModel @Inject constructor(application: Application) :
 
             }
             .addOnFailureListener { exception ->
-
                 registrationInProgress.value = false
                 // Check if the exception is an FirebaseAuthUserCollisionException
                 if (exception is FirebaseAuthUserCollisionException) {
                     // Check the error code
                     val errorCode = exception.errorCode
-                    Log.d(TAG, "Exception eorror code = ${exception.errorCode}")
+                    Log.d(TAG, "Exception error code = ${exception.errorCode}")
                     // Handle the case where the email is already in use
                     if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
+                        registrationSuccessful.intValue = 1
+                        Log.d(TAG, "registration successful value = ${registrationSuccessful.intValue}")
                         showEmailAlreadyRegisteredDialog(context, navController)
                     }
                 } else {
-                    registrationInProgress.value = false
+                    registrationSuccessful.intValue = 2
                     Log.d(TAG, "Inside on Failure Lister")
                     Log.d(TAG, "Exception = ${exception.message}")
                 }
@@ -232,7 +239,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      *  @param context Context of the application.
      *  @param navController The NavController for navigation purposes.
      */
-    private fun showEmailAlreadyRegisteredDialog(context: Context, navController: NavController) {
+    fun showEmailAlreadyRegisteredDialog(context: Context, navController: NavController) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("E-mail already registered")
         builder.setMessage(

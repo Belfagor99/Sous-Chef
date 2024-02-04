@@ -17,7 +17,7 @@
     <string name="log_out">Log out</string>
     <string name="wrong_password">Password is not correct</string>
     <string name="remaining_tries">Number of remaining tries:</string>
-    <string name="password_reset">If the email address is register, you have received instructions to reset your password.</string>
+    <string name="password_reset">If the email address is registered, you should have received instructions to reset your password.</string>
     <string name="personal_information">Personal Information</string>
     <string name="allergies">Do you have any allergies?</string>
     <string name="diet_type">Do you follow any diet?</string>

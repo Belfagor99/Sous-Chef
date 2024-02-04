@@ -133,7 +133,7 @@ class LogInViewModel : ViewModel() {
                 .addOnCompleteListener {
                     passwordResetSent.value = true
                     passwordIsIncorrect.value = false
-                    logInUIState.value.numberOfRemainingSubmissions = 2
+                    logInUIState.value.numberOfRemainingSubmissions = 3
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Inside on Failure Lister Password Reset")
