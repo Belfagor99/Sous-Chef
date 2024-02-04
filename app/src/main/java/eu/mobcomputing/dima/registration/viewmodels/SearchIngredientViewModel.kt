@@ -35,13 +35,9 @@ class SearchIngredientViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
 
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
-
-
-
-
-
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
     private val _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     val ingredients: LiveData<List<Ingredient>> = _ingredients
 
@@ -101,9 +97,9 @@ class SearchIngredientViewModel @Inject constructor(
      */
     fun filterIngredients(searchText: String) {
 
-        if (searchText.isBlank()){
+        if (searchText.isBlank()) {
             loadIngredientFromCsv()
-        }else{
+        } else {
             val filteredList = ingredients.value?.filter { ingredient ->
                 ingredient.name.contains(searchText, ignoreCase = true)
             }
@@ -113,44 +109,36 @@ class SearchIngredientViewModel @Inject constructor(
         }
     }
 
-
-
-
-    suspend fun searchIngredient( toSearch : String ){
+    /**
+     * Function to search  an ingredient based on the provided search text.
+     *
+     * @param toSearch The text to use for searching the ingredient.
+     */
+    suspend fun searchIngredient(toSearch: String) {
 
         val response = APIService().api.searchIngredient(
             query = toSearch,
             number = 30
         )
 
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             _ingredients.value = response.body()?.results
         }
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    suspend fun getSelectedIngredientInfo(id : Int): Ingredient{
+    /**
+     * Function to get information about an ingredient based on the provided ingredient ID.
+     *
+     * @param id The id of the ingredient.
+     */
+    suspend fun getSelectedIngredientInfo(id: Int): Ingredient {
         val response = APIService().api.getIngredientInfoById(id = id)
 
-        return if(response.isSuccessful){
+        return if (response.isSuccessful) {
             response.body()!!
-        }else{
+        } else {
             Ingredient()
         }
     }
-
-
-
-
 }

@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.screens
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -15,16 +16,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -52,10 +53,10 @@ import eu.mobcomputing.dima.registration.components.ButtonComponent
 import eu.mobcomputing.dima.registration.components.add_ingredients.DatePickerView
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
+import eu.mobcomputing.dima.registration.utils.Constants
 import eu.mobcomputing.dima.registration.viewmodels.AddIngredientToPantryViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
-import eu.mobcomputing.dima.registration.utils.Constants
 
 
 /**
@@ -74,7 +75,6 @@ fun AddIngredientToPantry(
 ) {
 
     val isNetworkAvailable = addIngredientToPantryViewModel.connectionStatus.observeAsState()
-
 
 
     /*
@@ -108,7 +108,7 @@ fun AddIngredientToPantry(
                 .fillMaxSize()
                 .padding(10.dp)
                 .background(colorResource(id = R.color.pink_50))
-        ){
+        ) {
             /*
              * Back button row
              */
@@ -120,11 +120,14 @@ fun AddIngredientToPantry(
                 IconButton(
                     onClick = {
                         navController.navigate(Screen.SearchIngredientScreen.route) {
-                        launchSingleTop = true
+                            launchSingleTop = true
                         }
                     }
                 ) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go Back")
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Go Back"
+                    )
                 }
             }
 
@@ -137,9 +140,9 @@ fun AddIngredientToPantry(
                     .padding(10.dp),
                 verticalArrangement = Arrangement.SpaceEvenly
 
-            ){
+            ) {
 
-                ElevatedCard (
+                ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
@@ -155,15 +158,20 @@ fun AddIngredientToPantry(
                         contentColor = Color.Black,
                     ),
                 ) {
-                    Row{
+                    Row {
 
-                        Box(modifier = Modifier.weight(1f).align(Alignment.CenterVertically)){
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically)
+                        ) {
 
                             GlideImage(
-                                model = Constants.BASE_IMG_URL_500+ingredient.image ,
+                                model = Constants.BASE_IMG_URL_500 + ingredient.image,
                                 contentDescription = "recipe image",
                                 modifier = Modifier
-                                    .wrapContentSize().align(Alignment.Center),
+                                    .wrapContentSize()
+                                    .align(Alignment.Center),
                                 //contentScale = ContentScale.FillBounds,
                             )
                         }
@@ -188,7 +196,6 @@ fun AddIngredientToPantry(
                                 )
 
 
-
                             }
 
                         }
@@ -198,7 +205,7 @@ fun AddIngredientToPantry(
                 /*
                  * Expiration date row
                  */
-                Row (
+                Row(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -237,8 +244,9 @@ fun AddIngredientToPantry(
                             onDismiss = { showDatePicker = false },
                             onDateSelected = {
                                 date = it
-                                ingredient.expiringDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                                    .parse(it)
+                                ingredient.expiringDate =
+                                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                        .parse(it)
                             },
                         )
                     }
@@ -260,24 +268,26 @@ fun AddIngredientToPantry(
                     if (ingredient.unit==""){
                         ingredient.unit=ingredient.possibleUnits[0]
                     }*/
-                    Log.e("ADDING", ingredient.toString())
-                    val exit = addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
-
-                    if (exit){
-                        //notify user
-                        Toast.makeText(context,"Ingredient added to your pantry!",Toast.LENGTH_SHORT).show()
-                    }else{
-                        //notify user
-                        Toast.makeText(context,"Ingredient already in your pantry!",Toast.LENGTH_SHORT).show()
+                    if (ingredient.expiringDate == null) {
+                        showNoDateDialog(
+                            context,
+                            navController,
+                            ingredient,
+                            addIngredientToPantryViewModel
+                        )
                     }
-                    //go back to home
-                    navController.navigate(Screen.SearchIngredientScreen.route)
+                    else{
+                        addIngredientToUser(ingredient, addIngredientToPantryViewModel, context, navController)
+
+                    }
+
                 },
-                isEnabled = true)
+                isEnabled = true
+            )
 
         }
 
-        if(isNetworkAvailable.value==false){
+        if (isNetworkAvailable.value == false) {
             val myContext = LocalContext.current
             val builder = AlertDialog.Builder(myContext)
             builder.setTitle("Connection Lost")
@@ -294,13 +304,68 @@ fun AddIngredientToPantry(
 }
 
 
+fun addIngredientToUser(
+    ingredient: Ingredient,
+    addIngredientToPantryViewModel: AddIngredientToPantryViewModel,
+    context: Context,
+    navController: NavController){
+
+    Log.e("ADDING", ingredient.toString())
+    val exit = addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
+
+    if (exit) {
+        //notify user
+        Toast.makeText(
+            context,
+            "I've stored the ingredient to our pantry!",
+            Toast.LENGTH_SHORT
+        ).show()
+    } else {
+        //notify user
+        Toast.makeText(
+            context,
+            "I've already have the ingredient in our pantry!",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+    //go back to home
+    navController.navigate(Screen.SearchIngredientScreen.route)
+}
+
+
+fun showNoDateDialog(
+    context: Context,
+    navController: NavController,
+    ingredient: Ingredient,
+    addIngredientToPantryViewModel: AddIngredientToPantryViewModel
+) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle("Ingredient without due date to be added")
+    builder.setMessage("Are you sure you want to add ingredient without a due date?")
+    builder.setMessage(
+        "Without the due date, I won't be able to notify you about upcoming " +
+                "usage of the ingredient."
+    )
+    builder.setPositiveButton("Yes, dismiss") { _, _ ->
+        addIngredientToUser(ingredient, addIngredientToPantryViewModel, context, navController)
+    }
+
+    builder.setNegativeButton("No, I want to add date") { dialog, _ ->
+        // User clicked No, dismiss the dialog
+        dialog.dismiss()
+    }
+
+    val dialog = builder.create()
+    dialog.show()
+}
+
 @Preview
 @Composable
 fun AddIngredientToPantryPreview() {
     val ingredient = Ingredient(
-        id= 1,
+        id = 1,
         name = "Egg",
         image = "",
-        )
-    AddIngredientToPantry(navController = rememberNavController(),ingredient= ingredient)
+    )
+    AddIngredientToPantry(navController = rememberNavController(), ingredient = ingredient)
 }
