@@ -2,8 +2,8 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 
 import android.app.Application
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import android.content.Context
 import androidx.lifecycle.Observer
 import eu.mobcomputing.dima.registration.models.Ingredient
 import kotlinx.coroutines.test.runTest

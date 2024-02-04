@@ -94,6 +94,8 @@ dependencies {
 
 
     implementation("org.mockito:mockito-core:5.10.0")
+    implementation("androidx.compose.ui:ui-test-junit4:1.7.0-alpha01")
+    implementation("androidx.arch.core:core-testing:2.2.0")
     //annotationProcessor("com.google.dagger:hilt-compiler:2.50")
 
 
