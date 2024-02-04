@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -76,12 +77,12 @@ fun AddIngredientToPantry(
 
     val isNetworkAvailable = addIngredientToPantryViewModel.connectionStatus.observeAsState()
 
-
+    val datePicketText = "Open date picker dialog"
     /*
      * State variables for the date picker
      */
     var date by remember {
-        mutableStateOf("Open date picker dialog")
+        mutableStateOf(datePicketText)
     }
 
     var showDatePicker by remember {
@@ -126,7 +127,7 @@ fun AddIngredientToPantry(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Go Back"
+                        contentDescription = stringResource(R.string.go_back)
                     )
                 }
             }
@@ -168,7 +169,7 @@ fun AddIngredientToPantry(
 
                             GlideImage(
                                 model = Constants.BASE_IMG_URL_500 + ingredient.image,
-                                contentDescription = "recipe image",
+                                contentDescription = stringResource(R.string.recipe_image_desc),
                                 modifier = Modifier
                                     .wrapContentSize()
                                     .align(Alignment.Center),
@@ -211,7 +212,7 @@ fun AddIngredientToPantry(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Add the expiring date: ",
+                        text = stringResource(R.string.add_the_expiring_date),
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
@@ -258,8 +259,7 @@ fun AddIngredientToPantry(
              * Button to add to pantry
              */
             ButtonComponent(
-
-                value = "Add to pantry",
+                value = stringResource(R.string.add_to_pantry),
                 onClickAction = {
                     // be sure to put a quantity at least  = 1
                     /*if (ingredient.userQuantity==0.0){
@@ -290,10 +290,10 @@ fun AddIngredientToPantry(
         if (isNetworkAvailable.value == false) {
             val myContext = LocalContext.current
             val builder = AlertDialog.Builder(myContext)
-            builder.setTitle("Connection Lost")
-            builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
+            builder.setTitle(stringResource(id = R.string.connection_not_available))
+            builder.setMessage(stringResource(id = R.string.i_need_conection_txt))
 
-            builder.setPositiveButton("Ok") { _, _ ->
+            builder.setPositiveButton(stringResource(id = R.string.ok)) { _, _ ->
                 (myContext as Activity).finishAffinity()
             }
 
@@ -317,14 +317,14 @@ fun addIngredientToUser(
         //notify user
         Toast.makeText(
             context,
-            "I've stored the ingredient to our pantry!",
+            context.getString(R.string.i_ve_stored_the_ingredient_to_our_pantry),
             Toast.LENGTH_SHORT
         ).show()
     } else {
         //notify user
         Toast.makeText(
             context,
-            "I've already have the ingredient in our pantry!",
+            context.getString(R.string.i_ve_added_the_ingredient_in_our_pantry),
             Toast.LENGTH_SHORT
         ).show()
     }
