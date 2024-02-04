@@ -1,12 +1,9 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
-import android.app.AlertDialog
-import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -19,14 +16,11 @@ import eu.mobcomputing.dima.registration.models.User
 import eu.mobcomputing.dima.registration.navigation.Screen
 import eu.mobcomputing.dima.registration.uiEvents.RegistrationUIEvent
 import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
-import javax.inject.Inject
 
 /**
  * ViewModel responsible for handling registration-related logic and managing the UI state.
  */
-@HiltViewModel
-class RegistrationViewModel @Inject constructor(application: Application) :
-    AndroidViewModel(application) {
+class RegistrationViewModel : ViewModel() {
     private val TAG = RegistrationViewModel::class.simpleName
 
     // Represents the current state of the registration user interface
@@ -38,11 +32,15 @@ class RegistrationViewModel @Inject constructor(application: Application) :
     // Indicates whether the registration process is in progress
     var registrationInProgress = mutableStateOf(false)
 
+
+    val openAlertDialog = mutableStateOf(false)
+
+
     // Indicates whether the registration has been successful
     // 0 -> successful
     // 1 -> e-mail address already used
     // 2 -> other issue
-    var registrationSuccessful = mutableIntStateOf(0)
+    private var registrationSuccessful = mutableIntStateOf(0)
 
     /**
      * Handles UI events triggered by user interactions.
@@ -50,7 +48,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      * @param event The UI event to be processed.
      * @param navController The NavController for navigation purposes.
      */
-    fun onEvent(event: RegistrationUIEvent, navController: NavController, context: Context) {
+    fun onEvent(event: RegistrationUIEvent, navController: NavController) {
 
         when (event) {
             is RegistrationUIEvent.FirstNameChanged -> {
@@ -79,7 +77,7 @@ class RegistrationViewModel @Inject constructor(application: Application) :
             }
 
             is RegistrationUIEvent.RegistrationButtonClicked -> {
-                register(navController = navController, context = context)
+                register(navController = navController)
             }
         }
         validateDataWithRules()
@@ -122,12 +120,11 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      *
      * @param navController The NavController for navigation purposes.
      */
-    private fun register(navController: NavController, context: Context) {
+    private fun register(navController: NavController) {
         createFirebaseUser(
             email = registrationUIState.value.email,
             password = registrationUIState.value.password,
             navController = navController,
-            context = context
         )
     }
 
@@ -183,11 +180,10 @@ class RegistrationViewModel @Inject constructor(application: Application) :
      * @param password User's chosen password.
      * @param navController The NavController for navigation purposes.
      */
-    fun createFirebaseUser(
+    private fun createFirebaseUser(
         email: String,
         password: String,
         navController: NavController,
-        context: Context
     ) {
         registrationInProgress.value = true
         val auth = FirebaseAuth.getInstance()
@@ -221,8 +217,11 @@ class RegistrationViewModel @Inject constructor(application: Application) :
                     // Handle the case where the email is already in use
                     if (errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
                         registrationSuccessful.intValue = 1
-                        Log.d(TAG, "registration successful value = ${registrationSuccessful.intValue}")
-                        showEmailAlreadyRegisteredDialog(context, navController)
+                        Log.d(
+                            TAG,
+                            "registration successful value = ${registrationSuccessful.intValue}"
+                        )
+                        openAlertDialog.value = true
                     }
                 } else {
                     registrationSuccessful.intValue = 2
@@ -230,37 +229,6 @@ class RegistrationViewModel @Inject constructor(application: Application) :
                     Log.d(TAG, "Exception = ${exception.message}")
                 }
             }
-    }
-
-
-    /**
-     *  Shows user an alert dialog with information that e-mail is already registered.
-     *
-     *  @param context Context of the application.
-     *  @param navController The NavController for navigation purposes.
-     */
-    fun showEmailAlreadyRegisteredDialog(context: Context, navController: NavController) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("E-mail already registered")
-        builder.setMessage(
-            "I am sorry, the e-mail you are trying to register, I already know. " +
-                    "Please provide different e-mail or log in via provided e-mail. " +
-                    "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
-                    "reset your password."
-        )
-
-        builder.setPositiveButton("Yes, go to log in") { _, _ ->
-            // User clicked Yes, navigate to login page
-            redirectToLogInScreen(navController)
-        }
-
-        builder.setNegativeButton("No, create new account") { dialog, _ ->
-            // User clicked No, dismiss the dialog
-            dialog.dismiss()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
     }
 
     /**
