@@ -76,7 +76,8 @@ fun SmallWelcomeScreenView(navController: NavController, welcomeViewModel: Welco
         ) {
             MyImageComponent(
                 R.drawable.sous_chef,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = welcomeViewModel.imageDescription
             )
         }
 
@@ -85,7 +86,8 @@ fun SmallWelcomeScreenView(navController: NavController, welcomeViewModel: Welco
         ButtonComponent(
             value = stringResource(id = R.string.sign_up_log_in),
             onClickAction = { welcomeViewModel.redirection(navController) },
-            isEnabled = true
+            isEnabled = true,
+            buttonDescription = welcomeViewModel.buttonDescription
         )
     }
 }
@@ -114,14 +116,16 @@ fun WideWelcomeScreenView(navController: NavController, welcomeViewModel: Welcom
         ) {
             MyImageComponent(
                 R.drawable.sous_chef,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = welcomeViewModel.imageDescription
             )
         }
 
         ButtonComponent(
             value = stringResource(id = R.string.sign_up_log_in),
             onClickAction = { welcomeViewModel.redirection(navController) },
-            isEnabled = true
+            isEnabled = true,
+            buttonDescription = welcomeViewModel.buttonDescription
         )
 
 

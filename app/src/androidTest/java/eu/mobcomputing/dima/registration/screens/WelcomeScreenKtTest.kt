@@ -6,26 +6,21 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.navigation.testing.TestNavHostController
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import eu.mobcomputing.dima.registration.viewmodels.SplashScreenViewModel
-import org.junit.Assert.*
+import eu.mobcomputing.dima.registration.viewmodels.WelcomeViewModel
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-
-class SplashScreenKtTest{
+class WelcomeScreenKtTest{
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun splashScreenContentDisplayed() {
-        val viewModel = SplashScreenViewModel()
+    fun welcomeScreenContentDisplayed() {
+        val viewModel = WelcomeViewModel()
         composeTestRule.setContent {
-            SplashScreen(
+            WelcomeScreen(
                 navController = TestNavHostController(LocalContext.current),
-                splashScreenViewModel = viewModel
+                welcomeViewModel = viewModel
             )
         }
 
@@ -35,7 +30,7 @@ class SplashScreenKtTest{
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithContentDescription(viewModel.cicrcularProgresDescription)
+            .onNodeWithContentDescription(viewModel.buttonDescription)
             .assertIsDisplayed()
 
     }

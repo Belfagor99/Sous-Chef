@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,12 +39,22 @@ import eu.mobcomputing.dima.registration.R
  */
 
 @Composable
-fun ButtonComponent(value: String, onClickAction: () -> Unit, isEnabled: Boolean = false) {
+fun ButtonComponent(
+    value: String,
+    onClickAction: () -> Unit,
+    isEnabled: Boolean = false,
+    buttonDescription: String = ""
+) {
 
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(48.dp),
+            .heightIn(48.dp)
+            .semantics {
+                contentDescription =
+                    if (buttonDescription.isNotEmpty()) buttonDescription else value
+
+            },
         onClick = {
             onClickAction.invoke()
         },
