@@ -123,6 +123,7 @@ fun PantryScreen(
             }
         }
 
+        // if ingredient has been clicked to open a dialog
         if (viewModel.openIngredientDialog.value) {
             val context = LocalContext.current
             IngredientEditDialog(

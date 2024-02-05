@@ -32,6 +32,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import eu.mobcomputing.dima.registration.R
 
+/**
+ *  Custom Dialog to prompt edit of an ingredient.
+ *
+ *  @param ingredientName name of the ingredient to be trashed
+ *  @param onClose what should happen on close of the dialog
+ *  @param onTrash what should happen on trash of the ingredient
+ */
 @Composable
 fun IngredientEditDialog(ingredientName: String, onClose: () -> Unit, onTrash: () -> Unit) {
 
