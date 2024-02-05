@@ -28,15 +28,11 @@ import javax.inject.Inject
 @HiltViewModel
 class PantryViewModel @Inject constructor(application: Application,) : AndroidViewModel(application) {
 
-
-
     private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
     var connectionStatus : LiveData<Boolean> = _connectionStatus
 
 
-    /**
-     * LiveData containing the list of ingredients in the user's pantry.
-     */
+    // LiveData containing the list of ingredients in the user's pantry.
     private var _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     var ingredients: LiveData<List<Ingredient>> = _ingredients
 
@@ -115,9 +111,11 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
         }
     }
 
-
-
-
+    /**
+     *  Function to remove ingredients from pantry.
+     *
+     *  @param ingredientsRecipe List of ingredients to be removed
+     */
     fun removeFromPantry(ingredientsRecipe: List<Ingredient>){
 
         userDoc?.get()!!.addOnSuccessListener {

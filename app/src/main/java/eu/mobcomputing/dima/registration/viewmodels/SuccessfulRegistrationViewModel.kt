@@ -58,7 +58,6 @@ class SuccessfulRegistrationViewModel : ViewModel() {
 
     /**
      *  Welcomes user when the ViewModel is initialized.
-     *
      */
     private fun welcomeUser() {
         FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
@@ -68,6 +67,11 @@ class SuccessfulRegistrationViewModel : ViewModel() {
         }
     }
 
+    /**
+     *  Function to redirect to successful registration screen.
+     *
+     *  @param navController to navigate trough the screens
+     */
     fun redirect(navController: NavController){
         navController.navigate(route = Screen.UserAllergies.route) {
             popUpTo(Screen.SignUnSuccessful.route) { inclusive = true }

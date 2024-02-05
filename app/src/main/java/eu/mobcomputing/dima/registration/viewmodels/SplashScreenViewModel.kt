@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import eu.mobcomputing.dima.registration.navigation.Screen
 
 class SplashScreenViewModel : ViewModel() {
+
     /**
      * Checks the user's login status using Firebase authentication.
      */

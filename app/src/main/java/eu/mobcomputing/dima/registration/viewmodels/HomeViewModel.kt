@@ -29,38 +29,28 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     application: Application,
-) : AndroidViewModel(application)  {
-    private val TAG = HomeViewModel::class.simpleName
+) : AndroidViewModel(application) {
 
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
 
-
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
-
-
-
-    /**
-     * Reference to the user's document in Firestore.
-     */
-    var userDoc : DocumentReference? = getUserDocumentRef()
+    // Reference to the user's document in Firestore.
+    private var userDoc: DocumentReference? = getUserDocumentRef()
 
     private var _name = MutableLiveData<String>()
-    var name : LiveData<String> = _name
+    var name: LiveData<String> = _name
 
-    private var userDiet : DietType? = null
-    private var userPantry : List<Ingredient> = emptyList()
-    private var userIntolerances : String =""
+    private var userDiet: DietType? = null
+    private var userPantry: List<Ingredient> = emptyList()
+    private var userIntolerances: String = ""
 
-    /**
-     * LiveData containing the list of recipes based on the ingredients contained in the user's pantry.
-     */
+    // LiveData containing the list of recipes based on the ingredients contained in the user's pantry.
     private var _recipes = MutableLiveData<List<Recipe>>()
     var recipes: LiveData<List<Recipe>> = _recipes
 
     private var _ingredientsAsString = MutableLiveData<String>()
-    var ingredientsAsString: LiveData<String> = _ingredientsAsString
-
-
+    private var ingredientsAsString: LiveData<String> = _ingredientsAsString
 
 
     init {
@@ -78,12 +68,11 @@ class HomeViewModel @Inject constructor(
      *
      * If the user document is not available or an error occurs during the process, appropriate logs are generated.
      *
-     * @throws Exception if there is an error while retrieving or processing the ingredients from the user's pantry.
      */
-    private suspend fun getIngredientsListAsString (){
+    private suspend fun getIngredientsListAsString() {
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable) {
+        if (isNetworkAvailable) {
 
             try {
                 if (userDoc == null) {
@@ -129,7 +118,6 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
     /**
      * Retrieves available recipes based on the provided list of ingredients.
      *
@@ -138,12 +126,11 @@ class HomeViewModel @Inject constructor(
      * After a successful API response, it filters and sets the recipes with no missed ingredients.
      * Additional filtering based on user's diet and allergies is a performed.
      *
-     * @throws IOException if there is a network-related issue during the API call.
      */
-    private suspend fun getAvailableRecipe(){
+    private suspend fun getAvailableRecipe() {
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable) {
+        if (isNetworkAvailable) {
             //update userDiet if it has been modified
             updateUserDietType(userDoc!!)
             getUserPantry(userDoc!!)
@@ -152,7 +139,7 @@ class HomeViewModel @Inject constructor(
             Log.e("CHECK USER DIET", userDiet!!.diet)
             Log.e("CHECK USER PANTRY", userPantry.toString())
             Log.e("CHECK USER INTOLERANCES", userIntolerances)
-            Log.e("CHECK RECIPE INGR LIST", ingredientsAsString.value.toString())
+            Log.e("CHECK RECIPE INGREDIENT LIST", ingredientsAsString.value.toString())
 
             val response = APIService().api.getRecipesByIngredients(
                 ingredients = ingredientsAsString.value.toString(),
@@ -160,7 +147,7 @@ class HomeViewModel @Inject constructor(
                 number = 20,
             )
 
-            Log.e("RECIPE COUNTER BEF MISSING INGR", response.body()?.size.toString())
+            Log.e("RECIPE COUNTER BEF MISSING INGREDIENT", response.body()?.size.toString())
             Log.e("RESPONSE", response.body().toString())
 
 
@@ -185,22 +172,21 @@ class HomeViewModel @Inject constructor(
 
                 }
 
-                Log.e("RECIPES W/ 0 INGR ", recipesBulkList.size.toString())
+                Log.e("RECIPES W/ 0 INGREDIENT ", recipesBulkList.size.toString())
 
                 // filter the recipe based on user's diet type
                 //if is not omnivore filter the recipe, otherwise all recipe are good
                 if (userDiet != null && userDiet != DietType.OMNIVORE) {
 
-                    if (userDiet == DietType.LACTOSE_VEGETARIAN) {
-                        recipesBulkList = recipesBulkList
-                            .filter { recipe ->
-                                (recipe.diets!!.contains("lacto vegetarian") or
-                                        recipe.diets!!.contains("lacto ovo vegetarian"))
+                    recipesBulkList = if (userDiet == DietType.LACTOSE_VEGETARIAN) {
+                        recipesBulkList.filter { recipe ->
+                                (recipe.diets!!.contains("lacto vegetarian") or recipe.diets.contains(
+                                    "lacto ovo vegetarian"
+                                ))
                             }
                     } else {
-                        recipesBulkList = recipesBulkList.filter { recipe ->
-                            recipe.diets?.contains(userDiet!!.diet)
-                                ?: false
+                        recipesBulkList.filter { recipe ->
+                            recipe.diets?.contains(userDiet!!.diet) ?: false
                         }
                     }
 
@@ -217,11 +203,9 @@ class HomeViewModel @Inject constructor(
         val gson = Gson()
 
 
-        Log.e("HOME @ getAvailableRecipe",gson.toJson(_recipes.value))
+        Log.e("HOME @ getAvailableRecipe", gson.toJson(_recipes.value))
         Log.e("COUNTER RECIPE", _recipes.value?.size.toString())
     }
-
-
 
 
     /**
@@ -232,7 +216,7 @@ class HomeViewModel @Inject constructor(
     private fun getUserDocumentRef(): DocumentReference? {
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable) {
+        if (isNetworkAvailable) {
             FirebaseAuth.getInstance().currentUser?.uid?.let { userID ->
                 val db = FirebaseFirestore.getInstance()
                 val doc = db.collection("users").document(userID)
@@ -250,11 +234,10 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
-    private fun updateUserDietType(doc : DocumentReference){
+    private fun updateUserDietType(doc: DocumentReference) {
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable) {
+        if (isNetworkAvailable) {
             doc.get().addOnSuccessListener {
                 if (it.exists()) {
                     val user = (it.toObject(User::class.java))!!
@@ -266,10 +249,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getUserPantry(doc : DocumentReference){
+    private fun getUserPantry(doc: DocumentReference) {
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable) {
+        if (isNetworkAvailable) {
             doc.get().addOnSuccessListener {
                 if (it.exists()) {
                     val user = (it.toObject(User::class.java))!!
@@ -280,15 +263,15 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun getUserIntolerances(doc : DocumentReference){
+    private fun getUserIntolerances(doc: DocumentReference) {
 
         val isNetworkAvailable = _connectionStatus.value ?: false
 
-        if(isNetworkAvailable){
+        if (isNetworkAvailable) {
             doc.get().addOnSuccessListener {
                 if (it.exists()) {
                     val user = (it.toObject(User::class.java))!!
-                    userIntolerances = user.allergies.joinToString(separator=",")
+                    userIntolerances = user.allergies.joinToString(separator = ",")
                 }
             }
         }
