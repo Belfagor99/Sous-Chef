@@ -1,9 +1,8 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
-import android.app.AlertDialog
 import android.app.Application
-import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,13 +30,16 @@ import javax.inject.Inject
  * @property userDoc Reference to the user's document in Firestore.
  */
 @HiltViewModel
-class ProfileViewModel @Inject constructor(application: Application,) : AndroidViewModel(application)  {
+class ProfileViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
 
 
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
 
 
+    val openAlertDialog = mutableStateOf(false)
 
 
     /**
@@ -64,7 +66,7 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
     /**
      * Reference to the user's document in Firestore.
      */
-    var userDoc: DocumentReference? = getUserDocumentRef()
+    private var userDoc: DocumentReference? = getUserDocumentRef()
 
 
     /**
@@ -121,7 +123,7 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ GET USR CHAR -> CHECK", "Error Failire Listener: $e")
+                    Log.e("PROFILE @ GET USR CHAR -> CHECK", "Error Failure Listener: $e")
                 }
 
             }
@@ -140,7 +142,7 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
     fun setNewAllergies(newAllergies: List<String>) {
         try {
             if (userDoc == null) {
-                Log.e("PROFILE @ SET ALLERG ->SET ALLERGIES", "Error fetching user doc")
+                Log.e("PROFILE @ SET ALLERGEN ->SET ALLERGIES", "Error fetching user doc")
             } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
@@ -149,16 +151,16 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
 
                     } else {
                         // Document does not exist
-                        Log.e("PROFILE @ SET ALLERG -> CHECK", "Document does not exist.")
+                        Log.e("PROFILE @ SET ALLERGEN -> CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ SET ALLERG -> CHECK", "Error Failire Listener: $e")
+                    Log.e("PROFILE @ SET ALLERGEN -> CHECK", "Error Failure Listener: $e")
                 }
 
             }
         } catch (e: Exception) {
-            Log.e("PROFILE @ SET ALLERG -> GET USR", "Error getting user document", e)
+            Log.e("PROFILE @ SET ALLERGEN -> GET USR", "Error getting user document", e)
 
         }
     }
@@ -187,7 +189,7 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("PROFILE @ SET DIET-> CHECK", "Error Failire Listener: $e")
+                    Log.e("PROFILE @ SET DIET-> CHECK", "Error Failure Listener: $e")
                 }
 
             }
@@ -232,31 +234,4 @@ class ProfileViewModel @Inject constructor(application: Application,) : AndroidV
 
         firebaseAuth.addAuthStateListener(authStateListener)
     }
-
-    /**
-     * Shows an alert dialog before the user is actually logged out.
-     *
-     * @param context context of the application
-     * @param navController The NavController used for navigation
-     */
-    fun showLogoutConfirmationDialog(context: Context, navController: NavController) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Log Out")
-        builder.setMessage("Are you sure you want to log out?")
-
-        builder.setPositiveButton("Yes") { _, _ ->
-            // User clicked Yes, perform log out
-            logOut(navController)
-        }
-
-        builder.setNegativeButton("No") { dialog, _ ->
-            // User clicked No, dismiss the dialog
-            dialog.dismiss()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-
 }
