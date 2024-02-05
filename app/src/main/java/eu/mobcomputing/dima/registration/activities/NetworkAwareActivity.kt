@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.work.WorkManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.notification.MyNotificationWorker
 import eu.mobcomputing.dima.registration.screens.ConnectionLostScreen
 import java.util.concurrent.TimeUnit
@@ -64,6 +66,20 @@ abstract class NetworkAwareActivity : ComponentActivity(){
         )
 
         super.onCreate(savedInstanceState)
+
+
+
+        // Determine if the device is a tablet
+        val isTablet = resources.getBoolean(R.bool.isTablet)
+
+        // Set the screen orientation based on the device type
+        if (isTablet) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
+
         setContent {
             ConnectionLostScreen {
                 // Your main content here
