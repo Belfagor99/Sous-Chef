@@ -31,13 +31,9 @@ class SearchIngredientViewModelTest {
     @Mock
     private val mockApplicationContext: Context? = null
 
-    //
-    @Mock
-    lateinit var connectionStatusObserver: Observer<Boolean>
-
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this)
 
         `when`(application.applicationContext).thenReturn(mockApplicationContext)
     }
