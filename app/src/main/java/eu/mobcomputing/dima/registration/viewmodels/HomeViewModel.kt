@@ -277,9 +277,4 @@ class HomeViewModel @Inject constructor(
         }
 
     }
-
-
-    private fun checkNetworkStatus(context: Context) {
-        _connectionStatus.value = checkNetworkConnectivity(context)
-    }
 }

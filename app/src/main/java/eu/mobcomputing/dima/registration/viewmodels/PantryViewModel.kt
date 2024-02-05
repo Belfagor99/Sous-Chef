@@ -65,7 +65,7 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
 
                         // get ingredient List from firestore user's document
                         val ingredientsList = (documentSnapshot.toObject(User::class.java))!!.ingredientsInPantry.sortedBy {
-                            it.name.toLowerCase()
+                            it.name.lowercase()
                         }
 
                         _ingredients.value= ingredientsList
