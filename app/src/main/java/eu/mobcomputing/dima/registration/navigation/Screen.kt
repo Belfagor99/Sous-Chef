@@ -14,7 +14,6 @@ sealed class Screen(val route: String) {
     data object SignUnSuccessful : Screen(route = "sign_up_successful_screen")
     data object Pantry : Screen(route = "pantry_screen")
     data object Profile : Screen(route = "profile_screen")
-    data object Search : Screen(route = "search_screen")
     data object SearchIngredientScreen: Screen(route="search_ingredients")
     data object AddIngredientToFridgeScreen : Screen(route = "addToFridge/{ingredient}")
     data object SplashScreen: Screen(route = "splash_screen")

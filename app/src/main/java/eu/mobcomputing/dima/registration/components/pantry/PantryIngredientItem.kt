@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.components.pantry
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,11 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
+import eu.mobcomputing.dima.registration.viewmodels.PantryViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 
 @Composable
-fun PantryIngredientItem(ingredient: Ingredient) {
+fun PantryIngredientItem(ingredient: Ingredient, pantryViewModel: PantryViewModel) {
     ElevatedCard(
         modifier = Modifier
             .padding(5.dp)
@@ -43,7 +45,10 @@ fun PantryIngredientItem(ingredient: Ingredient) {
             containerColor = Color.White,
             contentColor = Color.Black,
         ),
-        onClick = {},
+        onClick = {
+            pantryViewModel.ingredientClicked = ingredient
+            pantryViewModel.openIngredientDialog.value = true
+        },
     ) {
 
 
@@ -67,7 +72,7 @@ fun PantryIngredientItem(ingredient: Ingredient) {
 
             )
 
-            if(ingredient.expiringDate!=null){
+            if (ingredient.expiringDate != null) {
                 Box(
                     modifier = Modifier
                         .padding(20.dp)
@@ -77,14 +82,16 @@ fun PantryIngredientItem(ingredient: Ingredient) {
                         .wrapContentHeight()
                         .weight(1f)
                         .fillMaxWidth()
-                ){
+                ) {
                     Text(
-                        modifier = Modifier.padding(
-                            start = 20.dp,
-                            bottom = 5.dp,
-                            top = 5.dp,
-                            end = 20.dp
-                        ).align(Alignment.Center),
+                        modifier = Modifier
+                            .padding(
+                                start = 20.dp,
+                                bottom = 5.dp,
+                                top = 5.dp,
+                                end = 20.dp
+                            )
+                            .align(Alignment.Center),
                         text = SimpleDateFormat("dd/MM/YYYY").format(ingredient.expiringDate!!),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
@@ -100,12 +107,16 @@ fun PantryIngredientItem(ingredient: Ingredient) {
 }
 
 
-
 @Preview
 @Composable
 fun AppPreview() {
-    val ingredient = Ingredient(name = "coconut cooking oil", userQuantity = 2.0, unit = "units", expiringDate = Date("12/02/2021"))
+    val ingredient = Ingredient(
+        name = "coconut cooking oil",
+        userQuantity = 2.0,
+        unit = "units",
+        expiringDate = Date("12/02/2021")
+    )
     MaterialTheme {
-        PantryIngredientItem(ingredient= ingredient,)
+        PantryIngredientItem(ingredient = ingredient, PantryViewModel(application = Application()))
     }
 }

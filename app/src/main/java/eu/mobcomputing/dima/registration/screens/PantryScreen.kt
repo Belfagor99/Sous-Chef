@@ -3,6 +3,7 @@ package eu.mobcomputing.dima.registration.screens
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.IngredientEditDialog
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
 import eu.mobcomputing.dima.registration.components.SearchBar
 import eu.mobcomputing.dima.registration.components.pantry.PantryIngredientGrid
@@ -43,23 +45,16 @@ import eu.mobcomputing.dima.registration.viewmodels.PantryViewModel
 @Composable
 fun PantryScreen(
     navController: NavController,
-    viewModel: PantryViewModel = hiltViewModel() ) {
+    viewModel: PantryViewModel = hiltViewModel()
+) {
 
     // Observe the LiveData containing the list of Ingredients
     val ingredientsList = viewModel.ingredients.observeAsState()
-
-
-
     val isNetworkAvailable = viewModel.connectionStatus.observeAsState()
-
-
-
     // State for holding the search text
     var searchText by remember { mutableStateOf("") }
 
-
-
-    Scaffold (
+    Scaffold(
         modifier = Modifier
             .fillMaxSize(),
 
@@ -77,7 +72,9 @@ fun PantryScreen(
                 .padding(it)
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.pink_50)),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(id = R.color.pink_50)),
                 //verticalArrangement = Arrangement.SpaceBetween
             ) {
 
@@ -107,7 +104,7 @@ fun PantryScreen(
                     ingredientsList.value?.let {
                         if (it.isNotEmpty()) {
                             //populate grid if ingredients found
-                            PantryIngredientGrid(ingredients = it)
+                            PantryIngredientGrid(ingredients = it, pantryViewModel = viewModel)
                         } else {
 
                             // Ingredients not found
@@ -126,7 +123,26 @@ fun PantryScreen(
             }
         }
 
-        if(isNetworkAvailable.value==false){
+        if (viewModel.openIngredientDialog.value) {
+            val context = LocalContext.current
+            IngredientEditDialog(
+                ingredientName = viewModel.ingredientClicked.name,
+                onClose = { viewModel.openIngredientDialog.value = false },
+                onTrash = { if (viewModel.ingredientClicked.name != "") {
+                    viewModel.removeFromPantry(listOf(viewModel.ingredientClicked))
+                    Toast.makeText(context, "Ingredient deleted", Toast.LENGTH_SHORT).show()
+                    viewModel.openIngredientDialog.value = false
+                }
+                    else{
+                        Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
+                }
+
+                }
+            )
+
+        }
+
+        if (isNetworkAvailable.value == false) {
             val context = LocalContext.current
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Connection Lost")
@@ -153,5 +169,5 @@ fun PreviewPantryScreen() {
         navController = rememberNavController(),
         viewModel = PantryViewModel(Application()),
 
-    )
+        )
 }

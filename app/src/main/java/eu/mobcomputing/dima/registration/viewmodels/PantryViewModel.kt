@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,20 +27,25 @@ import javax.inject.Inject
  *                    application-level resources.
  */
 @HiltViewModel
-class PantryViewModel @Inject constructor(application: Application,) : AndroidViewModel(application) {
+class PantryViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
 
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
 
 
     // LiveData containing the list of ingredients in the user's pantry.
     private var _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     var ingredients: LiveData<List<Ingredient>> = _ingredients
 
+    var openIngredientDialog = mutableStateOf(false)
+    var ingredientClicked = Ingredient()
+
     /**
      * Reference to the user's document in Firestore.
      */
-    var userDoc : DocumentReference? = getUserDocumentRef()
+    var userDoc: DocumentReference? = getUserDocumentRef()
 
 
     /**
@@ -57,27 +63,28 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
      */
     private fun getPantryIngredients() {
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
                 Log.e("GET PANTRY", "Error fetching user doc")
-            }else{
+            } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
                         // get ingredient List from firestore user's document
-                        val ingredientsList = (documentSnapshot.toObject(User::class.java))!!.ingredientsInPantry.sortedBy {
-                            it.name.lowercase()
-                        }
+                        val ingredientsList =
+                            (documentSnapshot.toObject(User::class.java))!!.ingredientsInPantry.sortedBy {
+                                it.name.lowercase()
+                            }
 
-                        _ingredients.value= ingredientsList
-                        Log.e("CHECK",_ingredients.toString())
+                        _ingredients.value = ingredientsList
+                        Log.e("CHECK", _ingredients.toString())
 
                     } else {
                         // Document does not exist
-                        Log.e("CHECK","Document does not exist.")
+                        Log.e("CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("CHECK","Error checking array: $e")
+                    Log.e("CHECK", "Error checking array: $e")
                 }
 
             }
@@ -99,9 +106,9 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
      */
     fun filterIngredients(searchText: String) {
 
-        if (searchText.isBlank()){
+        if (searchText.isBlank()) {
             getPantryIngredients()
-        }else{
+        } else {
             val filteredList = ingredients.value?.filter { ingredient ->
                 ingredient.name.contains(searchText, ignoreCase = true)
             }
@@ -116,26 +123,33 @@ class PantryViewModel @Inject constructor(application: Application,) : AndroidVi
      *
      *  @param ingredientsRecipe List of ingredients to be removed
      */
-    fun removeFromPantry(ingredientsRecipe: List<Ingredient>){
+    fun removeFromPantry(ingredientsRecipe: List<Ingredient>) {
 
         userDoc?.get()!!.addOnSuccessListener {
-            if(it.exists()){
+            if (it.exists()) {
                 var pantry = it.toObject(User::class.java)?.ingredientsInPantry
 
                 ingredientsRecipe.forEach { ingrRecipe ->
-                    pantry = pantry?.filter { ingredient -> ingredient.id != ingrRecipe.id   }
+                    pantry = pantry?.filter { ingredient -> ingredient.id != ingrRecipe.id }
                 }
 
-                Log.e("NEW PANTRY ",pantry.toString())
+                Log.e("NEW PANTRY ", pantry.toString())
 
                 //update the doc
                 userDoc!!.update("ingredientsInPantry", pantry)
+
+                if (_ingredients.value != null) {
+                    val updatedIngredients = _ingredients.value!!.toMutableList()
+                    updatedIngredients.removeAll(ingredientsRecipe)
+
+                    // Update the state to trigger recomposition
+                    _ingredients.value = updatedIngredients
+                }
             }
         }
+
+
     }
-
-
-
 
     /**
      * Helper function that retrieves the DocumentReference for the current user from Firestore.

@@ -105,8 +105,7 @@ fun SmallButtonComponent(value: String, onClickAction: () -> Unit, modifier: Mod
                 .fillMaxWidth()
                 .heightIn(48.dp)
                 .background(
-                    color = colorResource(id = R.color.pink_900),
-                    shape = RoundedCornerShape(50.dp)
+                    color = colorResource(id = R.color.pink_900), shape = RoundedCornerShape(50.dp)
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
@@ -126,4 +125,3 @@ private fun isInPortraitMode(): Boolean {
     val configuration = LocalConfiguration.current
     return configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 }
-
