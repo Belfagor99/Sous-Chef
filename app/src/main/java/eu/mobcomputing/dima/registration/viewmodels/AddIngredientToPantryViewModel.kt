@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,25 +18,22 @@ import javax.inject.Inject
 
 /**
  * ViewModel class for handling the addition of ingredients to the user's pantry.
- *
  */
 @HiltViewModel
-class AddIngredientToPantryViewModel  @Inject constructor(
+class AddIngredientToPantryViewModel @Inject constructor(
     application: Application,
-) : AndroidViewModel(application)  {
+) : AndroidViewModel(application) {
 
 
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
+    val openAlertDialogNoDate = mutableStateOf(false)
+    val dialogOpened = mutableStateOf(false)
 
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
 
-
-
-
-    /**
-     * Reference to the user's document in Firestore.
-     */
-    var userDoc : DocumentReference? = getUserDocumentRef()
+    // Reference to the user's document in Firestore.
+    private var userDoc: DocumentReference? = getUserDocumentRef()
 
 
     /**
@@ -44,18 +42,16 @@ class AddIngredientToPantryViewModel  @Inject constructor(
      *
      * @param ingredientToAdd The ingredient to be added to the pantry.
      */
-    fun addIngredientToPantry( ingredientToAdd: Ingredient) : Boolean {
+    fun addIngredientToPantry(ingredientToAdd: Ingredient): Int {
 
-        var needToBeAdded : Boolean = false
+        var operationResult = 0
 
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
                 Log.e("ADD TO PANTRY", "Error fetching user doc")
-            }else{
+            } else {
 
-                /*
-                * If the ingredient is already present modify the userQuantity variable
-                */
+                // If the ingredient is already present modify the userQuantity variable
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
@@ -63,28 +59,43 @@ class AddIngredientToPantryViewModel  @Inject constructor(
                         val array = documentSnapshot.toObject(User::class.java)?.ingredientsInPantry
 
                         if (array != null) {
-                            val existingIngredientsByName = array.filter { it.name  == ingredientToAdd.name }
+                            val existingIngredientsByName =
+                                array.filter { it.name == ingredientToAdd.name }
 
-                            if (existingIngredientsByName.isNotEmpty()) {
+                            operationResult = if (existingIngredientsByName.isNotEmpty()) {
                                 // Object with the specified name already exist, not add
-                                needToBeAdded = false
+                                userDoc!!.update(
+                                    "ingredientsInPantry", FieldValue.arrayRemove(
+                                        existingIngredientsByName[0]
+                                    )
+                                )
+                                userDoc!!.update(
+                                    "ingredientsInPantry",
+                                    FieldValue.arrayUnion(ingredientToAdd)
+                                )
+                                1
                             } else {
                                 // Object with the specified name doesn't exist, add it to the array
-                                userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
-                                needToBeAdded = true
+                                userDoc!!.update(
+                                    "ingredientsInPantry",
+                                    FieldValue.arrayUnion(ingredientToAdd)
+                                )
+                                0
                             }
                         }
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("CHECK","Error checking array: $e")
+                    operationResult = -1
+                    Log.e("CHECK", "Error checking array: $e")
                 }
             }
         } catch (e: Exception) {
+            operationResult = -1
             Log.e("ADD TO PANTRY", "Error adding ingredient to user's pantry", e)
         }
 
-        return needToBeAdded
+        return operationResult
     }
 
 

@@ -80,16 +80,11 @@ fun SearchIngredientScreen(
                 .fillMaxSize()
                 .padding(it)
                 .background(colorResource(id = R.color.pink_50)),
-            //verticalArrangement = Arrangement.Top
         ) {
 
             SearchBar(
-                //viewModel = viewModel,
                 onSearch = { newSearchText ->
                     searchText = newSearchText
-                    // Call the filter function in the ViewModel
-                    //viewModel.filterIngredients(newSearchText)
-
                     CoroutineScope(Dispatchers.Main).launch {
                         viewModel.searchIngredient(newSearchText)
                     }

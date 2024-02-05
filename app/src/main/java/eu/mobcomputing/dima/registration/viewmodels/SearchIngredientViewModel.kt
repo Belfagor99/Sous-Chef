@@ -1,19 +1,14 @@
 package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
-import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.mobcomputing.dima.registration.api.APIService
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
-import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import javax.inject.Inject
 
 
@@ -35,45 +30,52 @@ class SearchIngredientViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
 
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
-
-
-
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
+    val openAlertDialog = mutableStateOf(false)
 
 
     private val _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     val ingredients: LiveData<List<Ingredient>> = _ingredients
 
-
-
-    suspend fun searchIngredient( toSearch : String ){
+    /**
+     *  Function to search the ingredient ingredient via call to the API.
+     *
+     *  @param toSearch Ingredient name
+     *
+     */
+    suspend fun searchIngredient(toSearch: String) {
 
         val response = APIService().api.searchIngredient(
             query = toSearch,
             number = 30
         )
 
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             _ingredients.value = response.body()?.results
         }
 
     }
 
 
+    /**
+     *  Function to retrieve information about selected ingredient.
+     *  It returns object of type Ingredient, that is created by requesting the ingredient from the API.
+     *
+     *  @param id Ingredient ID
+     *
+     */
 
-
-    suspend fun getSelectedIngredientInfo(id : Int): Ingredient{
+    suspend fun getSelectedIngredientInfo(id: Int): Ingredient {
         val response = APIService().api.getIngredientInfoById(id = id)
 
-        return if(response.isSuccessful){
+        return if (response.isSuccessful) {
             response.body()!!
-        }else{
+        } else {
             Ingredient()
         }
     }
-
-
 
 
 }
