@@ -1,7 +1,6 @@
 package eu.mobcomputing.dima.registration.screens
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.Image

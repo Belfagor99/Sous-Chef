@@ -1,13 +1,14 @@
 package eu.mobcomputing.dima.registration.screens
 
 import android.app.Activity
-import android.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,17 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import eu.mobcomputing.dima.registration.R
-import eu.mobcomputing.dima.registration.components.add_ingredients.IngredientVerticalGrid
-import eu.mobcomputing.dima.registration.components.SearchBar
-import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.HeaderTextComponent
+import eu.mobcomputing.dima.registration.components.MyAlertDialog
 import eu.mobcomputing.dima.registration.components.NavigationBarComponent
+import eu.mobcomputing.dima.registration.components.SearchBar
+import eu.mobcomputing.dima.registration.components.add_ingredients.IngredientVerticalGrid
+import eu.mobcomputing.dima.registration.viewmodels.SearchIngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,7 +72,8 @@ fun SearchIngredientScreen(
             NavigationBarComponent(
                 navController = navController,
                 selectedItemIndex = 3
-        )}
+            )
+        }
     ) {
         Column(
             modifier = Modifier
@@ -95,8 +99,6 @@ fun SearchIngredientScreen(
                 onSearchTextChange = { newSearchText ->
                     searchText = newSearchText
                     // Call the filter function in the ViewModel
-
-
                     CoroutineScope(Dispatchers.Main).launch {
                         viewModel.searchIngredient(newSearchText)
                     }
@@ -111,11 +113,15 @@ fun SearchIngredientScreen(
                 ), thickness = 1.dp, color = Color.LightGray
             )
 
-            Box(modifier = Modifier.fillMaxSize().weight(weight = 1f, fill = true)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(weight = 1f, fill = true)
+            ) {
                 ingredientsList.value?.let {
                     if (it.isNotEmpty()) {
                         //populate grid if ingredients found
-                        IngredientVerticalGrid(ingredients = it, navController,viewModel)
+                        IngredientVerticalGrid(ingredients = it, navController, viewModel)
                     } else {
 
                         // Ingredients not found
@@ -126,7 +132,7 @@ fun SearchIngredientScreen(
                             verticalArrangement = Arrangement.Center,
                         ) {
                             HeaderTextComponent(
-                                value = "Please search the ingredient you want to add to your digital pantry"
+                                value = stringResource(R.string.search_ingredient_text)
                             )
                         }
                     }
@@ -134,19 +140,22 @@ fun SearchIngredientScreen(
             }
         }
 
-        if(isNetworkAvailable.value==false){
+        if (isNetworkAvailable.value == false) {
+            viewModel.openAlertDialog.value = true
             val context = LocalContext.current
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle("Connection Lost")
-            builder.setMessage("We lost connection to the server. Please make sure your connection works and restart the app")
-
-            builder.setPositiveButton("Ok") { _, _ ->
-                (context as Activity).finishAffinity()
-            }
-
-            val dialog = builder.create()
-            dialog.show()
+            MyAlertDialog(
+                onDismissRequest = {
+                    viewModel.openAlertDialog.value = false
+                },
+                onConfirmation = { (context as Activity).finishAffinity() },
+                dialogTitle = stringResource(id = R.string.connection_not_available),
+                dialogText = stringResource(id = R.string.i_need_conection_txt),
+                icon = Icons.Default.SignalCellularConnectedNoInternet0Bar,
+                confirmationText = stringResource(id = R.string.ok),
+                dismissText = ""
+            )
         }
+
     }
 }
 

@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,22 +21,20 @@ import javax.inject.Inject
  *
  */
 @HiltViewModel
-class AddIngredientToPantryViewModel  @Inject constructor(
+class AddIngredientToPantryViewModel @Inject constructor(
     application: Application,
-) : AndroidViewModel(application)  {
+) : AndroidViewModel(application) {
 
-
-
-    private var _connectionStatus = MutableLiveData<Boolean>(checkNetworkConnectivity(application.applicationContext))
-    var connectionStatus : LiveData<Boolean> = _connectionStatus
-
-
-
+    private var _connectionStatus =
+        MutableLiveData(checkNetworkConnectivity(application.applicationContext))
+    var connectionStatus: LiveData<Boolean> = _connectionStatus
+    val openAlertDialogNoDate = mutableStateOf(false)
+    val dialogOpened = mutableStateOf(false)
 
     /**
      * Reference to the user's document in Firestore.
      */
-    var userDoc : DocumentReference? = getUserDocumentRef()
+    private var userDoc: DocumentReference? = getUserDocumentRef()
 
 
     /**
@@ -44,18 +43,16 @@ class AddIngredientToPantryViewModel  @Inject constructor(
      *
      * @param ingredientToAdd The ingredient to be added to the pantry.
      */
-    fun addIngredientToPantry( ingredientToAdd: Ingredient) : Boolean {
 
-        var exit : Boolean = false
+    fun addIngredientToPantry(ingredientToAdd: Ingredient): Int {
+
+        var exit = 0
 
         try {
-            if (userDoc == null){
+            if (userDoc == null) {
+                exit = -1
                 Log.e("ADD TO PANTRY", "Error fetching user doc")
-            }else{
-
-                /*
-                * If the ingredient is already present modify the userQuantity variable
-                */
+            } else {
                 userDoc!!.get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
 
@@ -63,37 +60,51 @@ class AddIngredientToPantryViewModel  @Inject constructor(
                         val array = documentSnapshot.toObject(User::class.java)?.ingredientsInPantry
 
                         if (array != null) {
-                            val existingIngredientsByName = array.filter { it.name  == ingredientToAdd.name }
+                            val existingIngredientsByName =
+                                array.filter { it.name == ingredientToAdd.name }
 
-                            if (existingIngredientsByName.isNotEmpty()) {
+                            exit = if (existingIngredientsByName.isNotEmpty()) {
                                 // Object with the specified name already exist, not add
-                                exit = false
+                                userDoc!!.update(
+                                    "ingredientsInPantry", FieldValue.arrayRemove(
+                                        existingIngredientsByName[0]))
+                                userDoc!!.update(
+                                    "ingredientsInPantry",
+                                    FieldValue.arrayUnion(ingredientToAdd)
+                                )
+                                1
                             } else {
                                 // Object with the specified name doesn't exist, add it to the array
-                                userDoc!!.update("ingredientsInPantry", FieldValue.arrayUnion(ingredientToAdd))
-                                exit = true
+                                userDoc!!.update(
+                                    "ingredientsInPantry",
+                                    FieldValue.arrayUnion(ingredientToAdd)
+                                )
+                                0
                             }
-                        }else{
-                            Log.e("CHECK","array seems to be null!")
+                        } else {
+                            exit = -1
+                            Log.e("CHECK", "array seems to be null!")
                         }
                     } else {
                         // Document does not exist
-                        Log.e("CHECK","Document does not exist.")
+                        exit = -1
+                        Log.e("CHECK", "Document does not exist.")
                     }
                 }.addOnFailureListener { e ->
                     // Handle errors
-                    Log.e("CHECK","Error checking array: $e")
+                    exit = -1
+                    Log.e("CHECK", "Error checking array: $e")
                 }
 
             }
         } catch (e: Exception) {
+            exit = -1
             Log.e("ADD TO PANTRY", "Error adding ingredient to user's pantry", e)
 
         }
 
         return exit
     }
-
 
     /**
      * Helper function that retrieves the DocumentReference for the current user from Firestore.

@@ -51,4 +51,10 @@
     <string name="allergies_capital">Allergies</string>
     <string name="yes_log_me_out">Yes, log me out</string>
     <string name="no_i_want_to_stay_logged_in">No, I want to stay logged in</string>
+    <string name="ingredient_without_due_date_to_be_added">Ingredient without due date to be added</string>
+    <string name="add_ingredient_message">Are you sure you want to add ingredient without a due date? Without the due date, I won\'t be able to notify you about upcoming usage of the ingredient.</string>
+    <string name="add_ingredient_yes">Yes, I want to add ingredient without due date</string>
+    <string name="add_ingredient_no">No, I want to add date to my ingredient</string>
+    <string name="i_am_sorry_an_error_occurred">I am sorry, an error occurred</string>
+    <string name="search_ingredient_text">Please search the ingredient you want to add to our digital pantry. If the item is already present, I will update its due date.</string>
 </resources>

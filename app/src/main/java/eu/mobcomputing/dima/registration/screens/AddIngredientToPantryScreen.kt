@@ -1,7 +1,6 @@
 package eu.mobcomputing.dima.registration.screens
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -18,6 +17,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -51,6 +52,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.components.ButtonComponent
+import eu.mobcomputing.dima.registration.components.MyAlertDialog
 import eu.mobcomputing.dima.registration.components.add_ingredients.DatePickerView
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.navigation.Screen
@@ -78,9 +80,8 @@ fun AddIngredientToPantry(
     val isNetworkAvailable = addIngredientToPantryViewModel.connectionStatus.observeAsState()
 
     val datePicketText = "Open date picker dialog"
-    /*
-     * State variables for the date picker
-     */
+
+    // State variables for the date picker
     var date by remember {
         mutableStateOf(datePicketText)
     }
@@ -89,20 +90,13 @@ fun AddIngredientToPantry(
         mutableStateOf(false)
     }
 
-
-    /*
-    *   Get local context for Toast message
-    * */
+    // Get local context for Toast message
     val context = LocalContext.current
 
 
-    /*
-     * UI composition
-     */
+    // UI composition
     Surface(
-        color = colorResource(id = R.color.pink_50),
-        modifier = Modifier
-            .fillMaxSize()
+        color = colorResource(id = R.color.pink_50), modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -110,21 +104,17 @@ fun AddIngredientToPantry(
                 .padding(10.dp)
                 .background(colorResource(id = R.color.pink_50))
         ) {
-            /*
-             * Back button row
-             */
+
+            // Back button row
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
             ) {
                 // Navigate back button
-                IconButton(
-                    onClick = {
-                        navController.navigate(Screen.SearchIngredientScreen.route) {
-                            launchSingleTop = true
-                        }
+                IconButton(onClick = {
+                    navController.navigate(Screen.SearchIngredientScreen.route) {
+                        launchSingleTop = true
                     }
-                ) {
+                }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.go_back)
@@ -132,9 +122,7 @@ fun AddIngredientToPantry(
                 }
             }
 
-            /*
-             * Main content column
-             */
+            // Main content column
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -173,13 +161,11 @@ fun AddIngredientToPantry(
                                 modifier = Modifier
                                     .wrapContentSize()
                                     .align(Alignment.Center),
-                                //contentScale = ContentScale.FillBounds,
                             )
                         }
                         Box(modifier = Modifier.weight(1f)) {
                             Column(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
+                                modifier = Modifier.align(Alignment.Center)
                             ) {
 
                                 Text(
@@ -203,22 +189,18 @@ fun AddIngredientToPantry(
                     }
                 }
 
-                /*
-                 * Expiration date row
-                 */
+                // Expiration date row
                 Row(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(R.string.add_the_expiring_date),
-                        style = TextStyle(
+                        text = stringResource(R.string.add_the_expiring_date), style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             fontStyle = FontStyle.Normal,
-                        ),
-                        modifier = Modifier
+                        ), modifier = Modifier
                             .padding(8.dp)
                             .weight(1f)
                     )
@@ -246,118 +228,112 @@ fun AddIngredientToPantry(
                             onDateSelected = {
                                 date = it
                                 ingredient.expiringDate =
-                                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                                        .parse(it)
+                                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it)
                             },
                         )
                     }
                 }
             }
 
-
-            /*
-             * Button to add to pantry
-             */
+            // Button to add to pantry
             ButtonComponent(
-                value = stringResource(R.string.add_to_pantry),
-                onClickAction = {
-                    // be sure to put a quantity at least  = 1
-                    /*if (ingredient.userQuantity==0.0){
-                        ingredient.userQuantity=1.0
-                    }
-                    if (ingredient.unit==""){
-                        ingredient.unit=ingredient.possibleUnits[0]
-                    }*/
-                    if (ingredient.expiringDate == null) {
-                        showNoDateDialog(
-                            context,
-                            navController,
-                            ingredient,
-                            addIngredientToPantryViewModel
+                value = stringResource(R.string.add_to_pantry), onClickAction = {
+                    if ((!addIngredientToPantryViewModel.dialogOpened.value) and (ingredient.expiringDate == null)) {
+                        addIngredientToPantryViewModel.openAlertDialogNoDate.value = true
+                    } else {
+                        addIngredientToUser(
+                            ingredient, addIngredientToPantryViewModel, context, navController
                         )
-                    }
-                    else{
-                        addIngredientToUser(ingredient, addIngredientToPantryViewModel, context, navController)
 
                     }
 
+                }, isEnabled = true
+            )
+
+        }
+
+        if (addIngredientToPantryViewModel.openAlertDialogNoDate.value) {
+            MyAlertDialog(
+                onDismissRequest = {
+                    addIngredientToPantryViewModel.dialogOpened.value = true
+                    addIngredientToPantryViewModel.openAlertDialogNoDate.value = false
                 },
-                isEnabled = true
+                onConfirmation = {
+                    addIngredientToUser(
+                        ingredient = ingredient,
+                        addIngredientToPantryViewModel = addIngredientToPantryViewModel,
+                        context = context,
+                        navController = navController
+                    )
+                },
+                dialogTitle = stringResource(id = R.string.ingredient_without_due_date_to_be_added),
+                dialogText = stringResource(id = R.string.add_ingredient_message),
+                icon = Icons.Default.QuestionMark,
+                confirmationText = stringResource(id = R.string.add_ingredient_yes),
+                dismissText = stringResource(id = R.string.add_ingredient_no)
             )
 
         }
 
         if (isNetworkAvailable.value == false) {
-            val myContext = LocalContext.current
-            val builder = AlertDialog.Builder(myContext)
-            builder.setTitle(stringResource(id = R.string.connection_not_available))
-            builder.setMessage(stringResource(id = R.string.i_need_conection_txt))
-
-            builder.setPositiveButton(stringResource(id = R.string.ok)) { _, _ ->
-                (myContext as Activity).finishAffinity()
-            }
-
-            val dialog = builder.create()
-            dialog.show()
+            MyAlertDialog(
+                onDismissRequest = {
+                    addIngredientToPantryViewModel.openAlertDialogNoDate.value = false
+                },
+                onConfirmation = { (context as Activity).finishAffinity() },
+                dialogTitle = stringResource(id = R.string.connection_not_available),
+                dialogText = stringResource(id = R.string.i_need_conection_txt),
+                icon = Icons.Default.SignalCellularConnectedNoInternet0Bar,
+                confirmationText = stringResource(id = R.string.ok),
+                dismissText = ""
+            )
         }
     }
 }
 
+/** Function to add trigger the view model to add ingredient to user
+ *
+ * @param ingredient ingredient to be added
+ * @param addIngredientToPantryViewModel view model
+ * @param context context to show toast messages
+ * @param navController to navigate to a different class
+ */
 
 fun addIngredientToUser(
     ingredient: Ingredient,
     addIngredientToPantryViewModel: AddIngredientToPantryViewModel,
     context: Context,
-    navController: NavController){
-
-    Log.e("ADDING", ingredient.toString())
-    val exit = addIngredientToPantryViewModel.addIngredientToPantry(ingredient)
-
-    if (exit) {
-        //notify user
-        Toast.makeText(
-            context,
-            context.getString(R.string.i_ve_stored_the_ingredient_to_our_pantry),
-            Toast.LENGTH_SHORT
-        ).show()
-    } else {
-        //notify user
-        Toast.makeText(
-            context,
-            context.getString(R.string.i_ve_added_the_ingredient_in_our_pantry),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-    //go back to home
-    navController.navigate(Screen.SearchIngredientScreen.route)
-}
-
-
-fun showNoDateDialog(
-    context: Context,
-    navController: NavController,
-    ingredient: Ingredient,
-    addIngredientToPantryViewModel: AddIngredientToPantryViewModel
+    navController: NavController
 ) {
-    val builder = AlertDialog.Builder(context)
-    builder.setTitle("Ingredient without due date to be added")
-    builder.setMessage("Are you sure you want to add ingredient without a due date?")
-    builder.setMessage(
-        "Without the due date, I won't be able to notify you about upcoming " +
-                "usage of the ingredient."
-    )
-    builder.setPositiveButton("Yes, dismiss") { _, _ ->
-        addIngredientToUser(ingredient, addIngredientToPantryViewModel, context, navController)
+    Log.e("ADDING", ingredient.toString())
+
+    when (addIngredientToPantryViewModel.addIngredientToPantry(ingredient)) {
+        0 -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.i_ve_stored_the_ingredient_to_our_pantry),
+                Toast.LENGTH_LONG
+            ).show()
+            navController.navigate(Screen.SearchIngredientScreen.route)
+        }
+
+        -1 -> {
+            Toast.makeText(
+                context,
+                "I've updated your ingredient", Toast.LENGTH_LONG
+            ).show()
+        }
+
+        else -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.i_am_sorry_an_error_occurred), Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
-    builder.setNegativeButton("No, I want to add date") { dialog, _ ->
-        // User clicked No, dismiss the dialog
-        dialog.dismiss()
-    }
-
-    val dialog = builder.create()
-    dialog.show()
 }
+
 
 @Preview
 @Composable

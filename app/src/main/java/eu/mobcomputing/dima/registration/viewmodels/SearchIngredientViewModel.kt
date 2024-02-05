@@ -2,6 +2,7 @@ package eu.mobcomputing.dima.registration.viewmodels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -40,15 +41,14 @@ class SearchIngredientViewModel @Inject constructor(
     var connectionStatus: LiveData<Boolean> = _connectionStatus
     private val _ingredients = MutableLiveData<List<Ingredient>>(emptyList())
     val ingredients: LiveData<List<Ingredient>> = _ingredients
+    val openAlertDialog = mutableStateOf(false)
 
-    //private var allIngredients: List<Ingredient> = emptyList()
 
     /**
      * Initializes the ViewModel by launching a coroutine to load ingredients from the CSV file.
      */
     init {
         viewModelScope.launch {
-            //loadIngredientFromCsv()
         }
 
     }
@@ -67,7 +67,6 @@ class SearchIngredientViewModel @Inject constructor(
             val ingredientList = convertCsvDataToIngredientList(csvData)
             _ingredients.value = ingredientList
         } catch (e: IOException) {
-            // Handle the exception, e.g., log an error or show a message to the user
             e.printStackTrace()
         }
     }
