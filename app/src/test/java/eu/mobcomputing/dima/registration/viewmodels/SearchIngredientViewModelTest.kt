@@ -37,7 +37,7 @@ class SearchIngredientViewModelTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this);
 
         `when`(application.applicationContext).thenReturn(mockApplicationContext)
     }
@@ -73,7 +73,4 @@ class SearchIngredientViewModelTest {
         assertEquals(Ingredient::class.java, result.javaClass)
         assertEquals(18350, result.id)
     }
-
-
-
 }
