@@ -180,19 +180,18 @@ dependencies {
     // Optional -- Robolectric environment
     testImplementation("androidx.test:core:1.5.0")
     // Optional -- Mockito framework
-    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito:mockito-core:4.5.1")
     // Optional -- mockito-kotlin
-    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     // Optional -- Mockk framework
     testImplementation("io.mockk:mockk:1.12.0")
 
 
     testImplementation ("io.mockk:mockk:1.12.0")
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     testImplementation ("org.jetbrains.kotlin:kotlin-test-junit:1.5.21")
     androidTestImplementation("io.mockk:mockk-android:1.12.0")
     androidTestImplementation("org.mockito:mockito-android:3.12.4")
-
 
 }
