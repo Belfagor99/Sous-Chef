@@ -90,6 +90,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     implementation("androidx.compose.material3:material3-android:1.2.0-rc01")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.testng:testng:6.9.6")
     androidTestImplementation("junit:junit:4.13.2")
@@ -193,5 +194,9 @@ dependencies {
     testImplementation ("org.jetbrains.kotlin:kotlin-test-junit:1.5.21")
     androidTestImplementation("io.mockk:mockk-android:1.12.0")
     androidTestImplementation("org.mockito:mockito-android:3.12.4")
+
+    // compose testing
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.6")
+
 
 }

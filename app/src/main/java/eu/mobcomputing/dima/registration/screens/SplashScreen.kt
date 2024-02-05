@@ -14,6 +14,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,10 +68,13 @@ fun SplashScreen(
             ) {
                 MyImageComponent(
                     R.drawable.sous_chef,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    imageDesc = splashScreenViewModel.imageDescription
                 )
             }
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.semantics {
+                contentDescription = splashScreenViewModel.cicrcularProgresDescription
+            })
 
         }
     }

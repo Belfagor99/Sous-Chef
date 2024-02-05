@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,7 +34,8 @@ import java.net.URLDecoder
 fun SetUpNavGraph(navController: NavHostController) {
 
     // Create a shared instance of SharedUserDataModel using the SharedUserDataModelViewFactory
-    val sharedViewModelFactory = SharedUserDataModelViewFactory()
+    // Create a shared instance of SharedUserDataModel using the SharedUserDataModelViewFactory
+    val sharedViewModelFactory = remember { SharedUserDataModelViewFactory() }
     val sharedViewModel: SharedUserDataViewModel = viewModel(factory = sharedViewModelFactory)
 
 

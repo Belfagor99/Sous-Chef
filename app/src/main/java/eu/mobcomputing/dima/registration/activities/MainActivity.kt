@@ -16,12 +16,11 @@ import eu.mobcomputing.dima.registration.ui.theme.RegistrationTheme
 
 class MainActivity : NetworkAwareActivity() {
     private lateinit var navController: NavHostController
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Composable
     override fun setContent() {
+        navController = rememberNavController()
         RegistrationTheme {
-            navController = rememberNavController()
             SetUpNavGraph(navController = navController)
         }
     }

@@ -18,12 +18,12 @@ import androidx.compose.ui.res.painterResource
  *
  */
 @Composable
-fun MyImageComponent(imageResource: Int, modifier: Modifier = Modifier) {
+fun MyImageComponent(imageResource: Int, modifier: Modifier = Modifier, imageDesc:String  = "") {
     Image(
         painter = painterResource(imageResource),
-        contentDescription = imageResource.toString(),
+        contentDescription = if (imageDesc.isNotEmpty()) imageDesc else imageResource.toString(),
         modifier = modifier,
-        alignment = Alignment.Center
+        alignment = Alignment.Center,
     )
 }
 

@@ -2,6 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="SousChefNavigationTest">
+        <State />
+      </entry>
+      <entry key="SplashScreenKtTest">
+        <State />
+      </entry>
       <entry key="WelcomeViewModelTest">
         <State />
       </entry>
@@ -20,6 +26,12 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-04T22:26:56.754612700Z" />
         </State>
+      </entry>
+      <entry key="splashScreenContentDisplayed()">
+        <State />
+      </entry>
+      <entry key="testInitialScreen()">
+        <State />
       </entry>
     </value>
   </component>
