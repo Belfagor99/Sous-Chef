@@ -38,7 +38,7 @@ import java.util.Locale
  */
 class MyNotificationWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
-    private val TAG = MyNotificationWorker::class.java.simpleName
+    val TAG = MyNotificationWorker::class.java.simpleName
     private val defaultNotificationText = "Open your pantry to see."
 
     /**

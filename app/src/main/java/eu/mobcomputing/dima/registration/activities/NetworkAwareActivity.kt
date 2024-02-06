@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.activities
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
@@ -19,10 +20,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.notification.MyNotificationWorker
 import eu.mobcomputing.dima.registration.screens.ConnectionLostScreen
+import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-abstract class NetworkAwareActivity : ComponentActivity(){
+abstract class NetworkAwareActivity : ComponentActivity() {
 
     /**
      * Called when the activity is first created.
@@ -50,23 +53,10 @@ abstract class NetworkAwareActivity : ComponentActivity(){
             Log.d("FCM", token.toString())
         })
 
-        val workRequest = PeriodicWorkRequestBuilder<MyNotificationWorker>(
-            repeatInterval = 24, // Repeat every 24 hours
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        )
-            .setConstraints(
-                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-            )
-            .build()
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "MyUniqueWorkName",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest
-        )
+        // create worker for notification
+        this.enqueueNotificationWorker()
 
         super.onCreate(savedInstanceState)
-
 
 
         // Determine if the device is a tablet
@@ -92,6 +82,46 @@ abstract class NetworkAwareActivity : ComponentActivity(){
     @Composable
     abstract fun setContent()
 
+    /**
+     *  Function to create instance of work manager to trigger the notification process.
+     *
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun Context.enqueueNotificationWorker(
+    ) {
 
+        val localTime = LocalTime.of(8, 0)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val now = ZonedDateTime.now()
+
+        // Calculate the trigger time for today at 8 A.M.
+        val trigger = now.with(localTime)
+
+        // If the trigger time for today has already passed, set the trigger time for tomorrow
+        val realTrigger = if (trigger <= now) trigger.plusDays(1) else trigger
+
+        // Calculate the initial delay until the trigger time
+        val initialDelay = realTrigger.toEpochSecond() - now.toEpochSecond()
+
+        val notificationWork = PeriodicWorkRequestBuilder<MyNotificationWorker>(
+            repeatInterval = 1, // Repeat every 24 hours
+            repeatIntervalTimeUnit = TimeUnit.DAYS,
+            10,
+            TimeUnit.MINUTES
+        ).setInitialDelay(initialDelay, TimeUnit.SECONDS)
+            .setConstraints(constraints)
+            .addTag("notification_worker_tag")
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "SousChefAppUniqueWorkName",
+                ExistingPeriodicWorkPolicy.UPDATE,
+                notificationWork
+            )
+    }
 
 }
