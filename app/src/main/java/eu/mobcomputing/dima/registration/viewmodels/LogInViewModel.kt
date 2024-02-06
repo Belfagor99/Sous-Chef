@@ -15,6 +15,18 @@ import eu.mobcomputing.dima.registration.navigation.Screen
  */
 class LogInViewModel : ViewModel() {
     private val TAG = LogInViewModel::class.simpleName
+    val imageDesc = "sous chef logo"
+    val circular = "circular progress indicator"
+    val clickableTxt = "log or reg txt"
+    val normTxt1 = "or txt"
+    val passwordResentDesc = "forgotten passwd txt"
+    val compDesc = "forgotten passwd component"
+    val clickableTxt2 = "txt"
+    val btnDesc = "log in btn"
+    val passwdField = "passwd field"
+    val emailField = "email field"
+    val headTxt = "header txt"
+    val normTxt3 = "desc txt"
 
     // Represents the current state of the login UI.
     var logInUIState = mutableStateOf(LogInUIState())

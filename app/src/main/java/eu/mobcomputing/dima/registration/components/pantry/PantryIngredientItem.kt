@@ -32,6 +32,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun PantryIngredientItem(ingredient: Ingredient, pantryViewModel: PantryViewModel) {
     ElevatedCard(
@@ -94,7 +95,7 @@ fun PantryIngredientItem(ingredient: Ingredient, pantryViewModel: PantryViewMode
                                 end = 20.dp
                             )
                             .align(Alignment.Center),
-                        text = SimpleDateFormat("dd/MM/YYYY").format(ingredient.expiringDate!!),
+                        text = SimpleDateFormat("dd/mm/yyyy").format(ingredient.expiringDate!!),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.inverseOnSurface,

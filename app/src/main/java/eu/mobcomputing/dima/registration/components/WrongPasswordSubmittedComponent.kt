@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,14 +32,15 @@ import eu.mobcomputing.dima.registration.R
  *
  */
 @Composable
-fun WrongPasswordSubmitterComponent(numberOfTries: Int) {
+fun WrongPasswordSubmitterComponent(numberOfTries: Int, compDesc: String = "wrong password") {
     val wrongPasswordText = stringResource(id = R.string.wrong_password)
     val remainingTriesText = stringResource(id = R.string.remaining_tries)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp), // Optional: Add padding if needed
+            .padding(16.dp)
+            .semantics { contentDescription = compDesc }, // Optional: Add padding if needed
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     )

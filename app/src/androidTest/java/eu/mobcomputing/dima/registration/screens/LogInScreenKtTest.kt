@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import eu.mobcomputing.dima.registration.viewmodels.RegistrationViewModel
+import eu.mobcomputing.dima.registration.viewmodels.LogInViewModel
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -16,111 +16,108 @@ import org.junit.runner.RunWith
 
 // To perform tests use device of such type that the function is testing
 @RunWith(AndroidJUnit4::class)
-class RegisterScreenKtTest {
+class LogInScreenKtTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun testSmallRegistrationScreen() {
-        val viewModel = RegistrationViewModel()
+    fun testSmallLoginScreen() {
+        val viewModel = LogInViewModel()
 
         composeTestRule.setContent {
-            SmallRegistrationScreen(
+            SmallLogInScreen(
                 navController = TestNavHostController(LocalContext.current),
-                registrationViewModel = viewModel
+                logInViewModel = viewModel
             )
         }
         testSameComponents(viewModel)
     }
+
     @Test
-    fun testCircularProgressIsDisplayedRegistration(){
-        val viewModel = RegistrationViewModel()
-        viewModel.registrationInProgress.value = true
+    fun testWideLoginScreen() {
+        val viewModel = LogInViewModel()
 
         composeTestRule.setContent {
-            SmallRegistrationScreen(
+            WideLogInScreen(
                 navController = TestNavHostController(LocalContext.current),
-                registrationViewModel = viewModel
+                logInViewModel = viewModel
             )
         }
+        testSameComponents(viewModel)
+        composeTestRule
+            .onNodeWithContentDescription(viewModel.imageDesc)
+            .assertIsDisplayed()
+    }
 
+    @Test
+    fun testCircularWhenLogInInProgress() {
+        val viewModel = LogInViewModel()
+        viewModel.logInInProgress.value = true
+        composeTestRule.setContent {
+            SmallLogInScreen(
+                navController = TestNavHostController(LocalContext.current),
+                logInViewModel = viewModel
+            )
+        }
         composeTestRule
             .onNodeWithContentDescription(viewModel.circular)
             .assertIsDisplayed()
-
-    }
-    @Test
-    fun testPasswordAlertDialog(){
-        val viewModel = RegistrationViewModel()
-
-        viewModel.openAlertDialog.value = true
-        composeTestRule.setContent {
-            SmallRegistrationScreen(
-                navController = TestNavHostController(LocalContext.current),
-                registrationViewModel = viewModel
-            )
-        }
-
-        composeTestRule
-            .onNodeWithContentDescription(viewModel.alertDesc)
-            .assertIsDisplayed()
-
     }
 
     @Test
-    fun testWideRegistrationScreen() {
-        val viewModel = RegistrationViewModel()
-
+    fun testScreenWhenPasswordForgotten() {
+        val viewModel = LogInViewModel()
+        viewModel.passwordIsIncorrect.value = true
         composeTestRule.setContent {
-            WideRegistrationScreen(
+            SmallLogInScreen(
                 navController = TestNavHostController(LocalContext.current),
-                registrationViewModel = viewModel
+                logInViewModel = viewModel
             )
         }
-        testSameComponents(viewModel)
         composeTestRule
-            .onNodeWithContentDescription(viewModel.appLogoImg)
+            .onNodeWithContentDescription(viewModel.compDesc)
             .assertIsDisplayed()
     }
 
-
-    private fun testSameComponents(viewModel: RegistrationViewModel) {
-        // Assertions is UI components are displayed
+    @Test
+    fun testScreenWhenEmailSent() {
+        val viewModel = LogInViewModel()
+        viewModel.passwordResetSent.value = true
+        composeTestRule.setContent {
+            SmallLogInScreen(
+                navController = TestNavHostController(LocalContext.current),
+                logInViewModel = viewModel
+            )
+        }
         composeTestRule
-            .onNodeWithContentDescription(viewModel.buttonDesc)
+            .onNodeWithTag(viewModel.passwordResentDesc)
             .assertIsDisplayed()
+    }
 
+    private fun testSameComponents(viewModel: LogInViewModel) {
         composeTestRule
-            .onNodeWithTag(viewModel.clickableTxt)
+            .onNodeWithContentDescription(viewModel.btnDesc)
             .assertIsDisplayed()
-
         composeTestRule
-            .onNodeWithTag(viewModel.field4)
+            .onNodeWithTag(viewModel.normTxt3)
             .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(viewModel.field3)
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(viewModel.field2)
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(viewModel.field1)
-            .assertIsDisplayed()
-
         composeTestRule
             .onNodeWithTag(viewModel.normTxt1)
             .assertIsDisplayed()
-
         composeTestRule
-            .onNodeWithTag(viewModel.headerTxt1)
+            .onNodeWithTag(viewModel.clickableTxt)
             .assertIsDisplayed()
-
         composeTestRule
-            .onNodeWithTag(viewModel.headerTxt2)
+            .onNodeWithTag(viewModel.clickableTxt2)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(viewModel.emailField)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(viewModel.passwdField)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(viewModel.headTxt)
             .assertIsDisplayed()
     }
-
 }

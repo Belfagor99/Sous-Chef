@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -81,10 +83,13 @@ fun SmallLogInScreen(navController: NavController, logInViewModel: LogInViewMode
         HeaderTextComponent(
             value = stringResource(id = R.string.welcome_back_text),
             shouldBeCentered = true,
-            shouldBeRed = true
+            shouldBeRed = true,
+            testTag = logInViewModel.headTxt
         )
         Spacer(modifier = Modifier.height(20.dp))
-        NormalTextComponent(value = stringResource(id = R.string.log_in_small_text))
+        NormalTextComponent(
+            value = stringResource(id = R.string.log_in_small_text),
+            testTag = logInViewModel.normTxt3)
         Spacer(modifier = Modifier.height(20.dp))
         MyTextFieldComponent(
             labelValue = stringResource(id = R.string.email),
@@ -95,6 +100,7 @@ fun SmallLogInScreen(navController: NavController, logInViewModel: LogInViewMode
                 logInViewModel.onEvent(LogInUIEvent.EmailChanged(it), navController)
             },
             errorStatus = logInViewModel.logInUIState.value.emailError,
+            testTag = logInViewModel.emailField
 
             )
         MyPasswordFieldComponent(
@@ -106,33 +112,46 @@ fun SmallLogInScreen(navController: NavController, logInViewModel: LogInViewMode
                 logInViewModel.onEvent(LogInUIEvent.PasswordChanged(it), navController)
             },
             errorStatus = logInViewModel.logInUIState.value.passwordError,
+            testTag = logInViewModel.passwdField
 
 
             )
         Spacer(modifier = Modifier.height(20.dp))
         ButtonComponent(
-            value = stringResource(id = R.string.log_in_text), onClickAction = {
+            value = stringResource(id = R.string.log_in_text),
+            onClickAction = {
                 logInViewModel.onEvent(LogInUIEvent.LogInButtonClicked, navController)
-            }, isEnabled = logInViewModel.allValidationPassed.value
+            },
+            isEnabled = logInViewModel.allValidationPassed.value,
+            buttonDescription = logInViewModel.btnDesc
         )
         Spacer(modifier = Modifier.height(20.dp))
-        ClickableForgottenPasswordTextComponent(onClickAction = {
-            logInViewModel.resetPassword(
-                email = logInViewModel.logInUIState.value.email
-            )
-        })
+        ClickableForgottenPasswordTextComponent(testTag = logInViewModel.clickableTxt2,
+            onClickAction = {
+                logInViewModel.resetPassword(
+                    email = logInViewModel.logInUIState.value.email
+                )
+            })
 
         if (logInViewModel.passwordIsIncorrect.value) {
-            WrongPasswordSubmitterComponent(logInViewModel.logInUIState.value.numberOfRemainingSubmissions)
+            WrongPasswordSubmitterComponent(
+                numberOfTries = logInViewModel.logInUIState.value.numberOfRemainingSubmissions,
+                compDesc = logInViewModel.compDesc
+            )
         }
 
         if (logInViewModel.passwordResetSent.value) {
-            NormalTextComponent(value = stringResource(id = R.string.password_reset))
+            NormalTextComponent(
+                testTag = logInViewModel.passwordResentDesc,
+                value = stringResource(id = R.string.password_reset)
+            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        NormalTextComponent(value = stringResource(id = R.string.or))
-        ClickableLoginTextComponent(onClickAction = {
+        NormalTextComponent(
+            testTag = logInViewModel.normTxt1, value = stringResource(id = R.string.or)
+        )
+        ClickableLoginTextComponent(testTag = logInViewModel.clickableTxt, onClickAction = {
             logInViewModel.redirectToSignUp(
                 navController
             )
@@ -141,7 +160,9 @@ fun SmallLogInScreen(navController: NavController, logInViewModel: LogInViewMode
 
 
     if (logInViewModel.logInInProgress.value) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(modifier = Modifier.semantics {
+            contentDescription = logInViewModel.circular
+        })
     }
 }
 
@@ -168,82 +189,12 @@ fun WideLogInScreen(navController: NavController, logInViewModel: LogInViewModel
                 .fillMaxWidth()
         ) {
             MyImageComponent(
-                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+                R.drawable.sous_chef,
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = logInViewModel.imageDesc
             )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(18.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            HeaderTextComponent(
-                value = stringResource(id = R.string.welcome_back_text),
-                shouldBeCentered = true,
-                shouldBeRed = true
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            NormalTextComponent(value = stringResource(id = R.string.log_in_small_text))
-            Spacer(modifier = Modifier.height(20.dp))
-            MyTextFieldComponent(
-                labelValue = stringResource(id = R.string.email),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_alternate_email_24
-                ),
-                onTextSelected = {
-                    logInViewModel.onEvent(LogInUIEvent.EmailChanged(it), navController)
-                },
-                errorStatus = logInViewModel.logInUIState.value.emailError,
-
-                )
-            MyPasswordFieldComponent(
-                labelValue = stringResource(id = R.string.password),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_lock_24
-                ),
-                onTextSelected = {
-                    logInViewModel.onEvent(LogInUIEvent.PasswordChanged(it), navController)
-                },
-                errorStatus = logInViewModel.logInUIState.value.passwordError,
-
-
-                )
-            Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(
-                value = stringResource(id = R.string.log_in_text), onClickAction = {
-                    logInViewModel.onEvent(LogInUIEvent.LogInButtonClicked, navController)
-                }, isEnabled = logInViewModel.allValidationPassed.value
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            ClickableForgottenPasswordTextComponent(onClickAction = {
-                logInViewModel.resetPassword(
-                    email = logInViewModel.logInUIState.value.email
-                )
-            })
-
-            if (logInViewModel.passwordIsIncorrect.value) {
-                WrongPasswordSubmitterComponent(logInViewModel.logInUIState.value.numberOfRemainingSubmissions)
-            }
-
-            if (logInViewModel.passwordResetSent.value) {
-                NormalTextComponent(value = stringResource(id = R.string.password_reset))
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-            NormalTextComponent(value = stringResource(id = R.string.or))
-            ClickableLoginTextComponent(onClickAction = {
-                logInViewModel.redirectToSignUp(
-                    navController
-                )
-            })
-        }
-
-
-        if (logInViewModel.logInInProgress.value) {
-            CircularProgressIndicator()
-        }
+        SmallLogInScreen(navController = navController, logInViewModel = logInViewModel)
     }
 }
 

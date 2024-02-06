@@ -1,6 +1,5 @@
 package eu.mobcomputing.dima.registration.screens
 
-import android.app.Application
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
