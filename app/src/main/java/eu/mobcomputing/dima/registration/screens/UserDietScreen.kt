@@ -154,7 +154,7 @@ fun SmallUserDietScreenView(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(0.5f)
-                    .testTag(sharedUserDataViewModel.butt2)// Adjust the weight and fillMaxWidth accordingly
+                    .testTag(sharedUserDataViewModel.butt2)
             )
 
         }

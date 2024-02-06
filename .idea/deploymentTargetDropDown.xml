@@ -2,14 +2,21 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="SplashScreenKtTest">
-        <State />
-      </entry>
       <entry key="UserDietScreenKtTest">
-        <State />
-      </entry>
-      <entry key="WelcomeScreenKtTest">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fekia\.android\avd\Pixel_Tablet_API_TiramisuPrivacySandbox.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:29:28.543039200Z" />
+        </State>
       </entry>
       <entry key="app">
         <State>
@@ -27,9 +34,6 @@
           <timeTargetWasSelectedWithDropDown value="2024-02-04T22:26:56.754612700Z" />
         </State>
       </entry>
-      <entry key="splashScreenContentDisplayed()">
-        <State />
-      </entry>
       <entry key="testSmallUserDietScreenComponentsVisibility()">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
@@ -44,6 +48,41 @@
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-06T08:05:41.445154100Z" />
+        </State>
+      </entry>
+      <entry key="testSmallUserDietScreenComponentsVisibility() (1)">
+        <State />
+      </entry>
+      <entry key="testWideUserDietScreenComponentsVisibility()">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fekia\.android\avd\Pixel_Tablet_API_TiramisuPrivacySandbox.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:29:47.374881700Z" />
+        </State>
+      </entry>
+      <entry key="testWideUserDietScreenComponentsVisibility() (1)">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T09:07:38.152501600Z" />
         </State>
       </entry>
     </value>

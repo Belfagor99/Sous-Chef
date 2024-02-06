@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -91,14 +92,17 @@ fun SmallUserAllergiesScreen(
         HeaderTextComponent(
             value = stringResource(id = R.string.create_account_text),
             shouldBeCentered = true,
-            shouldBeRed = true
+            shouldBeRed = true,
+            testTag = sharedUserDataViewModel.headerComp1
         )
         Spacer(modifier = Modifier.height(10.dp))
         StepperBar(
             steps = sharedUserDataViewModel.steps,
             currentStep = sharedUserDataViewModel.allergiesStep.value
         )
-        NormalTextComponent(value = stringResource(id = R.string.allergies))
+        NormalTextComponent(
+            value = stringResource(id = R.string.allergies),
+            testTag = sharedUserDataViewModel.normComp2)
         Column {
             AllergenGrid(
                 allergens = sharedUserDataViewModel.allergens,
@@ -125,6 +129,7 @@ fun SmallUserAllergiesScreen(
                     sharedUserDataViewModel.allergiesScreenNext(navController)
                 },
                 modifier = Modifier.weight(1f)
+                .testTag(sharedUserDataViewModel.butt1),
             )
         }
 
@@ -158,58 +163,15 @@ fun WiderUserAllergiesScreen(
                 .fillMaxWidth()
         ) {
             MyImageComponent(
-                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+                R.drawable.sous_chef,
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = sharedUserDataViewModel.imgDesc
+
             )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(18.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.height(10.dp))
-            HeaderTextComponent(
-                value = stringResource(id = R.string.create_account_text),
-                shouldBeCentered = true,
-                shouldBeRed = true
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            StepperBar(
-                steps = sharedUserDataViewModel.steps,
-                currentStep = sharedUserDataViewModel.allergiesStep.value
-            )
-            NormalTextComponent(value = stringResource(id = R.string.allergies))
-            Column {
-                AllergenGrid(
-                    allergens = sharedUserDataViewModel.allergens,
-                    onAllergenClick = {
-                        sharedUserDataViewModel.allergenOnClick(it)
-                        it.selectedState.value = !it.selectedState.value
-                        it.selectedState.value = !it.selectedState.value
-                    }
-
-                )
-            }
-
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Spacer(modifier = Modifier.width(10.dp))
-                SmallButtonComponent(
-                    value = stringResource(id = R.string.next_step),
-                    onClickAction = {
-                        sharedUserDataViewModel.allergiesScreenNext(navController)
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-
-        }
+       SmallUserAllergiesScreen(
+           navController = navController,
+           sharedUserDataViewModel = sharedUserDataViewModel)
     }
 }
 

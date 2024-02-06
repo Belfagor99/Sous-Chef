@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Allergen
@@ -82,7 +84,9 @@ fun AllergenItem(
                 ),
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .testTag(allergen.name)
+                    .semantics {
+                    contentDescription = allergen.name
+                },
             )
         }
     }

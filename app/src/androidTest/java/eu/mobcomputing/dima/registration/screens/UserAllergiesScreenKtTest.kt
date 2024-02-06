@@ -7,15 +7,11 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.testing.TestNavHostController
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataViewModel
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class UserDietScreenKtTest {
+class UserAllergiesScreenKtTest{
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -24,7 +20,7 @@ class UserDietScreenKtTest {
         val viewModel = SharedUserDataViewModel()
 
         composeTestRule.setContent {
-            SmallUserDietScreenView(
+            SmallUserAllergiesScreen(
                 navController = TestNavHostController(LocalContext.current),
                 sharedUserDataViewModel = viewModel
             )
@@ -39,7 +35,7 @@ class UserDietScreenKtTest {
         val viewModel = SharedUserDataViewModel()
 
         composeTestRule.setContent {
-            WiderUserDietScreenView(
+            WiderUserAllergiesScreen(
                 navController = TestNavHostController(LocalContext.current),
                 sharedUserDataViewModel = viewModel
             )
@@ -69,10 +65,9 @@ class UserDietScreenKtTest {
         assertNodeIsDisplayedWithTag(viewModel.headerComp1)
         assertNodeIsDisplayedWithTag(viewModel.normComp2)
         assertNodeIsDisplayedWithTag(viewModel.butt1)
-        assertNodeIsDisplayedWithTag(viewModel.butt2)
 
-        viewModel.dietOptions.forEach { dietOption ->
-            val description = dietOption.type.diet
+        viewModel.allergens.forEach { allergen ->
+            val description = allergen.name
             assertNodeIsDisplayedWithContentDescription(description)
         }
 
