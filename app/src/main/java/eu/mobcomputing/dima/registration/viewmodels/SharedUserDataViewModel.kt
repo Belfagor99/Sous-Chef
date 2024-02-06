@@ -31,6 +31,12 @@ class SharedUserDataViewModel() : ViewModel() {
     val allergiesStep: MutableState<Int> = mutableIntStateOf(1)
     val dietTypeStep: MutableState<Int> = mutableIntStateOf(2)
 
+    val headerComp1 = "create account tag"
+    val normComp2 = "follow diet tag"
+    val butt1 = "prev step"
+    val butt2 = "finish step"
+    val imgDesc = "image on big screen"
+
     // List of steps for navigation
     val steps: List<String> = listOf("1", "2", "3")
 

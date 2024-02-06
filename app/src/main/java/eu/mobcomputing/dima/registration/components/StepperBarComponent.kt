@@ -1,21 +1,24 @@
 package eu.mobcomputing.dima.registration.components
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
 
@@ -36,7 +39,8 @@ fun StepperBar(steps: List<String>, currentStep: Int) {
     Row(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .semantics { contentDescription = "stepper bar" },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         steps.forEachIndexed { index, step ->
@@ -80,7 +84,7 @@ fun StepperItem(text: String, isCompleted: Boolean, isCurrent: Boolean) {
                 isCompleted -> Icons.Default.Check
                 else -> Icons.Default.Circle
             },
-            contentDescription = null,
+            contentDescription = if (isCompleted) "icon completed" else "icon circle",
             tint = color
         )
         Spacer(modifier = Modifier.width(8.dp))

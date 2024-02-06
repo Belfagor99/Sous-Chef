@@ -2,13 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="SousChefNavigationTest">
-        <State />
-      </entry>
       <entry key="SplashScreenKtTest">
         <State />
       </entry>
-      <entry key="WelcomeViewModelTest">
+      <entry key="UserDietScreenKtTest">
+        <State />
+      </entry>
+      <entry key="WelcomeScreenKtTest">
         <State />
       </entry>
       <entry key="app">
@@ -30,8 +30,21 @@
       <entry key="splashScreenContentDisplayed()">
         <State />
       </entry>
-      <entry key="testInitialScreen()">
-        <State />
+      <entry key="testSmallUserDietScreenComponentsVisibility()">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="RF8RB09ABFL" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:05:41.445154100Z" />
+        </State>
       </entry>
     </value>
   </component>

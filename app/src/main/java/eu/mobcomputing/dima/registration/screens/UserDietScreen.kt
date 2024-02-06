@@ -16,8 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -86,18 +89,30 @@ fun SmallUserDietScreenView(
             .padding(18.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(
+            modifier = Modifier
+                .height(5.dp)
+                .testTag("spacer1")
+        )
         HeaderTextComponent(
             value = stringResource(id = R.string.create_account_text),
             shouldBeCentered = true,
-            shouldBeRed = true
+            shouldBeRed = true,
+            testTag = sharedUserDataViewModel.headerComp1
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(
+            modifier = Modifier
+                .height(4.dp)
+                .semantics { contentDescription = "spacer2" },
+        )
         StepperBar(
             steps = sharedUserDataViewModel.steps,
             currentStep = sharedUserDataViewModel.dietTypeStep.value
         )
-        NormalTextComponent(value = stringResource(id = R.string.diet_type))
+        NormalTextComponent(
+            value = stringResource(id = R.string.diet_type),
+            testTag = sharedUserDataViewModel.normComp2
+        )
 
         DietOptionList(
             dietOptions = sharedUserDataViewModel.dietOptions,
@@ -121,11 +136,16 @@ fun SmallUserDietScreenView(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
+                    .fillMaxWidth(0.5f)
+                    .testTag(sharedUserDataViewModel.butt1)
 
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(
+                modifier = Modifier
+                    .width(10.dp)
+                    .testTag("spacer3")
+            )
             SmallButtonComponent(
                 value = stringResource(id = R.string.finish),
                 onClickAction = {
@@ -133,7 +153,8 @@ fun SmallUserDietScreenView(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
+                    .fillMaxWidth(0.5f)
+                    .testTag(sharedUserDataViewModel.butt2)// Adjust the weight and fillMaxWidth accordingly
             )
 
         }
@@ -160,77 +181,23 @@ fun WiderUserDietScreenView(
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f).testTag("wide spacer1"))
         Box(
             modifier = Modifier
                 .aspectRatio(1f)
                 .fillMaxWidth()
         ) {
             MyImageComponent(
-                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+                R.drawable.sous_chef, modifier = Modifier.fillMaxSize(),
+                imageDesc = sharedUserDataViewModel.imgDesc
             )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(18.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.height(5.dp))
-            HeaderTextComponent(
-                value = stringResource(id = R.string.create_account_text),
-                shouldBeCentered = true,
-                shouldBeRed = true
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            StepperBar(
-                steps = sharedUserDataViewModel.steps,
-                currentStep = sharedUserDataViewModel.dietTypeStep.value
-            )
-            NormalTextComponent(value = stringResource(id = R.string.diet_type))
-
-            DietOptionList(
-                dietOptions = sharedUserDataViewModel.dietOptions,
-                onDietClick = {
-                    sharedUserDataViewModel.dietOptionOnClick(it)
-                },
-
-                )
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-
-                SmallButtonComponent(
-                    value = stringResource(id = R.string.previous_step),
-                    onClickAction = {
-                        sharedUserDataViewModel.backStepOnClick(navController)
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
-
-                )
-
-                Spacer(modifier = Modifier.width(10.dp))
-                SmallButtonComponent(
-                    value = stringResource(id = R.string.finish),
-                    onClickAction = {
-                        sharedUserDataViewModel.finishRegistration(navController)
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(0.5f) // Adjust the weight and fillMaxWidth accordingly
-                )
-            }
-
-        }
+        SmallUserDietScreenView(
+            navController = navController,
+            sharedUserDataViewModel = sharedUserDataViewModel
+        )
     }
 }
-
 
 
 /**

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
@@ -81,6 +82,7 @@ fun AllergenItem(
                 ),
                 modifier = Modifier
                     .align(Alignment.Center)
+                    .testTag(allergen.name)
             )
         }
     }

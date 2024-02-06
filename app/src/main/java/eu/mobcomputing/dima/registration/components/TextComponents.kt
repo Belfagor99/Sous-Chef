@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -51,19 +52,25 @@ import eu.mobcomputing.dima.registration.R
  *
  */
 @Composable
-fun NormalTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false) {
+fun NormalTextComponent(
+    value: String,
+    shouldBeCentered: Boolean = true,
+    shouldBeRed: Boolean = false,
+    testTag: String = "normal Text Component"
+) {
     Text(
         text = value,
         modifier =
         Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(min = 40.dp)
+            .testTag(testTag),
         style = TextStyle(
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
         ),
-        color = if(shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
+        color = if (shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
         textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
     )
 }
@@ -80,13 +87,22 @@ fun NormalTextComponent(value: String, shouldBeCentered: Boolean = true, shouldB
  *
  */
 @Composable
-fun HeaderTextComponent(value: String, shouldBeCentered: Boolean = true, shouldBeRed: Boolean = false) {
+fun HeaderTextComponent(
+    value: String,
+    shouldBeCentered: Boolean = true,
+    shouldBeRed: Boolean = false,
+    testTag: String = "header text component"
+) {
     Text(
-        text = value, modifier = Modifier
+        text = value,
+        modifier = Modifier
             .fillMaxWidth()
-            .heightIn(), style = TextStyle(
+            .heightIn()
+            .testTag(testTag),
+        style = TextStyle(
             fontSize = 30.sp, fontWeight = FontWeight.Bold, fontStyle = FontStyle.Normal
-        ), color = if(shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
+        ),
+        color = if (shouldBeRed) colorResource(id = R.color.pink_900) else colorResource(id = R.color.base_text_color),
         textAlign = if (shouldBeCentered) TextAlign.Center else TextAlign.Left
 
     )
@@ -112,6 +128,7 @@ fun MyTextFieldComponent(
     leadingIcon: Painter,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false,
+    testTag: String = "text field component"
 ) {
 
     val textValue: MutableState<String> = remember {
@@ -122,7 +139,8 @@ fun MyTextFieldComponent(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
+            .clip(RoundedCornerShape(4.dp))
+            .testTag(testTag),
         label = { Text(text = labelValue) },
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = colorResource(id = R.color.pink_100),
@@ -168,8 +186,9 @@ fun MyPasswordFieldComponent(
     errorStatus: Boolean = false,
     onFocusChanged: (Boolean) -> Unit = {},
     supportingText: String = "",
+    testTag: String = "password text field component"
 
-) {
+    ) {
     val password = remember {
         mutableStateOf("")
     }
@@ -183,7 +202,8 @@ fun MyPasswordFieldComponent(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
-            .onFocusChanged { onFocusChanged(it.isFocused) },
+            .onFocusChanged { onFocusChanged(it.isFocused)}
+            .testTag(testTag),
 
         label = {
             Text(text = labelValue)
@@ -242,7 +262,7 @@ fun MyPasswordFieldComponent(
  *
  */
 @Composable
-fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
+fun ClickableLoginTextComponent(onClickAction: () -> Unit, testTag: String = "clickable test component") {
     val initialText = "Not have an account? "
     val loginText = "Sign up"
 
@@ -257,7 +277,8 @@ fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
     ClickableText(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 30.dp),
+            .heightIn(min = 30.dp)
+            .testTag(testTag),
         style = TextStyle(
             fontSize = 21.sp,
             fontWeight = FontWeight.Normal,
@@ -290,7 +311,7 @@ fun ClickableLoginTextComponent(onClickAction: () -> Unit) {
  *
  */
 @Composable
-fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
+fun ClickableRegisterTextComponent(onClickAction: () -> Unit, testTag: String = "registration clickable text component") {
     val initialText = "Already have an account? "
     val loginText = "Log in"
 
@@ -305,7 +326,8 @@ fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
     ClickableText(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(min = 40.dp)
+            .testTag(testTag),
         style = TextStyle(
             fontSize = 21.sp,
             fontWeight = FontWeight.Normal,
@@ -336,7 +358,7 @@ fun ClickableRegisterTextComponent(onClickAction: () -> Unit) {
  *
  */
 @Composable
-fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
+fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit, testTag: String = "forgotten password clickable text component") {
     val loginText = stringResource(id = R.string.forgot_passwd)
 
     val annotatedString = buildAnnotatedString {
@@ -350,7 +372,8 @@ fun ClickableForgottenPasswordTextComponent(onClickAction: () -> Unit) {
     ClickableText(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(min = 40.dp)
+            .testTag(testTag),
         style = TextStyle(
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
