@@ -17,14 +17,22 @@ import kotlinx.coroutines.tasks.await
 class SuccessfulRegistrationViewModel : ViewModel() {
     private val TAG = SuccessfulRegistrationViewModel::class.simpleName
 
+    val headerComp1 = "header text 1"
+    val headerComp2 = "header text 2"
+    val imgDesc = "application logo"
+    val normComp1 = "normal text 1"
+    val butDesc = "button next"
+    val testNameValue = "John"
+
     // MutableLiveData to hold the user's name
-    private val _userName = MutableLiveData<String>()
+    private val _userName = MutableLiveData(this.testNameValue)
 
     // Expose an immutable LiveData to observe changes to userName
     val userName: MutableLiveData<String> get() = _userName
 
     // Initialization block, called when the ViewModel is created
     init {
+        // for test purposes have to commented out
         welcomeUser()
     }
 

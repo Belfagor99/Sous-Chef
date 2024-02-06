@@ -88,12 +88,14 @@ fun SmallSingUpSuccessfulScreen(
     ) {
         HeaderTextComponent(
             value = successfulRegistrationViewModel.userName.value.toString(),
-            shouldBeCentered = false, shouldBeRed = true
+            shouldBeCentered = false, shouldBeRed = true,
+            testTag = successfulRegistrationViewModel.headerComp1
         )
         HeaderTextComponent(
             value = stringResource(id = R.string.registration_successful),
             shouldBeCentered = true,
-            shouldBeRed = true
+            shouldBeRed = true,
+            testTag = successfulRegistrationViewModel.headerComp2
         )
         Spacer(modifier = Modifier.weight(1f))
         Box(
@@ -102,12 +104,19 @@ fun SmallSingUpSuccessfulScreen(
                 .fillMaxWidth()
                 .aspectRatio(1f)
         ) {
-            MyImageComponent(R.drawable.souschef_logo, modifier = Modifier.fillMaxSize())
+            MyImageComponent(
+                R.drawable.souschef_logo,
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = successfulRegistrationViewModel.imgDesc
+            )
         }
 
 
         Spacer(modifier = Modifier.height(5.dp))
-        NormalTextComponent(value = stringResource(id = R.string.after_registration))
+        NormalTextComponent(
+            value = stringResource(id = R.string.after_registration),
+            testTag = successfulRegistrationViewModel.normComp1
+        )
 
         Spacer(
             modifier = Modifier.weight(1f)
@@ -117,7 +126,8 @@ fun SmallSingUpSuccessfulScreen(
                 id = R.string.next_step
             ),
             onClickAction = { successfulRegistrationViewModel.redirect(navController) },
-            isEnabled = true
+            isEnabled = true,
+            buttonDescription = successfulRegistrationViewModel.butDesc
         )
     }
 }
@@ -150,30 +160,37 @@ fun WideSingUpSuccessfulScreen(
             HeaderTextComponent(
                 value = successfulRegistrationViewModel.userName.value.toString(),
                 shouldBeCentered = false,
-                shouldBeRed = true
+                shouldBeRed = true,
+                testTag = successfulRegistrationViewModel.headerComp1
             )
             HeaderTextComponent(
                 value = stringResource(id = R.string.registration_successful),
                 shouldBeCentered = true,
-                shouldBeRed = true
+                shouldBeRed = true,
+                testTag = successfulRegistrationViewModel.headerComp2
 
             )
 
 
             MyImageComponent(
                 R.drawable.souschef_logo,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = successfulRegistrationViewModel.imgDesc
             )
         }
 
         Column {
-            NormalTextComponent(value = stringResource(id = R.string.after_registration))
+            NormalTextComponent(
+                value = stringResource(id = R.string.after_registration),
+                testTag = successfulRegistrationViewModel.normComp1
+            )
             ButtonComponent(
                 value = stringResource(
                     id = R.string.next_step
                 ),
                 onClickAction = { successfulRegistrationViewModel.redirect(navController) },
-                isEnabled = true
+                isEnabled = true,
+                buttonDescription = successfulRegistrationViewModel.butDesc
             )
 
         }

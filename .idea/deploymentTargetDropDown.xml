@@ -2,39 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="UserDietScreenKtTest">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\fekia\.android\avd\Pixel_Tablet_API_TiramisuPrivacySandbox.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:29:28.543039200Z" />
-        </State>
-      </entry>
       <entry key="app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-04T22:26:56.754612700Z" />
-        </State>
-      </entry>
-      <entry key="testSmallUserDietScreenComponentsVisibility()">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
             <Target>
@@ -47,13 +15,32 @@
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:05:41.445154100Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T10:21:32.584610600Z" />
         </State>
       </entry>
-      <entry key="testSmallUserDietScreenComponentsVisibility() (1)">
+      <entry key="testDietScreenComponentsVisibility()">
         <State />
       </entry>
-      <entry key="testWideUserDietScreenComponentsVisibility()">
+      <entry key="testSamallSuccessfullRegistrationScreen()">
+        <State />
+      </entry>
+      <entry key="testSmallSuccessfulRegistrationScreen()">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:53:51.067249100Z" />
+        </State>
+      </entry>
+      <entry key="testSmallSuccessfullRegistrationScreen()">
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -66,14 +53,14 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T08:29:47.374881700Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:41:47.414487900Z" />
         </State>
       </entry>
-      <entry key="testWideUserDietScreenComponentsVisibility() (1)">
+      <entry key="testWideSuccessfulRegistrationScreen()">
         <State>
-          <runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
             <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
+              <type value="QUICK_BOOT_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
@@ -81,8 +68,8 @@
                 </Key>
               </deviceKey>
             </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T09:07:38.152501600Z" />
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:51:33.678621600Z" />
         </State>
       </entry>
     </value>

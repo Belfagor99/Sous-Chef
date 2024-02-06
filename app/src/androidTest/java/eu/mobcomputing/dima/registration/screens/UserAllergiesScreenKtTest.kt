@@ -7,10 +7,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import eu.mobcomputing.dima.registration.viewmodels.SharedUserDataViewModel
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+// To perform tests use device of such type that the function is testing
+@RunWith(AndroidJUnit4::class)
 class UserAllergiesScreenKtTest{
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()

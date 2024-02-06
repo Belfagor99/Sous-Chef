@@ -56,6 +56,47 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1508611816">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_Tablet_API_TiramisuPrivacySandbox" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1478023719">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1444083166">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_Tablet_API_TiramisuPrivacySandbox" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1274532281">
           <value>
             <AndroidTestResultsTableState>
@@ -63,6 +104,20 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_7_Pro_API_TiramisuPrivacySandbox" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1259690488">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_7_Pro_API_TiramisuPrivacySandbox" value="120" />
+                  <entry key="Pixel_Tablet_API_TiramisuPrivacySandbox" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -135,7 +190,33 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-511663112">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-399174069">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-343678694">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -228,6 +309,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="680102139">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_Tablet_API_TiramisuPrivacySandbox" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="695988504">
           <value>
             <AndroidTestResultsTableState>
@@ -249,6 +344,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_Tablet_API_TiramisuPrivacySandbox" value="120" />
                   <entry key="Tests" value="360" />
+                  <entry key="samsung SM-G970F" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

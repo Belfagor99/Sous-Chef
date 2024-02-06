@@ -14,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+// To perform tests use device of such type that the function is testing
 @RunWith(AndroidJUnit4::class)
 class UserDietScreenKtTest {
     @get:Rule
