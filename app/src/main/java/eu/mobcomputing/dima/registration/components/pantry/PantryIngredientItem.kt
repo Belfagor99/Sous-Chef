@@ -95,7 +95,7 @@ fun PantryIngredientItem(ingredient: Ingredient, pantryViewModel: PantryViewMode
                                 end = 20.dp
                             )
                             .align(Alignment.Center),
-                        text = SimpleDateFormat("dd/mm/yyyy").format(ingredient.expiringDate!!),
+                        text = SimpleDateFormat("dd/MM/yyyy").format(ingredient.expiringDate!!),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.inverseOnSurface,
