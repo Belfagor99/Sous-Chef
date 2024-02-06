@@ -31,6 +31,41 @@ class UserDietScreenKtTest {
         }
 
 
+        testSameComponents(viewModel)
+    }
+
+    @Test
+    fun testWideUserDietScreenComponentsVisibility() {
+        val viewModel = SharedUserDataViewModel()
+
+        composeTestRule.setContent {
+            WiderUserDietScreenView(
+                navController = TestNavHostController(LocalContext.current),
+                sharedUserDataViewModel = viewModel
+            )
+        }
+
+        testSameComponents(viewModel)
+        assertNodeIsDisplayedWithContentDescription(viewModel.imgDesc)
+    }
+
+
+    private fun assertNodeIsDisplayedWithTag(tag: String) {
+        composeTestRule
+            .onNodeWithTag(tag)
+            .assertIsDisplayed()
+            .also { println("Node with tag $tag is displayed") }
+    }
+
+    private fun assertNodeIsDisplayedWithContentDescription(contentDescription: String) {
+        composeTestRule
+            .onNodeWithContentDescription(contentDescription)
+            .assertIsDisplayed()
+            .also { println("Node with content description '$contentDescription' is displayed") }
+    }
+
+    private fun testSameComponents(viewModel: SharedUserDataViewModel){
+
         assertNodeIsDisplayedWithTag(viewModel.headerComp1)
         assertNodeIsDisplayedWithTag(viewModel.normComp2)
         assertNodeIsDisplayedWithTag(viewModel.butt1)
@@ -43,21 +78,4 @@ class UserDietScreenKtTest {
 
         assertNodeIsDisplayedWithContentDescription("stepper bar")
     }
-
-    // Helper function to assert if a node with a given tag is displayed
-    private fun assertNodeIsDisplayedWithTag(tag: String) {
-        composeTestRule
-            .onNodeWithTag(tag)
-            .assertIsDisplayed()
-            .also { println("Node with tag $tag is displayed") }
-    }
-
-    // Helper function to assert if a node with a given content description is displayed
-    private fun assertNodeIsDisplayedWithContentDescription(contentDescription: String) {
-        composeTestRule
-            .onNodeWithContentDescription(contentDescription)
-            .assertIsDisplayed()
-            .also { println("Node with content description '$contentDescription' is displayed") }
-    }
-
 }
