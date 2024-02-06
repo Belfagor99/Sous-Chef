@@ -1,5 +1,6 @@
 package eu.mobcomputing.dima.registration.components.pantry
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import eu.mobcomputing.dima.registration.R
 import eu.mobcomputing.dima.registration.models.Ingredient
 import eu.mobcomputing.dima.registration.viewmodels.PantryViewModel
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -107,14 +109,20 @@ fun PantryIngredientItem(ingredient: Ingredient, pantryViewModel: PantryViewMode
 }
 
 
+@SuppressLint("SimpleDateFormat")
 @Preview
 @Composable
 fun AppPreview() {
+
+    val stringDate = "12/02/2021"
+    val formatter: DateFormat = SimpleDateFormat("dd/mm/yyyy")
+    val myDate: Date = formatter.parse(stringDate)!!
+
     val ingredient = Ingredient(
         name = "coconut cooking oil",
         userQuantity = 2.0,
         unit = "units",
-        expiringDate = Date("12/02/2021")
+        expiringDate = myDate
     )
     MaterialTheme {
         PantryIngredientItem(ingredient = ingredient, PantryViewModel(application = Application()))

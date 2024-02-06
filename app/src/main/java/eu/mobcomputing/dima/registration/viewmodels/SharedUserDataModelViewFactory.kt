@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 /**
  * Factory class for creating instances of [SharedUserDataViewModel].
  */
+@Suppress("UNCHECKED_CAST")
 class SharedUserDataModelViewFactory : ViewModelProvider.Factory {
 
     /**

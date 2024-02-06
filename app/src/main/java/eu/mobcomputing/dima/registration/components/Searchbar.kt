@@ -19,6 +19,8 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +50,10 @@ fun SearchBar(
 
     Column(modifier = Modifier.padding(horizontal = 10.dp)) {
 
-        SearchBar(modifier = Modifier.fillMaxWidth(),
+        SearchBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { contentDescription = "search bar" },
             query = text,
             onQueryChange = {
                 text = it
@@ -117,5 +122,5 @@ fun SearchBar(
 @Preview
 @Composable
 fun PreviewSearchBarExample() {
-    SearchBar(onSearch = {},onSearchTextChange = {})
+    SearchBar(onSearch = {}, onSearchTextChange = {})
 }

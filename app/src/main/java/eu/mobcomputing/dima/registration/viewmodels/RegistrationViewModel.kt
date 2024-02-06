@@ -22,6 +22,19 @@ import eu.mobcomputing.dima.registration.uiStates.RegistrationUIState
 class RegistrationViewModel : ViewModel() {
     private val TAG = RegistrationViewModel::class.simpleName
 
+    val appLogoImg = "sous chef logo"
+    val clickableTxt = "log or reg text"
+    val buttonDesc = "sign me up btn"
+    val field4 = "password field"
+    val field3 = "email field"
+    val field2 = "surname field"
+    val field1 = "name field"
+    val headerTxt2 = "personal inf"
+    val headerTxt1 = "create an account"
+    val normTxt1 = "or"
+    val circular = "circular progress indicator"
+    val alertDesc = "alert dialog for same password"
+
     // Represents the current state of the registration user interface
     var registrationUIState = mutableStateOf(RegistrationUIState())
 

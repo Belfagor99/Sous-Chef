@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,10 +99,14 @@ fun SmallRegistrationScreen(
         HeaderTextComponent(
             value = stringResource(id = R.string.create_account_text),
             shouldBeCentered = true,
-            shouldBeRed = true
+            shouldBeRed = true,
+            testTag = registrationViewModel.headerTxt1
         )
         Spacer(modifier = Modifier.height(10.dp))
-        HeaderTextComponent(value = stringResource(id = R.string.personal_information))
+        HeaderTextComponent(
+            value = stringResource(id = R.string.personal_information),
+            testTag = registrationViewModel.headerTxt2
+        )
         Spacer(modifier = Modifier.height(10.dp))
 
         // First name Component
@@ -115,8 +121,9 @@ fun SmallRegistrationScreen(
                 )
             },
             errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
+            testTag = registrationViewModel.field1
 
-            )
+        )
 
         // Last name component
         MyTextFieldComponent(
@@ -131,6 +138,8 @@ fun SmallRegistrationScreen(
                     )
             },
             errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
+            testTag = registrationViewModel.field2
+
         )
 
         //R-mail component
@@ -146,6 +155,7 @@ fun SmallRegistrationScreen(
                     )
             },
             errorStatus = registrationViewModel.registrationUIState.value.emailError,
+            testTag = registrationViewModel.field3
         )
 
         // Password component
@@ -157,16 +167,18 @@ fun SmallRegistrationScreen(
             onTextSelected = {
                 registrationViewModel.onEvent(
                     RegistrationUIEvent.PasswordChanged(it), navController,
-
-                    )
+                )
             },
             errorStatus = registrationViewModel.registrationUIState.value.passwordError,
-            supportingText = "The password must contain 8 characters, 1 upper case letter and 3 numbers."
+            supportingText = "The password must contain 8 characters, 1 upper case letter and 3 numbers.",
+            testTag = registrationViewModel.field4
+
         )
 
 
         Spacer(modifier = Modifier.weight(1f))
         ButtonComponent(value = stringResource(id = R.string.sign_up),
+            buttonDescription = registrationViewModel.buttonDesc,
             isEnabled = registrationViewModel.allValidationPassed.value,
             onClickAction = {
                 registrationViewModel.onEvent(
@@ -174,29 +186,32 @@ fun SmallRegistrationScreen(
                 )
             })
         Spacer(modifier = Modifier.height(10.dp))
-        NormalTextComponent(value = stringResource(id = R.string.or))
-        ClickableRegisterTextComponent(onClickAction = {
-            registrationViewModel.redirectToLogInScreen(navController)
-        })
+        NormalTextComponent(
+            value = stringResource(id = R.string.or),
+            testTag = registrationViewModel.normTxt1
+        )
+        ClickableRegisterTextComponent(
+            testTag = registrationViewModel.clickableTxt,
+            onClickAction = {
+                registrationViewModel.redirectToLogInScreen(navController)
+            })
     }
 
-
-
     if (registrationViewModel.registrationInProgress.value) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(modifier = Modifier.semantics {
+            contentDescription = registrationViewModel.circular
+        })
     }
     if (registrationViewModel.openAlertDialog.value) {
         MyAlertDialog(
             onDismissRequest = { registrationViewModel.openAlertDialog.value = false },
             onConfirmation = { registrationViewModel.redirectToLogInScreen(navController) },
             dialogTitle = stringResource(R.string.e_mail_already_registered),
-            dialogText = "I am sorry, the e-mail you are trying to register, I already know. " +
-                    "Please provide different e-mail or log in via provided e-mail. " +
-                    "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
-                    "reset your password.",
+            dialogText = stringResource(R.string.password_alredy_registred_text),
             icon = Icons.Default.Info,
-            confirmationText = "Yes, go to log in",
-            dismissText = "No, create new account",
+            confirmationText = stringResource(R.string.yes_go_to_log_in),
+            dismissText = stringResource(R.string.no_create_new_account),
+            alertDesc = registrationViewModel.alertDesc
         )
     }
 
@@ -228,114 +243,15 @@ fun WideRegistrationScreen(
                 .fillMaxWidth()
         ) {
             MyImageComponent(
-                R.drawable.sous_chef, modifier = Modifier.fillMaxSize()
+                R.drawable.sous_chef, modifier = Modifier.fillMaxSize(),
+                imageDesc = registrationViewModel.appLogoImg
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            HeaderTextComponent(
-                value = stringResource(id = R.string.create_account_text),
-                shouldBeCentered = true,
-                shouldBeRed = true
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            HeaderTextComponent(value = stringResource(id = R.string.personal_information))
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // First name Component
-            MyTextFieldComponent(
-                labelValue = stringResource(id = R.string.first_name),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_person_24
-                ),
-                onTextSelected = {
-                    registrationViewModel.onEvent(
-                        RegistrationUIEvent.FirstNameChanged(it), navController,
-                    )
-                },
-                errorStatus = registrationViewModel.registrationUIState.value.firstNameError,
-
-                )
-
-            // Last name component
-            MyTextFieldComponent(
-                labelValue = stringResource(id = R.string.last_name),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_person_24
-                ),
-                onTextSelected = {
-                    registrationViewModel.onEvent(
-                        RegistrationUIEvent.LastNameChanged(it), navController,
-                    )
-                },
-                errorStatus = registrationViewModel.registrationUIState.value.lastNameError,
-            )
-            //R-mail component
-            MyTextFieldComponent(
-                labelValue = stringResource(id = R.string.email),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_alternate_email_24
-                ),
-                onTextSelected = {
-                    registrationViewModel.onEvent(
-                        RegistrationUIEvent.EmailChanged(it), navController,
-                    )
-                },
-                errorStatus = registrationViewModel.registrationUIState.value.emailError,
-            )
-
-            // Password component
-            MyPasswordFieldComponent(
-                labelValue = stringResource(id = R.string.password),
-                leadingIcon = painterResource(
-                    id = R.drawable.baseline_lock_24
-                ),
-                onTextSelected = {
-                    registrationViewModel.onEvent(
-                        RegistrationUIEvent.PasswordChanged(it), navController,
-                    )
-                },
-                errorStatus = registrationViewModel.registrationUIState.value.passwordError,
-                supportingText = "The password must contain 8 characters, 1 upper case letter and 3 numbers."
-
-            )
-
-            ButtonComponent(value = stringResource(id = R.string.sign_up),
-                isEnabled = registrationViewModel.allValidationPassed.value,
-                onClickAction = {
-                    registrationViewModel.onEvent(
-                        RegistrationUIEvent.RegistrationButtonClicked, navController,
-                    )
-                })
-            NormalTextComponent(value = stringResource(id = R.string.or))
-            ClickableRegisterTextComponent(onClickAction = {
-                registrationViewModel.redirectToLogInScreen(navController)
-            })
-        }
-
-        if (registrationViewModel.registrationInProgress.value) {
-            CircularProgressIndicator()
-        }
-        if (registrationViewModel.openAlertDialog.value) {
-            MyAlertDialog(
-                onDismissRequest = { registrationViewModel.openAlertDialog.value = false },
-                onConfirmation = { registrationViewModel.redirectToLogInScreen(navController) },
-                dialogTitle = stringResource(R.string.e_mail_already_registered),
-                dialogText = "I am sorry, the e-mail you are trying to register, I already know. " +
-                        "Please provide different e-mail or log in via provided e-mail. " +
-                        "If you forgot your password, please click on Yes, I will redirect you to log in page, where you can " +
-                        "reset your password.",
-                icon = Icons.Default.Info,
-                confirmationText = "Yes, go to log in",
-                dismissText = "No, create new account",
-            )
-        }
+        SmallRegistrationScreen(
+            navController = navController,
+            registrationViewModel = registrationViewModel
+        )
     }
 }
 

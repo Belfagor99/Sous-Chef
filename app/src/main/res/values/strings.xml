@@ -58,4 +58,7 @@
     <string name="i_am_sorry_an_error_occurred">I am sorry, an error occurred</string>
     <string name="search_ingredient_text">Please search the ingredient you want to add to our digital pantry. If the item is already present, I will update its due date.</string>
     <string name="edit_ingredient_txt">Do you want to delete me?\nIf you want to edit my date, go to add ingredient and change my due date there.</string>
+    <string name="no_create_new_account">No, create new account</string>
+    <string name="yes_go_to_log_in">Yes, go to log in</string>
+    <string name="password_alredy_registred_text">I am sorry, the e-mail you are trying to register, I already know. If you forgot your password, please click on Yes, I will redirect you to log in page, where you can reset your password.</string>
 </resources>

@@ -18,33 +18,33 @@
           <timeTargetWasSelectedWithDropDown value="2024-02-06T10:21:32.584610600Z" />
         </State>
       </entry>
-      <entry key="testDietScreenComponentsVisibility()">
+      <entry key="testCircularProgressIsDisplayedRegistration()">
         <State />
       </entry>
-      <entry key="testSamallSuccessfullRegistrationScreen()">
-        <State />
-      </entry>
-      <entry key="testSmallSuccessfulRegistrationScreen()">
+      <entry key="testCircularProgressRegistration()">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="RF8RB09ABFL" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:53:51.067249100Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T13:48:51.329065300Z" />
         </State>
       </entry>
-      <entry key="testSmallSuccessfullRegistrationScreen()">
+      <entry key="testPasswordAlertDialog()">
+        <State />
+      </entry>
+      <entry key="testSmallRegistrationScreen()">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
@@ -52,24 +52,24 @@
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:41:47.414487900Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T13:24:28.999954500Z" />
         </State>
       </entry>
-      <entry key="testWideSuccessfulRegistrationScreen()">
+      <entry key="testWideRegistrationScreen()">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\fekia\.android\avd\Pixel_7_Pro_API_TiramisuPrivacySandbox.avd" />
+                  <value value="C:\Users\fekia\.android\avd\Pixel_Tablet_API_TiramisuPrivacySandbox.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-06T11:51:33.678621600Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-06T13:28:01.866744700Z" />
         </State>
       </entry>
     </value>

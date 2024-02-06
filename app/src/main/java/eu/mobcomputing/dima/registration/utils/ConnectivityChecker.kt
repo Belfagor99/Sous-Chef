@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import androidx.core.content.ContextCompat.getSystemService
 
 fun checkNetworkConnectivity(context: Context): Boolean {
-    val connectivityManager = getSystemService(context, ConnectivityManager::class.java) as ConnectivityManager?
+    val connectivityManager = getSystemService(context, ConnectivityManager::class.java)
 
     if (connectivityManager != null) {
         val networkCapabilities = connectivityManager.activeNetwork ?: return false
