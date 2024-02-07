@@ -63,10 +63,10 @@ abstract class NetworkAwareActivity : ComponentActivity() {
         val isTablet = resources.getBoolean(R.bool.isTablet)
 
         // Set the screen orientation based on the device type
-        if (isTablet) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        requestedOrientation = if (isTablet) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         } else {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
 
@@ -90,27 +90,25 @@ abstract class NetworkAwareActivity : ComponentActivity() {
     fun Context.enqueueNotificationWorker(
     ) {
 
-        val localTime = LocalTime.of(8, 0)
+        val localTime = LocalTime.of(11, 0)
+
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         val now = ZonedDateTime.now()
 
-        // Calculate the trigger time for today at 8 A.M.
         val trigger = now.with(localTime)
 
-        // If the trigger time for today has already passed, set the trigger time for tomorrow
-        val realTrigger = if (trigger <= now) trigger.plusDays(1) else trigger
+        // If the trigger time for today has already passed, set the trigger time in an hour
+        val realTrigger = if (trigger <= now) trigger.plusHours(1) else trigger
 
         // Calculate the initial delay until the trigger time
         val initialDelay = realTrigger.toEpochSecond() - now.toEpochSecond()
 
         val notificationWork = PeriodicWorkRequestBuilder<MyNotificationWorker>(
-            repeatInterval = 1, // Repeat every 24 hours
-            repeatIntervalTimeUnit = TimeUnit.DAYS,
-            10,
-            TimeUnit.MINUTES
+            repeatInterval = 24, // Repeat every 24 hours
+            repeatIntervalTimeUnit = TimeUnit.HOURS,
         ).setInitialDelay(initialDelay, TimeUnit.SECONDS)
             .setConstraints(constraints)
             .addTag("notification_worker_tag")

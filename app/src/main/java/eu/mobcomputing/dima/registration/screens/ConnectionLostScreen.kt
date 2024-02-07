@@ -40,7 +40,6 @@ import eu.mobcomputing.dima.registration.utils.checkNetworkConnectivity
 @Composable
 fun ConnectionLostScreen(content: @Composable () -> Unit) {
 
-
     val context = LocalContext.current
     val isNetworkAvailable = remember { checkNetworkConnectivity(context) }
 
@@ -86,7 +85,7 @@ fun SmallNoInternetConnectionScreenView() {
         ) {
             Icon(
                 imageVector = Icons.Filled.WifiOff,
-                contentDescription = null,
+                contentDescription = "no connection icon",
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -99,9 +98,14 @@ fun SmallNoInternetConnectionScreenView() {
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 HeaderTextComponent(
-                    value = stringResource(R.string.connection_not_available), shouldBeRed = true
+                    value = stringResource(R.string.connection_not_available),
+                    shouldBeRed = true,
+                    testTag = "no connection header"
                 )
-                NormalTextComponent(value = stringResource(R.string.i_need_conection_txt))
+                NormalTextComponent(
+                    value = stringResource(R.string.i_need_conection_txt),
+                    testTag = "no connection text"
+                )
             }
 
         }
@@ -130,41 +134,12 @@ fun WideNoInternetConnectionScreenView(
         ) {
             MyImageComponent(
                 R.drawable.sous_chef,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                imageDesc = "app logo"
             )
         }
 
-        Column {
-
-
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentSize()
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.WifiOff,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentHeight()
-            ) {
-                Column(
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-                    HeaderTextComponent(
-                        value = (stringResource(R.string.connection_not_available)),
-                        shouldBeRed = true
-                    )
-                    NormalTextComponent(value = stringResource(id = R.string.i_need_conection_txt))
-                }
-
-            }
-        }
+        SmallNoInternetConnectionScreenView()
     }
 }
 
