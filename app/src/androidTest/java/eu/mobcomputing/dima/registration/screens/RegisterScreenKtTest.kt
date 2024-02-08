@@ -50,7 +50,7 @@ class RegisterScreenKtTest {
 
     }
     @Test
-    fun testPasswordAlertDialog(){
+    fun testAlertRegistrationDialogIsDisplayed(){
         val viewModel = RegistrationViewModel()
 
         viewModel.openAlertDialog.value = true

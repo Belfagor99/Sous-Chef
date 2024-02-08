@@ -90,7 +90,7 @@ abstract class NetworkAwareActivity : ComponentActivity() {
     fun Context.enqueueNotificationWorker(
     ) {
 
-        val localTime = LocalTime.of(11, 0)
+        val localTime = LocalTime.of(10, 0)
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
