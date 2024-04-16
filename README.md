@@ -1,7 +1,7 @@
 # Sous Chef App
 <img src="https://github.com/Belfagor99/Sous-Chef/assets/9574238/c6433aed-84ab-4836-8daa-17e3c4db7b7f" width=200px height=200px align="right" />
 
-Sous Chef is the final project of **"Design and Implementation of Mobile Application (DIMA)"** course of the master degree in **"Computer Science and Engineering"** held at Politecnico di Milano (2023/2024).
+Sous Chef is the final project of **"Design and Implementation of Mobile Applications (DIMA)"** course of the master degree in **"Computer Science and Engineering"** held at Politecnico di Milano (2023/2024).
 
 <BR>
 
